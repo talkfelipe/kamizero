@@ -1,0 +1,47 @@
+// Brand colors
+$kamizero-teal: #14bec0;
+$kamizero-navy: #0097b2;
+
+.events-list-card,      // optional alias if you add it later
+.col-md-6 > .card {     // your current events card selector
+  // keep default card look; adjust only header + list below
+}
+
+/* Header */
+.col-md-6 .card-header {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e3e3e3;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Title “UPCOMING EVENTS” */
+.col-md-6 .card-header span {
+  letter-spacing: 0.04em;
+}
+
+/* Events list */
+.events-list {
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.events-list .list-group-item {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  border-left: none;
+  border-right: none;
+}
+
+.events-list .list-group-item:first-child {
+  border-top: none;
+}
+
+.events-list .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Date column */
+.events-list .fw-semibold {
+  color: $kamizero-navy;
+}

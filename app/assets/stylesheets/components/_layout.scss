@@ -1,0 +1,9 @@
+@media (min-width: 768px) { // desktop / tablet+
+  .calendar-events-row > .col-md-6 {
+    display: flex;          // column becomes flex container
+  }
+
+  .calendar-events-row > .col-md-6 > .card {
+    flex: 1 1 auto;         // card stretches to full column height
+  }
+}

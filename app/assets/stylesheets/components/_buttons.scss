@@ -1,0 +1,23 @@
+$kamizero-teal: #14bec0;
+
+.button-view-all {
+  background-color: $kamizero-teal !important;
+  border-color: $kamizero-teal !important;
+  color: #ffffff !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+
+  &:hover {
+    background-color: darken($kamizero-teal, 8%) !important;
+    border-color: darken($kamizero-teal, 8%) !important;
+    color: #ffffff !important;
+  }
+
+  &:active,
+  &:focus {
+    background-color: darken($kamizero-teal, 12%) !important;
+    border-color: darken($kamizero-teal, 12%) !important;
+    box-shadow: 0 0 0 0.15rem rgba(20, 190, 192, 0.35) !important;
+  }
+}
