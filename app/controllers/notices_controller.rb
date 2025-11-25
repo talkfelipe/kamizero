@@ -1,16 +1,21 @@
 class NoticesController < ApplicationController
   def show
     @notice = Notice.find(params[:id])
+    ReadNotification.new(user: current_user, notice: @notice, status: true)
   end
 
   def index
-    @notices = Notice.all
-
-    category = params.dig(:filters, :category)
-    if category.present?
-      @notices = @notices.where(category: category)
+    if current_user.role == "teacher"
+      @notices = current_user.school.notices
+    else
+      @notices = current_user.subscriptions.map do |subs|
+        subs.school.notices.where(grade: [subs.grade, "All"], classroom: [subs.classroom, "All"])
+      end.flatten.uniq
     end
+  end
 
+  def events
+    @events = Notice.where(category: "Event")
   end
 
   def new

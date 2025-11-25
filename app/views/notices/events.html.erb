@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="my-3">
+    <%= link_to "←　Back", root_path, class: "text-decoration-none text-secondary" %>
+    <h2>All Events</h2>
+  </div>
+  <div class="row g-3 mb-4">
+
+    <div class="col-8">
+      <div class="card">
+        <div class="card-header">
+          Calendar
+        </div>
+        <!--
+        <div class="card-body p-0">
+          <%#= month_calendar events: @events do |event| %>
+            <div class="calendar-day">
+              <span class="date-number"><%#= event.date %></span>
+
+              <%# events.each do |event| %>
+                <div class="calendar-event">
+                  <%#= event.title %>
+                </div>
+              <%# end %>
+            </div>
+          <%# end %>
+        </div>
+      --->
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>All Events</span>
+        </div>
+
+        <!-- All events -->
+        <ul class="list-group list-group-flush events-list">
+          <% if @events.present? %>
+            <% @events.each do |event| %>
+              <li class="list-group-item d-flex">
+                <div class="me-3">
+                  <small class="fw-semibold">
+                    <%= event.date %>
+                  </small>
+                </div>
+                <div class="flex-grow-1">
+                  <%= event.title || "Event title" %>
+                </div>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="list-group-item text-muted">
+              No upcoming events yet
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+</div>

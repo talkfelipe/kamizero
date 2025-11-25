@@ -9,10 +9,12 @@
     </div>
   </div>
   <div class="border p-3 shadow rounded">
-    <%= simple_form_for @notice do |f| %>
+    <%= simple_form_for @notice, html: { data: { controller: "conditional-form" } } do |f| %>
     <%= f.input :title, placeholder: "e.g., Sports day" %>
-    <%= f.input :category, collection: Notice::CATEGORIES %>
-    <%= f.input :date, as: :string, placeholder: "yyyy/mm/dd", input_html: { data: { controller: "flatpickr" } } %>
+    <%= f.input :category, collection: Notice::CATEGORIES, input_html: { data: { "conditional-form-target" => "selector", action: "change->conditional-form#toggleDependentField" } } %>
+    <div data-conditional-form-target="dependentField" data-show-if="Event" class="hidden">
+      <%= f.input :date, as: :string, placeholder: "yyyy/mm/dd", input_html: { data: { controller: "flatpickr" } } %>
+    </div>
     <%= f.input :content, placeholder: "Enter the full notice comment here... " %>
     <h3>Targer Audience</h3>
       <div class="row">
