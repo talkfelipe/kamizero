@@ -1,0 +1,64 @@
+<div class="container my-2">
+
+
+  <div class="my-3">
+   <%= link_to "←　Back", notices_path, class: "text-decoration-none text-secondary" %>
+   <h2>All Notices</h2>
+  </div>
+
+<!-- NEED TO CHANGE THIS CODE LATER BECAUSE SEARCH FUNCTION DOES NOT WORK -->
+  <%= simple_form_for :filters, url: notices_path, method: :get, html: { class: "notice-filters" } do |f| %>
+
+    <!-- Search -->
+    <div class="filter-item search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <%= f.input :q,
+        wrapper: false,
+        input_html: { placeholder: "Search notices...", class: "filter-input" },
+        label: false %>
+    </div>
+
+    <!-- Category -->
+    <div class="filter-item">
+      <%= f.input :category,
+        collection: [["All Categories", ""], ["General", "general"], ["Event", "event"]],
+        label: false,
+        wrapper: false,
+        include_blank: false,
+        input_html: { class: "filter-select" } %>
+    </div>
+
+    <!-- Read Status（今は枠だけ） -->
+    <div class="filter-item">
+      <%= f.input :status,
+        collection: [["All Notices", ""], ["Unread", "unread"], ["Read", "read"]],
+        label: false,
+        wrapper: false,
+        include_blank: false,
+        input_html: { class: "filter-select" } %>
+    </div>
+
+  <% end %>
+
+
+  <div class="notices-page">
+    <div class="notices-list">
+      <% @notices.each do |notice| %>
+        <%= link_to notice_path(notice), class: "notice-card" do %>
+            <div class="notice-card-icon">
+              <i class="fa-regular fa-file-lines"></i>
+            </div>
+
+            <div class="notice-card-main">
+              <div class="notice-card-header">
+                <h2 class="notice-card-title"><%= notice.title %></h2>
+              </div>
+              <p class="notice-card-body">
+                <%= truncate(strip_tags(notice.content), length: 180) %>
+              </p>
+            </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

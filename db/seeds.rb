@@ -9,7 +9,7 @@ school1.save
 school2.save
 
 notice1 = Notice.new(
-  school_id: 2,
+  school_id: 1,
   category: "Event",
   title: "Grade 3A Class Party",
   grade: "3",
@@ -25,7 +25,7 @@ date: Date.new(2025, 12, 5)
 )
 
 notice2 = Notice.new(
-  school_id: 1,
+  school_id: 2,
   category: "Event",
   title: "Grade 2B Class Party",
   grade: "2",

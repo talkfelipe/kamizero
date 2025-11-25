@@ -1,0 +1,85 @@
+
+/* カード本体 */
+.notice-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  margin: 12px 0;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* 左側のアイコン丸 */
+.notice-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* 右側の内容部分 */
+.notice-card-main {
+  flex: 1;
+}
+
+.notice-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.notice-card-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.notice-card-body {
+  font-size: 14px;
+  color: #4b5563;
+  margin: 4px 0 8px;
+}
+
+.notice-filters {
+  display: flex;
+  gap: 20px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.filter-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  padding: 6px 6px;
+  border-radius: 12px;
+}
+
+.search-box i {
+  color: #6b7280;
+  margin-right: 10px;
+}
+
+.filter-input,
+.filter-select {
+  width: 100%;
+  border: none !important;
+  background: transparent !important;
+  font-size: 16px;
+  outline: none;
+  box-shadow: none !important;
+  // padding: 4px 0;
+}
