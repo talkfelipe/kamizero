@@ -1,0 +1,53 @@
+// Brand colors
+$kamizero-teal: #14bec0;
+$kamizero-navy: #0097b2;
+
+.notices-card {
+  border-radius: 6px;
+  border-color: #e3e3e3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* Header row */
+.notices-card .card-header {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e3e3e3;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Bell + label */
+.notices-card .fa-bell {
+  color: $kamizero-navy;
+  font-size: 1rem;
+}
+
+.notices-card .fw-semibold {
+  letter-spacing: 0.04em;
+}
+
+/* Unread badge */
+.notices-card .badge {
+  background-color: #ff3b30;
+}
+
+/* List area */
+.notices-list {
+  max-height: 230px;        // scroll if many notices
+  overflow-y: auto;
+}
+
+.notices-list .list-group-item {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  border-left: none;
+  border-right: none;
+}
+
+.notices-list .list-group-item:first-child {
+  border-top: none;
+}
+
+.notices-list .list-group-item:last-child {
+  border-bottom: none;
+}

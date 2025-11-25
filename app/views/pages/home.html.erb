@@ -1,15 +1,20 @@
 <div class="container my-4">
+
+  <!-- WELCOME CARD -->
   <div class="card welcome-card mb-4">
     <div class="card-body d-flex align-items-center">
       <div class="welcome-logo-wrapper me-3">
         <%= image_tag "KAMIZERO LOGO MAIN.png", class: "welcome-logo img-fluid" %>
       </div>
+
       <div class="flex-grow-1">
         <h3 class="mb-1 welcome-line-1">WELCOME TO KAMIZERO</h3>
         <h6 class="mb-1 welcome-line-2">Managing School Notices Paperlessly</h6>
+
         <p class="mb-0 welcome-line-3">
           <strong><%= @current_user&.name || "USER NAME" %></strong>
         </p>
+
         <p class="mb-0 welcome-line-4">
           <em><%= @current_user&.grade_and_class || "Grade 3, Class A" %></em>
         </p>
@@ -17,31 +22,24 @@
     </div>
   </div>
 
-  <!-- NEW NOTICES CARD (glimpse list) -->
+
+  <!-- NEW NOTICES CARD -->
   <div class="card notices-card mb-4">
 
-    <!-- HEADER -->
     <div class="card-header d-flex justify-content-between align-items-center">
 
       <div class="d-flex align-items-center gap-2">
-        <!-- Bell icon -->
         <i class="fa-solid fa-bell me-2"></i>
-
-        <!-- Label -->
         <span class="fw-semibold">UNREAD NOTICES</span>
 
-        <!-- Live unread count -->
         <span class="badge bg-danger ms-2">
           <%= @unread_count || 0 %>
         </span>
       </div>
 
-      <!-- Bootstrap info button -->
       <%= link_to "VIEW ALL", notices_path, class: "btn button-view-all btn-sm" %>
-
     </div>
 
-    <!-- BODY: Live-updating notice list -->
     <ul class="list-group list-group-flush notices-list">
       <% if @notices.present? %>
         <% @notices.each do |notice| %>
@@ -56,27 +54,27 @@
         <li class="list-group-item text-muted">No notices yet</li>
       <% end %>
     </ul>
-
   </div>
 
-  <!-- calendar card -->
-  <div class="row g-3 mb-4">
 
+  <!-- SCROLL TARGET FOR PREVIOUS/TODAY/NEXT -->
+  <div id="calendar-section"></div>
+
+
+  <!-- CALENDAR + UPCOMING EVENTS -->
+  <div class="row g-3 mb-4 calendar-events-row">
+
+    <!-- CALENDAR CARD -->
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          CALENDAR
-        </div>
+      <div class="card calendar-card h-100">
+        <div class="card-header">CALENDAR</div>
 
         <div class="card-body p-0">
-          <%= month_calendar events: @events do |date, events| %>
+          <%= month_calendar events: @events, attribute: :date do |date, events| %>
             <div class="calendar-day">
               <span class="date-number"><%= date.day %></span>
-
               <% events.each do |event| %>
-                <div class="calendar-event">
-                  <%= event.title %>
-                </div>
+                <div class="calendar-event"><%= event.title %></div>
               <% end %>
             </div>
           <% end %>
@@ -84,27 +82,24 @@
       </div>
     </div>
 
-    <!-- upcoming events card -->
+
+    <!-- UPCOMING EVENTS CARD -->
     <div class="col-md-6">
-      <div class="card">
+      <div class="card events-card h-100">
         <div class="card-header d-flex justify-content-between align-items-center">
           <span>UPCOMING EVENTS</span>
-          <%= link_to "VIEW ALL", "events_path", class: "btn button-view-all btn-sm" %>
+          <%= link_to "VIEW ALL", events_notices_path, class: "btn button-view-all btn-sm" %>
         </div>
 
-        <!-- upcoming events -->
         <ul class="list-group list-group-flush events-list">
           <% if @events.present? %>
             <% @events.each do |event| %>
               <li class="list-group-item d-flex">
                 <div class="me-3">
-                  <small class="fw-semibold">
-                    <%= event.start_date&.strftime("%Y-%m-%d") || "DATE" %>
-                  </small>
+                  <small class="fw-semibold"><%= event.date&.strftime("%Y-%m-%d") %></small>
                 </div>
-                <div class="flex-grow-1">
-                  <%= event.title || "Event title" %>
-                </div>
+
+                <div class="flex-grow-1"><%= event.title %></div>
               </li>
             <% end %>
           <% else %>
