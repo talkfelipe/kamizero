@@ -5,6 +5,12 @@ class NoticesController < ApplicationController
 
   def index
     @notices = Notice.all
+
+    category = params.dig(:filters, :category)
+    if category.present?
+      @notices = @notices.where(category: category)
+    end
+
   end
 
   def new
