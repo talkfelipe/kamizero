@@ -77,3 +77,5 @@ end
 #custom added gem
 gem "cloudinary"
 gem "ostruct"
+
+gem "simple_calendar", "~> 3.1"
