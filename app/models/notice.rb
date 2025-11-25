@@ -6,8 +6,9 @@ class Notice < ApplicationRecord
   validates :content, presence: true
   validates :classroom, presence: true
   validates :grade, presence: true
+  has_one_attached :attachment
 
-  CATEGORIES = ["Events", "General"]
+  CATEGORIES = ["Event", "General"]
   GRADES = ["All", "1", "2", "3", "4", "5", "6"]
-  CLASSROOM = ["All", "A", "B", "C", "D"]
+  CLASSROOMS = ["All", "A", "B", "C", "D"]
 end

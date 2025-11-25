@@ -9,10 +9,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :pages, only: [:index]
 
   resources :notices, only: [:new, :create, :index, :show] do
-    resources :events, only: [:index]
+    collection do
+      get :events
+    end
   end
 
   resources :notices, only: [:destroy]
