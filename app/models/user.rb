@@ -5,4 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :subscriptions, dependent: :destroy
   validates :role, presence: true
+  belongs_to :school, optional: true
 end
