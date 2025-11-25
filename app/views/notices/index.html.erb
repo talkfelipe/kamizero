@@ -1,6 +1,6 @@
 <div class="container my-2">
 
-
+<!-- BACK BUTTON & ALL NOTICES -->
   <div class="my-3">
     <%= link_to "←　Back", root_path, class: "text-decoration-none text-secondary" %>
     <h2>All Notices</h2>
@@ -21,11 +21,14 @@
     <!-- Category -->
     <div class="filter-item">
       <%= f.input :category,
-        collection: [["All Categories", ""], ["General", "general"], ["Event", "event"]],
+        collection: [["All Categories", ""], ["General", "General"], ["Event", "Event"]],
         label: false,
         wrapper: false,
         include_blank: false,
-        input_html: { class: "filter-select" } %>
+        input_html: {
+          class: "filter-select",
+          onchange: "this.form.submit();"
+        } %>
     </div>
 
     <!-- Read Status（今は枠だけ） -->
@@ -40,13 +43,17 @@
 
   <% end %>
 
-
+<!-- CONTENT PART -->
   <div class="notices-page">
     <div class="notices-list">
       <% @notices.each do |notice| %>
-        <%= link_to notice_path(notice), class: "notice-card" do %>
+        <%= link_to notice_path(notice), class: "notice-card position-relative" do %>
             <div class="notice-card-icon">
               <i class="fa-regular fa-file-lines"></i>
+              <!-- Event badge to be created later -->
+              <span class="badge rounded-pill bg-dark position-absolute top-0 end-0 m-3">
+                <%= notice.category == "Event" ? "Event" : "General"%>
+              </span>
             </div>
 
             <div class="notice-card-main">
