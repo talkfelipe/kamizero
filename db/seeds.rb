@@ -92,4 +92,16 @@ teacher2 = User.new(
 teacher1.save!
 teacher2.save!
 
+parent1 = User.create(
+  email: "parent@meguro.com",
+  password: "123456",
+)
+
+subscription = Subscription.create(
+  user: parent1,
+  school: school1,
+  grade: "3",
+  classroom: "A"
+)
+
 puts "done!"
