@@ -1,7 +1,7 @@
 class NoticesController < ApplicationController
   def show
     @notice = Notice.find(params[:id])
-    ReadNotification.new(user: current_user, notice: @notice, status: true)
+    ReadNotification.create(user: current_user, notice: @notice, status: true)
   end
 
   def index

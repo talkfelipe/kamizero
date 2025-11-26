@@ -3,6 +3,7 @@ include PgSearch::Model
 class Notice < ApplicationRecord
   belongs_to :school
   has_many :read_notifications, dependent: :destroy
+  # has_many :read_users, through: :read_notifications, source: :user
   validates :category, presence: true
   validates :title, presence: true
   validates :content, presence: true
