@@ -18,13 +18,13 @@
         label: false %>
     </div>
 
-    <!-- Category -->
+    <!-- Category Filter -->
     <div class="filter-item">
       <%= f.input :category,
         collection: [["All Categories", ""], ["General", "General"], ["Event", "Event"]],
+        selected: params.dig(:filters, :category),
         label: false,
         wrapper: false,
-        include_blank: false,
         input_html: {
           class: "filter-select",
           onchange: "this.form.submit();"
@@ -46,11 +46,11 @@
 <!-- CONTENT PART -->
   <div class="notices-page">
     <div class="notices-list">
-      <% @notices.each do |notice| %>
+      <% @category_filtered_notices.each do |notice| %>
         <%= link_to notice_path(notice), class: "notice-card position-relative" do %>
             <div class="notice-card-icon">
               <i class="fa-regular fa-file-lines"></i>
-              <!-- Event badge to be created later -->
+              <!-- Event Badge -->
               <span class="badge rounded-pill bg-dark position-absolute top-0 end-0 m-3">
                 <%= notice.category == "Event" ? "Event" : "General"%>
               </span>
