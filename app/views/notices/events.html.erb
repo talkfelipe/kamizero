@@ -4,27 +4,26 @@
     <h2>All Events</h2>
   </div>
   <div class="row g-3 mb-4">
-
     <div class="col-8">
       <div class="card">
         <div class="card-header">
           Calendar
         </div>
-        <!--
         <div class="card-body p-0">
-          <%#= month_calendar events: @events do |event| %>
+          <%= month_calendar events: @events, attribute: :starts_at do |date, events_for_day| %>
             <div class="calendar-day">
-              <span class="date-number"><%#= event.date %></span>
-
-              <%# events.each do |event| %>
-                <div class="calendar-event">
-                  <%#= event.title %>
+              <span class="date-number"><%= date.day %></span>
+              <% events_for_day.each do |event| %>
+                <div class="calendar-event" style="height: <%= event.duration_in_minutes %>px;">
+                  <%= event.title %><br>
+                  <small>
+                    <%= event.start_time.strftime("%H:%M") %> - <%= event.end_time.strftime("%H:%M") %>
+                  </small>
                 </div>
-              <%# end %>
+              <% end %>
             </div>
-          <%# end %>
+          <% end %>
         </div>
-      --->
       </div>
     </div>
     <div class="col-4">
@@ -32,7 +31,6 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <span>All Events</span>
         </div>
-
         <!-- All events -->
         <ul class="list-group list-group-flush events-list">
           <% if @events.present? %>
@@ -40,7 +38,8 @@
               <li class="list-group-item d-flex">
                 <div class="me-3">
                   <small class="fw-semibold">
-                    <%= event.date %>
+                    <%= event.date.strftime("%B %d, %Y") %>
+                    <p><%= event.start_time.strftime("%H:%M") %> - <%= event.end_time.strftime("%H:%M") %></p>
                   </small>
                 </div>
                 <div class="flex-grow-1">
@@ -56,4 +55,5 @@
         </ul>
       </div>
     </div>
+  </div>
 </div>

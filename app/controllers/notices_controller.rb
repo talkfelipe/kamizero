@@ -5,25 +5,55 @@ class NoticesController < ApplicationController
   end
 
   def index
+    #teacher can see all the notices of the school
     if current_user.role == "teacher"
-      @notices = current_user.school.notices
+      base_scope = current_user.school.notices
     else
-      @notices = current_user.subscriptions.map do |subs|
-        subs.school.notices.where(grade: [subs.grade, "All"], classroom: [subs.classroom, "All"])
-      end.flatten.uniq
+    #parents can see only notices of subscribed items
+      base_scope = Notice.none #none
+
+      #creating subscription data to put it into base_scope
+      current_user.subscriptions.each do |subs|
+        scope_for_sub =
+          subs.school.notices.where(
+            grade: [subs.grade, "All"],
+            classroom: [subs.classroom, "All"]
+          )
+        base_scope = base_scope.or(scope_for_sub)
+        #.or will add up subscription into base_scope
+      end
+
+      # eliminating same data ex: all grade for two children needs to be only one
+      base_scope = base_scope.distinct
     end
 
-    category = params.dig(:filters, :category)
+    # get the parameters of filters
+    filters = params[:filters] || {}
+    query = filters[:q]
+    category = filters[:category]
 
+    # without the filter
+    scoped = base_scope
+
+    # if query exist, we will use the query
+    if query.present?
+      scoped = scoped.search_by_filters(query)
+    end
+
+    # if category exist, we will use the category
     if category.present?
-      @category_filtered_notices = @notices.select { |notice|notice.category == category }
-    else
-      @category_filtered_notices = @notices
+      scoped = scoped.where(category: category)
     end
+
+    @notices = scoped
   end
 
   def events
-    @events = Notice.where(category: "Event")
+    if current_user.role == "teacher"
+      @events = current_user.school.notices.where(category: "Event")
+    else
+      @events = current_user.notices.where(category: "Event")
+    end
   end
 
   def new

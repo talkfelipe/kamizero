@@ -33,15 +33,15 @@
 
 .notice-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 12px;
   margin-bottom: 6px;
 }
 
 .notice-card-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
 }
 
 .notice-card-body {
@@ -50,8 +50,16 @@
   margin: 4px 0 8px;
 }
 
+.notice-card-date {
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+}
+
 .notice-filters {
   display: flex;
+  align-items: center;
   gap: 20px;
   padding: 12px;
   background: #fff;
@@ -82,4 +90,17 @@
   outline: none;
   box-shadow: none !important;
   // padding: 4px 0;
+}
+
+.filter-clear {
+  background: transparent;
+  padding: 10px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #374151;
+  font-size: 14px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 2px solid #f3f4f6;
 }

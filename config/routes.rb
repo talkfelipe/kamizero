@@ -20,4 +20,6 @@ Rails.application.routes.draw do
 
   resources :notices, only: [:destroy]
 
+  resources :subscriptions, only: [:new, :create]
+
 end
