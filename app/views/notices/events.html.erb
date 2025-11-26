@@ -10,16 +10,13 @@
           Calendar
         </div>
         <div class="card-body p-0">
-          <%= month_calendar events: @events, attribute: :starts_at do |date, events_for_day| %>
+          <%= month_calendar do |date| %>
             <div class="calendar-day">
               <span class="date-number"><%= date.day %></span>
-              <% events_for_day.each do |event| %>
-                <div class="calendar-event" style="height: <%= event.duration_in_minutes %>px;">
-                  <%= event.title %><br>
-                  <small>
-                    <%= event.start_time.strftime("%H:%M") %> - <%= event.end_time.strftime("%H:%M") %>
-                  </small>
-                </div>
+              <% if @events_for_day[date] %>
+                <% @events_for_day[date].each do |event| %>
+                  <%= link_to "#{event.title}", notice_path(event) %>
+                <% end %>
               <% end %>
             </div>
           <% end %>

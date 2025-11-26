@@ -35,7 +35,7 @@
           <%= f.input :classroom, collection: Notice::CLASSROOMS %>
         </div>
     </div>
-    <%= f.input :attachmen, as: :file, label: 'Add Attachment'%>
+    <%= f.input :attachment, as: :file, label: 'Add Attachment'%>
     <div class="d-flex justify-content-end m-3">
     <%= link_to "Cancel", dashboard_path, class: "btn btn-light"%>
     <%= f.button :submit, class: "btn btn-dark" %>
