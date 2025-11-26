@@ -12,8 +12,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   </head>
 
-  <body><%= render "shared/navbar" %>
+  <body>
+    <%= render "shared/navbar" %>
     <%= render "shared/flashes" %>
-    <%= yield %>
+
+    <% if devise_controller? %>
+      <div class="auth-layout-wrapper">
+        <%= yield %>
+      </div>
+    <% else %>
+      <div class="container my-5">
+        <%= yield %>
+      </div>
+    <% end %>
   </body>
+
 </html>

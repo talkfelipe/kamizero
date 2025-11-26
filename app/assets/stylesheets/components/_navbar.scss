@@ -1,12 +1,97 @@
+/* ============================================================
+   BASE NAVBAR
+   ============================================================ */
+
 .navbar-lewagon {
   justify-content: space-between;
   background: white;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
+/* prevent Bootstrap from forcing full expansion */
 .navbar-lewagon .navbar-collapse {
   flex-grow: 0;
 }
 
+/* brand logo */
 .navbar-lewagon .navbar-brand img {
   width: 40px;
+  height: auto;
+}
+
+
+/* ============================================================
+   NORMAL PAGES NAV WRAPPER (Bootstrap container-fluid)
+   ============================================================ */
+
+.navbar .container-fluid {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+
+/* ============================================================
+   AUTH PAGES NAV WRAPPER (NO Bootstrap layout constraints)
+   ============================================================ */
+
+.nav-inner-auth {
+  width: 100%;
+  padding: 0 1.2rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* ============================================================
+   NAV LINKS STYLING
+   ============================================================ */
+
+.nav-kamizero {
+  font-weight: 600;
+  color: #003049 !important;
+  letter-spacing: 0.02em;
+}
+
+.nav-kamizero:hover {
+  color: #007ea7 !important;
+}
+
+
+/* ============================================================
+   DROPDOWN TRIGGER ICON (FontAwesome “list”)
+   ============================================================ */
+
+.navbar-lewagon i.fa-list {
+  font-size: 1.35rem;
+  color: #003049;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.navbar-lewagon i.fa-list:hover {
+  color: #007ea7;
+}
+
+
+/* ============================================================
+   DROPDOWN MENU FIX
+   ============================================================ */
+
+.dropdown-menu {
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.dropdown-item {
+  padding: 0.6rem 1rem;
+}
+
+.dropdown-item:hover {
+  background: #e8f7fa;
+  color: #003049;
 }
