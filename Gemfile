@@ -79,3 +79,4 @@ gem "cloudinary"
 gem "ostruct"
 
 gem "simple_calendar", "~> 3.1"
+gem 'pg_search'

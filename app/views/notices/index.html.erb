@@ -14,8 +14,12 @@
       <i class="fa-solid fa-magnifying-glass"></i>
       <%= f.input :q,
         wrapper: false,
-        input_html: { placeholder: "Search notices...", class: "filter-input" },
-        label: false %>
+        label: false,
+        input_html: {
+          placeholder: "Search notices...",
+          class: "filter-input",
+          value: params.dig(:filters, :q)
+        } %>
     </div>
 
     <!-- Category Filter -->
@@ -32,13 +36,8 @@
     </div>
 
     <!-- Read Status（今は枠だけ） -->
-    <div class="filter-item">
-      <%= f.input :status,
-        collection: [["All Notices", ""], ["Unread", "unread"], ["Read", "read"]],
-        label: false,
-        wrapper: false,
-        include_blank: false,
-        input_html: { class: "filter-select" } %>
+    <div>
+      <%= link_to "Clear", notices_path, class: "filter-clear" %>
     </div>
 
   <% end %>
@@ -46,16 +45,17 @@
 <!-- CONTENT PART -->
   <div class="notices-page">
     <div class="notices-list">
-      <% @category_filtered_notices.each do |notice| %>
+      <% @notices.each do |notice| %>
         <%= link_to notice_path(notice), class: "notice-card position-relative" do %>
             <div class="notice-card-icon">
               <i class="fa-regular fa-file-lines"></i>
-              <!-- Event Badge -->
-              <span class="badge rounded-pill bg-dark position-absolute top-0 end-0 m-3">
-                <%= notice.category == "Event" ? "Event" : "General"%>
+              <!-- Category Badge -->
+              <span class="badge rounded-pill position-absolute top-0 end-0 m-3
+                <%= notice.category == "Event" ? "bg-warning" : "bg-dark" %>">
+                <%= notice.category %>
               </span>
             </div>
-
+            <!-- Main Content -->
             <div class="notice-card-main">
               <div class="notice-card-header">
                 <h2 class="notice-card-title"><%= notice.title %></h2>
