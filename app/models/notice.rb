@@ -1,3 +1,5 @@
+include PgSearch::Model
+
 class Notice < ApplicationRecord
   belongs_to :school
   has_many :read_notifications, dependent: :destroy
@@ -11,4 +13,12 @@ class Notice < ApplicationRecord
   CATEGORIES = ["Event", "General"]
   GRADES = ["All", "1", "2", "3", "4", "5", "6"]
   CLASSROOMS = ["All", "A", "B", "C", "D"]
+
+  pg_search_scope :search_by_filters,
+    against: [:content, :date, :grade, :classroom],
+    using: {
+      tsearch: {
+        prefix: true
+      }
+  }
 end
