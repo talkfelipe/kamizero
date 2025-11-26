@@ -12,6 +12,14 @@ class NoticesController < ApplicationController
         subs.school.notices.where(grade: [subs.grade, "All"], classroom: [subs.classroom, "All"])
       end.flatten.uniq
     end
+
+    category = params.dig(:filters, :category)
+
+    if category.present?
+      @category_filtered_notices = @notices.select { |notice|notice.category == category }
+    else
+      @category_filtered_notices = @notices
+    end
   end
 
   def events

@@ -44,7 +44,7 @@
                   </small>
                 </div>
                 <div class="flex-grow-1">
-                  <%= event.title || "Event title" %>
+                  <%= link_to "#{event.title}", notice_path(event) %>
                 </div>
               </li>
             <% end %>
