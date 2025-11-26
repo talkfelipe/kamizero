@@ -8,9 +8,7 @@ class NoticesController < ApplicationController
     if current_user.role == "teacher"
       @notices = current_user.school.notices
     else
-      @notices = current_user.subscriptions.map do |subs|
-        subs.school.notices.where(grade: [subs.grade, "All"], classroom: [subs.classroom, "All"])
-      end.flatten.uniq
+      @notices = current_user.notices
     end
 
     category = params.dig(:filters, :category)
@@ -23,7 +21,11 @@ class NoticesController < ApplicationController
   end
 
   def events
-    @events = Notice.where(category: "Event")
+    if current_user.role == "teacher"
+      @events = current_user.school.notices.where(category: "Event")
+    else
+      @events = current_user.notices.where(category: "Event")
+    end
   end
 
   def new

@@ -1,7 +1,7 @@
 <div class="container">
   <div class="d-flex align-items-center gap-4">
     <div class="">
-      <%= link_to "← Back", root_path, class: "text-decoration-none text-secondary" %>
+      <%= link_to "← Back", dashboard_path, class: "text-decoration-none text-secondary" %>
     </div>
     <div class="py-2">
       <h2>Create New Notice</h2>
@@ -14,9 +14,19 @@
     <%= f.input :category, collection: Notice::CATEGORIES, input_html: { data: { "conditional-form-target" => "selector", action: "change->conditional-form#toggleDependentField" } } %>
     <div data-conditional-form-target="dependentField" data-show-if="Event" class="hidden">
       <%= f.input :date, as: :string, placeholder: "yyyy/mm/dd", input_html: { data: { controller: "flatpickr" } } %>
+      <div class="row">
+        <div class="col-6">
+          <%= f.input :start_time, as: :string, placeholder: "10:30:00", input_html: { data: { controller: "timepicker" } } %>
+        </div>
+        <div class="col-6">
+          <%= f.input :end_time, as: :string, placeholder: "11:30:00", input_html: { data: { controller: "timepicker" } } %>
+        </div>
+    </div>
+
+
     </div>
     <%= f.input :content, placeholder: "Enter the full notice comment here... " %>
-    <h3>Targer Audience</h3>
+    <h3>Target Audience</h3>
       <div class="row">
         <div class="col-6">
           <%= f.input :grade, collection: Notice::GRADES %>
@@ -27,7 +37,7 @@
     </div>
     <%= f.input :attachmen, as: :file, label: 'Add Attachment'%>
     <div class="d-flex justify-content-end m-3">
-    <%= link_to "Cancel", root_path, class: "btn btn-light"%>
+    <%= link_to "Cancel", dashboard_path, class: "btn btn-light"%>
     <%= f.button :submit, class: "btn btn-dark" %>
     </div>
     <% end %>
