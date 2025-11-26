@@ -26,17 +26,17 @@ class Notice < ApplicationRecord
   }
 
   def starts_at
-  return nil if date.blank? || start_time.blank?
-    DateTime.parse("#{date} #{start_time}")
+    return nil if date.nil? || start_time.nil?
+    DateTime.new(date.year, date.month, date.day, start_time.hour, start_time.min)
   end
 
   def ends_at
-    return nil if date.blank? || end_time.blank?
-    DateTime.parse("#{date} #{end_time}")
+    return nil if date.nil? || end_time.nil?
+    DateTime.new(date.year, date.month, date.day, end_time.hour, end_time.min)
   end
 
   def duration_in_minutes
-    return 30 if starts_at.nil? || ends_at.nil? # fallback
+    return 0 if ends_at.nil? || starts_at.nil?
     ((ends_at - starts_at) * 24 * 60).to_i
   end
 end

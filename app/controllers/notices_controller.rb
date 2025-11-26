@@ -54,6 +54,7 @@ class NoticesController < ApplicationController
     else
       @events = current_user.notices.where(category: "Event")
     end
+    @events_for_day = @events.group_by(&:date)
   end
 
   def new
@@ -73,6 +74,6 @@ class NoticesController < ApplicationController
   private
 
   def notice_params
-    params.require(:notice).permit(:title, :category, :date, :content, :grade, :classroom, :attachment, :school)
+    params.require(:notice).permit(:title, :category, :date, :start_time, :end_time, :content, :grade, :classroom, :attachment, :school)
   end
 end
