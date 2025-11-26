@@ -1,0 +1,64 @@
+/* ============================
+   WELCOME CARD – FULL STYLING
+   ============================ */
+
+.welcome-card {
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+/* Layout: logo + text column */
+.welcome-card .card-body {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: center;
+}
+
+/* LOGO */
+.welcome-logo-wrapper {
+  flex: 0 0 auto;
+}
+
+.welcome-logo {
+  height: 150px;     // perfect balance with 4 lines of text
+  width: auto;
+  object-fit: contain;
+}
+
+/* TEXT COLUMN */
+.welcome-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Poppins", sans-serif !important;
+  color: #003049; /* Kamizero navy */
+}
+
+/* WELCOME TO KAMIZERO */
+.welcome-line-1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+/* TAGLINE */
+.welcome-line-2 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1rem; /* spacing before USER NAME */
+  max-width: 360px;    /* aligns visually under the title */
+}
+
+/* USER NAME (slightly bigger) */
+.welcome-line-3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+/* Grade and Class */
+.welcome-line-4 {
+  font-size: 1rem;
+  opacity: 0.85;
+}

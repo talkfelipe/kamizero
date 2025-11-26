@@ -82,3 +82,14 @@ $kamizero-navy: #0097b2;
     line-height: 1.2;
   }
 }
+
+.simple-calendar td.today {
+  background-color: #e0f7fa;
+  font-weight: 600;
+}
+
+
+.calendar-title {
+  color: #003049;
+  font-weight: 700;
+}
