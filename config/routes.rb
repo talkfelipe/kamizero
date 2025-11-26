@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  get "/dashboard", to: "pages#dashboard", as: :dashboard
+
   resources :notices, only: [:new, :create, :index, :show] do
     collection do
       get :events
