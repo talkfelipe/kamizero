@@ -1,13 +1,21 @@
 <div class="simple-calendar">
-  <div class="calendar-heading">
-    <%= link_to t('simple_calendar.previous', default: 'Previous'),
-                calendar.url_for_previous_view + '#calendar-section' %>
+  <div class="calendar-heading d-flex justify-content-between align-items-center mb-2">
+    <!-- LEFT: Previous -->
+    <div>
+      <%= link_to "Previous",
+                  "?start_date=#{(start_date - 1.month).to_date}#calendar-section" %>
+    </div>
 
-    <%= link_to t('simple_calendar.today', default: 'Today'),
-                calendar.url_for_today_view + '#calendar-section' %>
+    <!-- CENTER: Month title -->
+    <div class="calendar-title fw-bold">
+      <%= start_date.strftime("%B %Y") %>
+    </div>
 
-    <%= link_to t('simple_calendar.next', default: 'Next'),
-                calendar.url_for_next_view + '#calendar-section' %>
+    <!-- RIGHT: Next -->
+    <div>
+      <%= link_to "Next",
+                  "?start_date=#{(start_date + 1.month).to_date}#calendar-section" %>
+    </div>
   </div>
 
   <table class="table table-striped">

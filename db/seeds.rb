@@ -23,7 +23,9 @@ notice1 = Notice.new(
             We look forward to celebrating together!
             Ms. Johnson
             Event Date: December 5, 2025",
-date: Date.new(2025, 12, 5)
+date: Date.new(2025, 12, 5),
+start_time: "13:30:00",
+end_time: "14:30:00"
 )
 
 notice2 = Notice.new(
@@ -39,7 +41,9 @@ notice2 = Notice.new(
             We look forward to celebrating together!
             Ms. Johnson
             Event Date: January 15, 2026",
-date: Date.new(2026, 1, 15)
+date: Date.new(2026, 1, 15),
+start_time: "10:30:00",
+end_time: "11:30:00"
 )
 
 notice3 = Notice.new(
