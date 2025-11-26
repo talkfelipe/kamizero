@@ -82,6 +82,8 @@ notice4.save
 teacher1 = User.new(
   email: "teacher@meguro.com",
   password: "123456",
+  first_name: "Teacher",
+  last_name:"Sato",
   role: "teacher",
   school: school1
 )
@@ -89,6 +91,8 @@ teacher1 = User.new(
 teacher2 = User.new(
   email: "teacher@shinagawa.com",
   password: "123456",
+  first_name: "Teacher",
+  last_name:"Sato",
   role: "teacher",
   school: school2
 )
@@ -98,6 +102,8 @@ teacher2.save!
 
 parent1 = User.create(
   email: "parent@meguro.com",
+  first_name: "Parent",
+  last_name:"Sato",
   password: "123456",
 )
 

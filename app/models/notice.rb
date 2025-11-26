@@ -11,6 +11,8 @@ class Notice < ApplicationRecord
   has_one_attached :attachment
 
   CATEGORIES = ["Event", "General"]
+  SUBGRADES = ["1", "2", "3", "4", "5", "6"]
+  SUBCLASSROOMS = ["A", "B", "C", "D"]
   GRADES = ["All", "1", "2", "3", "4", "5", "6"]
   CLASSROOMS = ["All", "A", "B", "C", "D"]
 
