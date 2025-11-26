@@ -1,18 +1,21 @@
-/* ============================
-   WELCOME CARD – FULL STYLING
-   ============================ */
+/* ============================================
+   WELCOME CARD – FINAL CLEAN WORKING VERSION
+   ============================================ */
 
+/* CARD CONTAINER */
 .welcome-card {
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 14px;
+  padding: 2rem 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  margin-top: 40px; /* ensures card is NOT stuck to navbar */
 }
 
-/* Layout: logo + text column */
+/* BODY LAYOUT */
 .welcome-card .card-body {
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
   align-items: center;
+  gap: 3rem;
 }
 
 /* LOGO */
@@ -21,44 +24,138 @@
 }
 
 .welcome-logo {
-  height: 150px;     // perfect balance with 4 lines of text
+  height: 320px;
   width: auto;
   object-fit: contain;
 }
 
-/* TEXT COLUMN */
+/* ===========================
+   TEXT BLOCK EXACT TYPOGRAPHY
+   =========================== */
+
 .welcome-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-family: "Poppins", sans-serif !important;
   color: #003049; /* Kamizero navy */
+  max-width: 630px;
 }
 
-/* WELCOME TO KAMIZERO */
-.welcome-line-1 {
-  font-size: 1.7rem;
-  font-weight: 700;
-  margin-bottom: 0.3rem;
+.welcome-text p {
+  margin: 0;
 }
 
-/* TAGLINE */
+/* WELCOME TO */
+.welcome-line-1:first-of-type {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+
+/* KAMIZERO */
+.welcome-line-1:nth-of-type(2) {
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+/* Managing School Notices Paperlessly */
 .welcome-line-2 {
-  font-size: 1rem;
+  font-size: 20px;
   font-weight: 500;
-  margin-bottom: 1rem; /* spacing before USER NAME */
-  max-width: 360px;    /* aligns visually under the title */
+  line-height: 1.35;
 }
 
-/* USER NAME (slightly bigger) */
-.welcome-line-3 {
-  font-size: 1.2rem;
+/* DESKTOP-ONLY: shift text block further right */
+@media (min-width: 769px) {
+  .welcome-text {
+    margin-left: 80px;   /* adjust this number until perfect */
+  }
+}
+
+/* BUTTON ROW UNDER CARD */
+.landing-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 1rem;
+}
+
+/* BUTTON LOOKS */
+.btn-kamizero {
+  background-color: #00bcd4;
+  border-radius: 8px;
+  border: none;
+  padding: 10px 28px;
+  color: white;
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom: 0.2rem;
 }
 
-/* Grade and Class */
-.welcome-line-4 {
-  font-size: 1rem;
-  opacity: 0.85;
+.btn-kamizero-outline {
+  background: white;
+  border: 2px solid #00bcd4;
+  color: #00bcd4;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===========================
+   RESPONSIVE (MOBILE/TABLET)
+   =========================== */
+
+@media (max-width: 768px) {
+  .welcome-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.5rem 1.25rem;   /* slightly tighter left/right */
+    margin-top: 24px;
+    overflow: hidden;          /* prevent inner flex from poking out */
+  }
+
+  .welcome-card .card-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.2rem;
+  }
+
+  .welcome-logo {
+    height: 200px;             /* keep your height, just reaffirm */
+    width: auto;
+  }
+
+  .welcome-text {
+    max-width: 100%;
+    align-items: center;
+    margin-left: 0;            /* make sure no desktop shift leaks in */
+  }
+
+  /* keep your font sizes exactly as you set them */
+  .welcome-line-1:first-of-type {
+    font-size: 32px;
+  }
+
+  .welcome-line-1:nth-of-type(2) {
+    font-size: 44px;
+  }
+
+  .welcome-line-2 {
+    font-size: 17px;
+  }
+
+  .landing-actions {
+    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .landing-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
 }
