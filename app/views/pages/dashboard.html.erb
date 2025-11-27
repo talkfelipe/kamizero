@@ -35,10 +35,10 @@
           <li class="list-group-item">
             <%= link_to notice_path(notice),
                         class: "text-decoration-none text-reset d-block" do %>
-              <div class="fw-semibold"><%= notice.title %></div>
               <small class="text-muted">
                 <%= notice.created_at&.strftime("%Y-%m-%d") %>
               </small>
+              <div class="fw-semibold"><%= notice.title %></div>
             <% end %>
           </li>
         <% end %>
@@ -81,10 +81,12 @@
             <% @events.order(date: :asc).each do |event| %>
               <% if event.date >= Date.current %>
                 <li class="list-group-item d-flex">
+                  <%= link_to notice_path(event), class: "d-flex w-100 text-decoration-none text-reset p-3" do %>
                   <div class="me-3">
                     <small class="fw-semibold"><%= event.date&.strftime("%Y-%m-%d") %></small>
                   </div>
                   <div class="flex-grow-1"><%= event.title %></div>
+                <% end %>
                 </li>
               <% end %>
             <% end %>
