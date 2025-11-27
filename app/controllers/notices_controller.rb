@@ -48,6 +48,16 @@ class NoticesController < ApplicationController
     @notices = scoped
   end
 
+  def scan_file
+    text = params[:text]
+    hash_data = Notice.extract_title_and_content(text)
+    # TODO get info from image
+    @notice = Notice.new(
+      title: hash_data["title"],
+      content: hash_data["content"]
+    )
+  end
+
   def events
     if current_user.role == "teacher"
       @events = current_user.school.notices.where(category: "Event")

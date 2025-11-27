@@ -9,8 +9,8 @@
     </div>
   </div>
   <div class="border p-3 shadow rounded">
-    <%= simple_form_for @notice, html: { data: { controller: "conditional-form" } } do |f| %>
-    <%= f.input :title, placeholder: "e.g., Sports day" %>
+    <%= simple_form_for @notice, html: { data: { controller: "conditional-form document-upload" } } do |f| %>
+    <%= f.input :title, placeholder: "e.g., Sports day", input_html: { data: { "document-upload-target": "title" } } %>
     <%= f.input :category, collection: Notice::CATEGORIES, input_html: { data: { "conditional-form-target" => "selector", action: "change->conditional-form#toggleDependentField" } } %>
     <div data-conditional-form-target="dependentField" data-show-if="Event" class="hidden">
       <%= f.input :date, as: :string, placeholder: "yyyy/mm/dd", input_html: { data: { controller: "flatpickr" } } %>
@@ -25,7 +25,7 @@
 
 
     </div>
-    <%= f.input :content, placeholder: "Enter the full notice comment here... " %>
+    <%= f.input :content, placeholder: "Enter the full notice comment here...", input_html: { data: { "document-upload-target": "content" } } %>
     <h3>Target Audience</h3>
       <div class="row">
         <div class="col-6">
@@ -35,7 +35,7 @@
           <%= f.input :classroom, collection: Notice::CLASSROOMS %>
         </div>
     </div>
-    <%= f.input :attachment, as: :file, label: 'Add Attachment'%>
+    <%= f.input :attachment, as: :file, label: 'Add Attachment', input_html: { data: { action: "change->document-upload#handleFileChange" } }%>
     <div class="d-flex justify-content-end m-3">
     <%= link_to "Cancel", dashboard_path, class: "btn btn-light"%>
     <%= f.button :submit, class: "btn btn-dark" %>
