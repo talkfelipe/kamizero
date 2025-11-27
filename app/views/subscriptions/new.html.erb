@@ -1,29 +1,67 @@
-<div class="container">
-  <div class="d-flex align-items-center gap-4">
-    <div class="">
-      <%= link_to "← Back", dashboard_path, class: "text-decoration-none text-secondary" %>
-    </div>
-    <div class="py-2">
-      <h2>Hi, <%= current_user.first_name %></h2>
-      <p>Select the school, grade and classroom you wish to subscribe</p>
+<div class="container my-4 subscription-page">
+
+  <!-- WELCOME CARD (for subscription page) -->
+  <div class="card welcome-card mb-4">
+    <div class="card-body d-flex align-items-center">
+      <div class="welcome-logo-wrapper me-3">
+        <%= image_tag "KAMIZERO LOGO MAIN.png", class: "welcome-logo img-fluid" %>
+      </div>
+
+      <div class="flex-grow-1 welcome-text">
+        <p class="mb-1 welcome-line-1">WELCOME TO KAMIZERO</p>
+        <p class="mb-1 welcome-line-2">Managing School Notices Paperlessly</p>
+
+        <p class="mb-0 welcome-line-4">
+          <strong>Setup Your School Subscription Below <i class="fa-solid fa-angles-down"></i></strong>
+        </p>
+      </div>
     </div>
   </div>
-  <div class="border p-3 shadow rounded">
-    <%= simple_form_for @subscription, html: { data: { controller: "conditional-form" } } do |f| %>
-    <%= f.association :school %>
-    <h3>Target Audience</h3>
-      <div class="row">
-        <div class="col-6">
-          <%= f.input :grade, collection: Notice::SUBGRADES %>
-        </div>
-        <div class="col-6">
-          <%= f.input :classroom, collection: Notice::SUBCLASSROOMS %>
-        </div>
-    </div>
-    <div class="d-flex justify-content-end m-3">
-    <%= link_to "Cancel", dashboard_path, class: "btn btn-light"%>
-    <%= f.button :submit, "Subscribe", class: "btn btn-dark" %>
-    </div>
+  <!-- END WELCOME CARD -->
+
+
+  <!-- HEADER + BACK LINK -->
+  <div class="subscription-header mb-4">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> BACK
     <% end %>
+
+    <h2>Hi, <%= current_user.first_name %></h2>
+    <p>Select the School, Grade, and Classroom you wish to subscribe to.</p>
   </div>
+
+  <!-- SUBSCRIPTION FORM CARD -->
+  <div class="card subscription-card p-4 shadow-sm rounded">
+
+    <%= simple_form_for @subscription, html: { data: { controller: "conditional-form" } } do |f| %>
+
+      <%= f.association :school, label: "SCHOOL" %>
+
+      <h3 class="mt-4 mb-3">Target Audience</h3>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <%= f.input :grade,
+                collection: Notice::SUBGRADES,
+                label: "GRADE *" %>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <%= f.input :classroom,
+                collection: Notice::SUBCLASSROOMS,
+                label: "CLASSROOM *" %>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4 gap-2">
+        <%= link_to "CANCEL", dashboard_path, class: "btn btn-light px-4" %>
+        <%= f.button :submit, "SUBSCRIBE",
+              class: "btn btn-dark px-4" %>
+      </div>
+
+    <% end %>
+
+  </div>
+  <!-- END SUBSCRIPTION FORM CARD -->
+
 </div>
