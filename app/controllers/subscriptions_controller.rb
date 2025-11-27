@@ -8,6 +8,9 @@ class SubscriptionsController < ApplicationController
     @user = current_user
     @subscription.user = @user
     if @subscription.save
+      if current_user.school.nil?
+        current_user.update!(school: @subscription.school)
+      end
       redirect_to dashboard_path
     else
       render :new, status: :unprocessable_entity
