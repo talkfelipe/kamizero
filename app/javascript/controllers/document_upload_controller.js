@@ -2,10 +2,15 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["title", "content"]
+  static targets = ["title", "content", "preview"]
+
+  connect(){
+    console.log(this.titleTarget, this.contentTarget);
+  }
 
   async handleFileChange(event) {
     const file = event.target.files[0]
+
     this.OCRscan(file)
   }
 
@@ -24,6 +29,7 @@ export default class extends Controller {
       const formData = new FormData()
       const base64 = await this.toBase64(file)
       formData.append("base64Image", base64)
+      this.previewTarget.src = base64
 
       fetch(endpoint, {
         method: "POST",
@@ -51,6 +57,8 @@ export default class extends Controller {
       }).then(response=>response.json())
       .then(data=>{
         console.log(data)
+        this.titleTarget.value = data.title
+        this.contentTarget.value = data.content
       })
   }
 }
