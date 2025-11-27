@@ -5,6 +5,11 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-
+    if current_user.role == "teacher"
+      @events = current_user.school.notices.where(category: "Event")
+    else
+      @events = current_user.notices.where(category: "Event")
+    end
+    @events_for_day = @events.group_by(&:date)
   end
 end

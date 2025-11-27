@@ -31,7 +31,7 @@
         <!-- All events -->
         <ul class="list-group list-group-flush events-list">
           <% if @events.present? %>
-            <% @events.each do |event| %>
+            <% @events.order(date: :asc).each do |event| %>
               <li class="list-group-item d-flex">
                 <div class="me-3">
                   <small class="fw-semibold">
