@@ -80,3 +80,4 @@ gem "ostruct"
 
 gem "simple_calendar", "~> 3.1"
 gem 'pg_search'
+gem "ruby_llm", "~> 1.2.0"

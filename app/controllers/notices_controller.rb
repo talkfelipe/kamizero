@@ -1,7 +1,16 @@
 class NoticesController < ApplicationController
   def show
     @notice = Notice.find(params[:id])
-    ReadNotification.create(user: current_user, notice: @notice, status: true)
+   # For those who read the show page will change the status to true.
+    # Used find_or_initialize_by in order to avoid having multiple action of
+    # status = true by looking at same show page several times
+    read = ReadNotification.find_or_initialize_by(
+      user: current_user,
+      notice: @notice
+    )
+    read.status = true
+    read.save!
+    # ReadNotification.create(user: current_user, notice: @notice, status: true)
   end
 
   def index
@@ -46,6 +55,16 @@ class NoticesController < ApplicationController
     end
 
     @notices = scoped
+  end
+
+  def scan_file
+    text = params[:text]
+    hash_data = Notice.extract_title_and_content(text)
+    # TODO get info from image
+    @notice = Notice.new(
+      title: hash_data["title"],
+      content: hash_data["content"]
+    )
   end
 
   def events
