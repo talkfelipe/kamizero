@@ -1,32 +1,62 @@
-<div class="container">
-  <div class="d-flex align-items-center gap-4">
-    <div class="">
-      <%= link_to "← Back", dashboard_path, class: "text-decoration-none text-secondary" %>
-    </div>
-    <div class="py-2">
-      <h2>Create New Notice</h2>
-      <p>Send a new notice to parents</p>
-    </div>
+<div class="container notice-page">
+
+  <!-- KAMIZERO TOP CARD -->
+  <%= render "shared/kamizero_top_card" %>
+
+  <!-- PAGE HEADER: BACK + TITLE + SUBTITLE -->
+  <div class="notice-header">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
+    <% end %>
+
+    <h2>Create New Notice</h2>
+    <p>Send a New Notice to Parents <i class="fa-solid fa-angles-down"></i></p>
   </div>
-  <div class="border p-3 shadow rounded">
+
+  <!-- FORM CARD -->
+  <div class="notice-card">
     <%= simple_form_for @notice, html: { data: { controller: "conditional-form" } } do |f| %>
-    <%= f.input :title, placeholder: "e.g., Sports day" %>
-    <%= f.input :category, collection: Notice::CATEGORIES, input_html: { data: { "conditional-form-target" => "selector", action: "change->conditional-form#toggleDependentField" } } %>
-    <div data-conditional-form-target="dependentField" data-show-if="Event" class="hidden">
-      <%= f.input :date, as: :string, placeholder: "yyyy/mm/dd", input_html: { data: { controller: "flatpickr" } } %>
-      <div class="row">
-        <div class="col-6">
-          <%= f.input :start_time, as: :string, placeholder: "10:30:00", input_html: { data: { controller: "timepicker" } } %>
-        </div>
-        <div class="col-6">
-          <%= f.input :end_time, as: :string, placeholder: "11:30:00", input_html: { data: { controller: "timepicker" } } %>
-        </div>
-    </div>
 
+      <%= f.input :title, placeholder: "e.g., Sports Day" %>
 
-    </div>
-    <%= f.input :content, placeholder: "Enter the full notice comment here... " %>
-    <h3>Target Audience</h3>
+      <%= f.input :category,
+                  collection: Notice::CATEGORIES,
+                  input_html: {
+                    data: {
+                      "conditional-form-target" => "selector",
+                      action: "change->conditional-form#toggleDependentField"
+                    }
+                  } %>
+
+      <div data-conditional-form-target="dependentField"
+           data-show-if="Event"
+           class="hidden">
+        <%= f.input :date,
+                    as: :string,
+                    placeholder: "yyyy/mm/dd",
+                    input_html: { data: { controller: "flatpickr" } } %>
+
+        <div class="row">
+          <div class="col-6">
+            <%= f.input :start_time,
+                        as: :string,
+                        placeholder: "10:30:00",
+                        input_html: { data: { controller: "timepicker" } } %>
+          </div>
+          <div class="col-6">
+            <%= f.input :end_time,
+                        as: :string,
+                        placeholder: "11:30:00",
+                        input_html: { data: { controller: "timepicker" } } %>
+          </div>
+        </div>
+      </div>
+
+      <%= f.input :content,
+                  placeholder: "Enter the full notice content here. " %>
+
+      <h3>TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
+
       <div class="row">
         <div class="col-6">
           <%= f.input :grade, collection: Notice::GRADES %>
@@ -34,12 +64,16 @@
         <div class="col-6">
           <%= f.input :classroom, collection: Notice::CLASSROOMS %>
         </div>
-    </div>
-    <%= f.input :attachment, as: :file, label: 'Add Attachment'%>
-    <div class="d-flex justify-content-end m-3">
-    <%= link_to "Cancel", dashboard_path, class: "btn btn-light"%>
-    <%= f.button :submit, class: "btn btn-dark" %>
-    </div>
+      </div>
+
+      <%= f.input :attachment, as: :file, label: "Add Attachment" %>
+
+      <div class="d-flex justify-content-end mt-3">
+        <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
+        <%= f.button :submit, class: "btn btn-dark" %>
+      </div>
+
     <% end %>
   </div>
+
 </div>

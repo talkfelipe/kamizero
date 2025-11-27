@@ -1,0 +1,28 @@
+<div class="card welcome-card mb-4">
+  <div class="card-body d-flex align-items-center">
+
+    <div class="welcome-logo-wrapper me-3">
+      <%= image_tag "KAMIZERO LOGO MAIN.png", class: "welcome-logo img-fluid" %>
+    </div>
+
+    <div class="flex-grow-1 welcome-text">
+      <!-- Title -->
+      <p class="mb-1 welcome-line-1">
+        <%= local_assigns[:title] || "WELCOME TO KAMIZERO" %>
+      </p>
+
+      <!-- Subtitle -->
+      <p class="mb-1 welcome-line-2">
+        <%= local_assigns[:subtitle] || "Managing School Notices Paperlessly" %>
+      </p>
+
+      <!-- Optional bottom line -->
+      <% if local_assigns[:bottom] %>
+        <p class="mb-0 welcome-line-4">
+          <%= bottom.html_safe %>
+        </p>
+      <% end %>
+    </div>
+
+  </div>
+</div>

@@ -12,7 +12,7 @@
         <p class="mb-1 welcome-line-2">Managing School Notices Paperlessly</p>
 
         <p class="mb-0 welcome-line-4">
-          <strong>Setup Your School Subscription Below <i class="fa-solid fa-angles-down"></i></strong>
+          SETUP YOUR SCHOOL SUBSCRIPTION BELOW <i class="fa-solid fa-angles-down"></i>
         </p>
       </div>
     </div>
@@ -23,11 +23,11 @@
   <!-- HEADER + BACK LINK -->
   <div class="subscription-header mb-4">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
-      <i class="fa-solid fa-angles-left"></i> BACK
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
 
     <h2>Hi, <%= current_user.first_name %></h2>
-    <p>Select the School, Grade, and Classroom you wish to subscribe to.</p>
+    <p>Select the School, Grade, and Classroom you wish to subscribe to <i class="fa-solid fa-angles-down"></i></p>
   </div>
 
   <!-- SUBSCRIPTION FORM CARD -->
@@ -37,7 +37,7 @@
 
       <%= f.association :school, label: "SCHOOL" %>
 
-      <h3 class="mt-4 mb-3">Target Audience</h3>
+      <h3 class="mt-4 mb-3">TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
 
       <div class="row">
         <div class="col-12 col-md-6">

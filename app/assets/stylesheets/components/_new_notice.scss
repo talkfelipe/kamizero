@@ -1,26 +1,26 @@
 /* ============================================================
-   SUBSCRIPTION PAGE (fully scoped / independent)
+   NOTICE CREATE PAGE (fully scoped / independent)
    ============================================================ */
 
-.subscription-page {
+.notice-page {
   /* Base typography for this page only */
   font-family: "Poppins", sans-serif;
   padding: 1rem 0 3rem;
 
   /* Main blocks: same width, centered */
   .welcome-card,
-  .subscription-header,
-  .subscription-card {
+  .notice-header,
+  .notice-card {
     max-width: 1000px;
     margin: 0 auto 1.5rem;
   }
 
   /* ------------------------------------------------------------
-     WELCOME CARD (SUBSCRIPTION VARIANT)
+     TOP KAMIZERO CARD (mirrors subscription exactly)
      ------------------------------------------------------------ */
 
   .welcome-card {
-    border-radius: 16px;         /* edit welcome card radius */
+    border-radius: 16px;
     padding: 1rem 3rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border: none;
@@ -30,7 +30,7 @@
   .welcome-card .card-body {
     display: flex;
     align-items: center;
-    gap: 2.4rem;                    /* distance between logo and text */
+    gap: 2rem;
   }
 
   .welcome-logo-wrapper {
@@ -38,7 +38,7 @@
   }
 
   .welcome-logo {
-    height: 200px;
+    height: 140px;
     width: auto;
     object-fit: contain;
   }
@@ -51,43 +51,33 @@
   }
 
   .welcome-text p {
-    margin-bottom: 0;   /* only bottom, don’t reset top */
+    margin-bottom: 0;
   }
 
   .welcome-line-1 {
-    font-size: 40px;
+    font-size: 48px;
     font-weight: 800;
     line-height: 1.4;
     margin-bottom: 4px;
   }
 
   .welcome-line-2 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     line-height: 1.4;
     margin-bottom: 8px;
   }
 
-  /* "Setup Your School Subscription Below" – extra gap before this line */
-  .welcome-line-4 {
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 0.9;
-    margin-top: 32px;  /* adjust this for more/less gap */
-    color: #0097b2 !important;
-  }
-
-
 
   /* ------------------------------------------------------------
-     HEADER: BACK + Hi, User + description
+     HEADER: BACK + Title + Subtitle
      ------------------------------------------------------------ */
 
-  .subscription-header {
+  .notice-header {
     text-align: left;
   }
 
-  .subscription-header a.text-secondary {
+  .notice-header a.text-secondary {
     font-size: 0.95rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -96,28 +86,29 @@
     color: #0097b2 !important;
   }
 
-  .subscription-header a.text-secondary i {
+  .notice-header a.text-secondary i {
     margin-right: 4px;
   }
 
-  .subscription-header h2 {
+  .notice-header h2 {
     font-weight: 700;
     margin: 0 0 0.2rem 0;
     color: #003049;
-    font-family: "Poppins", sans-serif; /* force Poppins on "Hi, Yume" */
+    font-family: "Poppins", sans-serif;
   }
 
-  .subscription-header p {
+  .notice-header p {
     margin: 0;
     color: #6b7280;
     font-size: 0.96rem;
   }
 
+
   /* ------------------------------------------------------------
-     SUBSCRIPTION CARD
+     NOTICE FORM CARD (mirrors subscription card)
      ------------------------------------------------------------ */
 
-  .subscription-card {
+  .notice-card {
     background: #ffffff;
     border-radius: 16px !important;
     border: none;
@@ -125,30 +116,37 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   }
 
-  .subscription-card h3 {
+  .notice-card form {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .notice-card h3 {
     font-size: 0.95rem;
     font-weight: 600;
     color: #0097b2;
     margin-bottom: 1rem;
   }
 
-  .subscription-card .input,
-  .subscription-card .form-group {
+  .notice-card .input,
+  .notice-card .form-group {
     margin-bottom: 1.2rem;
   }
 
-  .subscription-card label {
+  .notice-card label {
     font-size: 0.95rem;
     color: #14bec0;
     font-weight: 600;
     margin-bottom: 0.35rem;
   }
 
-  .subscription-card select,
-  .subscription-card input[type="text"],
-  .subscription-card input[type="number"],
-  .subscription-card input[type="email"],
-  .subscription-card input[type="tel"] {
+  .notice-card select,
+  .notice-card input[type="text"],
+  .notice-card input[type="number"],
+  .notice-card input[type="email"],
+  .notice-card input[type="tel"],
+  .notice-card textarea {
     width: 100%;
     border-radius: 10px;
     border: 1px solid #d0d7de;
@@ -157,52 +155,53 @@
     background: #fafafa;
   }
 
-  .subscription-card select:focus,
-  .subscription-card input:focus {
+  .notice-card select:focus,
+  .notice-card input:focus,
+  .notice-card textarea:focus {
     border-color: #00bcd4;
     box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.25);
     outline: none;
   }
 
   /* Buttons */
-
-  .subscription-card .btn {
+  .notice-card .btn {
     border-radius: 10px;
     font-weight: 600;
     padding: 0.6rem 1.9rem;
     font-size: 0.95rem;
   }
 
-  .subscription-card .btn-light {
+  .notice-card .btn-light {
     border: 1px solid #d1d5db;
     background: #ffffff;
     color: #0097b2;
   }
 
-  .subscription-card .btn-light:hover {
+  .notice-card .btn-light:hover {
     background: #f3f4f6;
     color: #14bec0;
   }
 
-  .subscription-card .btn-dark {
+  .notice-card .btn-dark {
     background: #00bcd4;
     border: none;
     color: #ffffff;
   }
 
-  .subscription-card .btn-dark:hover {
+  .notice-card .btn-dark:hover {
     background: #009db2;
     color: #ffffff;
   }
 
+
   /* ------------------------------------------------------------
-     RESPONSIVE
+     RESPONSIVE (mirrors subscription)
      ------------------------------------------------------------ */
 
   @media (max-width: 768px) {
     .welcome-card,
-    .subscription-header,
-    .subscription-card {
+    .notice-header,
+    .notice-card {
       max-width: 100%;
       margin: 0 0 1.5rem 0;
     }
@@ -235,27 +234,27 @@
       font-size: 16px;
     }
 
-    .welcome-line-4 {
-      font-size: 14px;
-    }
-
-    .subscription-card {
+    .notice-card {
       padding: 2rem 1.6rem 2.2rem;
       border-radius: 14px;
+    }
+
+    .notice-header h2 {
+      font-size: 1.35rem;
+    }
+
+    .notice-header p {
+      font-size: 0.9rem;
     }
   }
 
   @media (max-width: 576px) {
-    .subscription-card {
+    .welcome-card {
+      padding: 1.6rem 1.3rem 2rem;
+    }
+
+    .notice-card {
       padding: 1.8rem 1.4rem 2.1rem;
-    }
-
-    .subscription-header h2 {
-      font-size: 1.35rem;
-    }
-
-    .subscription-header p {
-      font-size: 0.9rem;
     }
   }
 }
