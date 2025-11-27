@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post "/scan_file", to: "notices#scan_file", as: :scan_file
+
   resources :notices, only: [:destroy]
 
   resources :subscriptions, only: [:new, :create]

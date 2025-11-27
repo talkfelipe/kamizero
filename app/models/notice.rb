@@ -25,18 +25,21 @@ class Notice < ApplicationRecord
       }
   }
 
-  def starts_at
-    return nil if date.nil? || start_time.nil?
-    DateTime.new(date.year, date.month, date.day, start_time.hour, start_time.min)
+  def self.extract_title_and_content(text)
+    prompt = <<~PROMPT
+    From the input #{text}, extract and structure the information into the following JSON format with two keys:
+
+    - "title" = "The title of the notice"
+    - "content" = "The full body content of the notice"
+
+    Expected output format:
+    content => {
+      "title" = "Example Title",
+      "content" = "Example content of the notice."
+    }
+    PROMPT
+    response = RubyLLM.chat.ask(prompt)
+    response.content
   end
 
-  def ends_at
-    return nil if date.nil? || end_time.nil?
-    DateTime.new(date.year, date.month, date.day, end_time.hour, end_time.min)
-  end
-
-  def duration_in_minutes
-    return 0 if ends_at.nil? || starts_at.nil?
-    ((ends_at - starts_at) * 24 * 60).to_i
-  end
 end
