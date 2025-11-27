@@ -1,47 +1,235 @@
-// Brand colors
+/* ============================================================
+   EVENTS PAGE – MIRROR NOTICES / CREATE NOTICE
+   ============================================================ */
+
 $kamizero-teal: #14bec0;
 $kamizero-navy: #0097b2;
 
-.events-list-card,      // optional alias if you add it later
-.col-md-6 > .card {     // your current events card selector
-  // keep default card look; adjust only header + list below
-}
+.notice-page.events-page {
+  font-family: "Poppins", sans-serif;
+  padding: 1rem 0 3rem;
 
-/* Header */
-.col-md-6 .card-header {
-  background-color: #fafafa;
-  border-bottom: 1px solid #e3e3e3;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-}
+  /* ----------------------------------------------------------
+     HEADER (same feel as notices)
+     ---------------------------------------------------------- */
+  .notice-header {
+    max-width: 1000px;
+    margin: 0 auto 1.5rem;
+    text-align: left;
+  }
 
-/* Title “UPCOMING EVENTS” */
-.col-md-6 .card-header span {
-  letter-spacing: 0.04em;
-}
+  .notice-header a.text-secondary {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.35rem;
+    color: $kamizero-navy !important;
+  }
 
-/* Events list */
-.events-list {
-  max-height: 230px;
-  overflow-y: auto;
-}
+  .notice-header a.text-secondary i {
+    margin-right: 4px;
+  }
 
-.events-list .list-group-item {
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  border-left: none;
-  border-right: none;
-}
+  .notice-header h2 {
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+    color: #003049;
+    font-family: "Poppins", sans-serif;
+  }
 
-.events-list .list-group-item:first-child {
-  border-top: none;
-}
+  .notice-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.96rem;
+  }
 
-.events-list .list-group-item:last-child {
-  border-bottom: none;
-}
+  /* ----------------------------------------------------------
+     MAIN ROW (calendar + side list)
+     ---------------------------------------------------------- */
+  .events-main {
+    max-width: 1000px;
+    margin: 0 auto 1.5rem;
+  }
 
-/* Date column */
-.events-list .fw-semibold {
-  color: $kamizero-navy;
+  .events-calendar-card,
+  .events-side-card {
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* Card headers */
+  .events-calendar-card .card-header,
+  .events-side-card .card-header {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: $kamizero-navy;
+  }
+
+  .events-side-card .card-header span {
+    letter-spacing: 0.08em;
+  }
+
+  /* ==========================================================
+     CALENDAR (simple_calendar styling)
+     ========================================================== */
+  .events-calendar-card .simple-calendar {
+    font-family: "Poppins", sans-serif;
+  }
+
+  .events-calendar-card .simple-calendar table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+  }
+
+  .events-calendar-card .simple-calendar th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    padding: 0.5rem 0.75rem;
+    background: #ffffff;
+  }
+
+  .events-calendar-card .simple-calendar td {
+    padding: 0;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+
+  .events-calendar-card .calendar-day {
+    min-height: 80px;
+    padding: 6px 8px;
+    background-color: #f9fafb;
+    font-size: 0.78rem;
+  }
+
+  /* TODAY highlight (restored) */
+  .events-calendar-card .simple-calendar .today .calendar-day {
+    background-color: #e3f6fb !important;
+    box-shadow: inset 0 0 0 2px $kamizero-teal;
+  }
+
+  .events-calendar-card .calendar-day .date-number {
+    display: inline-block;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #4b5563;
+  }
+
+  .events-calendar-card .calendar-day a {
+    display: block;
+    margin-top: 2px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    color: $kamizero-navy;
+    font-weight: 600;
+  }
+
+  .events-calendar-card .calendar-day a:hover {
+    color: $kamizero-teal;
+  }
+
+  /* Previous / Next links */
+  .events-calendar-card .simple-calendar .calendar-heading {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .events-calendar-card .simple-calendar .calendar-heading a {
+    color: $kamizero-navy;
+    text-decoration: none;
+  }
+
+  .events-calendar-card .simple-calendar .calendar-heading a:hover {
+    color: $kamizero-teal;
+  }
+
+  /* ==========================================================
+     SIDE LIST (All Events)
+     ========================================================== */
+  .events-list {
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  .events-list .list-group-item {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.9rem;
+    border-left: none;
+    border-right: none;
+    border-color: #f3f4f6;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #ffffff;
+  }
+
+  .events-list .list-group-item:first-child {
+    border-top: none;
+  }
+
+  .events-list .list-group-item:last-child {
+    border-bottom: none;
+  }
+
+  .events-list .fw-semibold {
+    display: block;
+    color: $kamizero-navy;
+    font-size: 0.8rem;
+  }
+
+  .events-list .fw-semibold p {
+    margin: 2px 0 0;
+    font-size: 0.76rem;
+    color: #6b7280;
+  }
+
+  /* Event title link */
+  .events-list a {
+    text-decoration: none;
+    color: #111827;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .events-list a:hover {
+    color: $kamizero-teal;
+    text-decoration: underline;
+  }
+
+  /* Empty state */
+  .events-list .list-group-item.text-muted {
+    font-size: 0.85rem;
+    color: #9ca3af !important;
+  }
+
+  /* ----------------------------------------------------------
+     RESPONSIVE
+     ---------------------------------------------------------- */
+  @media (max-width: 768px) {
+    .events-main {
+      max-width: 100%;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .events-calendar-card,
+    .events-side-card {
+      border-radius: 14px;
+    }
+
+    .events-side-card {
+      margin-top: 1rem;
+    }
+  }
 }

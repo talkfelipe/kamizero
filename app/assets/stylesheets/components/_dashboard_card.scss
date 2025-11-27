@@ -1,0 +1,327 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+
+/* ============================================================
+   DASHBOARD PAGE – KAMIZERO STYLE
+   ============================================================ */
+
+$kamizero-teal: #14bec0;
+$kamizero-navy: #0097b2;
+
+/* ------------------------------------------------------------
+   WIDER DASHBOARD CONTAINER
+   ------------------------------------------------------------ */
+.dashboard-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   KAMIZERO TOP CARD ON DASHBOARD (mirrors subscription page)
+   ============================================================ */
+
+.dashboard-page .welcome-card {
+  border-radius: 16px;
+  padding: 1.5rem 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border: none;
+  background: #ffffff;
+  margin-top: 40px;
+}
+
+.dashboard-page .welcome-card .card-body {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.dashboard-page .welcome-logo-wrapper {
+  flex: 0 0 auto;
+}
+
+.dashboard-page .welcome-logo {
+  height: 200px;
+  width: auto;
+  object-fit: contain;
+  padding: 1rem 3rem;
+}
+
+.dashboard-page .welcome-card h3,
+.dashboard-page .welcome-card h6,
+.dashboard-page .welcome-card p {
+  font-family: "Poppins", sans-serif;
+  color: #003049;
+  margin: 0;
+}
+
+/* Title + subtitle + user block */
+.dashboard-page .welcome-line-1 {
+  font-weight: 800;
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.dashboard-page .welcome-line-2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.dashboard-page .welcome-line-3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.dashboard-page .welcome-line-4 {
+  font-size: 16px;
+  font-style: italic;
+  color: #4b5563;
+}
+
+/* ============================================================
+   SHARED CARD SHELLS
+   ============================================================ */
+
+.dashboard-page .dashboard-card,
+.dashboard-page .calendar-card,
+.dashboard-page .events-card {
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* Headers – UNREAD NOTICES / CALENDAR / UPCOMING EVENTS */
+.dashboard-page .dashboard-card .card-header,
+.dashboard-page .calendar-card .card-header,
+.dashboard-page .events-card .card-header {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: $kamizero-navy;
+  padding: 0.9rem 1.4rem;
+}
+
+/* ============================================================
+   UNREAD NOTICES LIST
+   ============================================================ */
+
+.dashboard-page .notices-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.dashboard-page .notices-list .list-group-item {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  border-left: none;
+  border-right: none;
+  border-color: #f3f4f6;
+  padding: 0.9rem 1.4rem;
+}
+
+.dashboard-page .notices-list .list-group-item:first-child {
+  border-top: none;
+}
+
+.dashboard-page .notices-list .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* ============================================================
+   CALENDAR (simple_calendar)
+   ============================================================ */
+
+.dashboard-page .calendar-card .simple-calendar {
+  font-family: "Poppins", sans-serif;
+}
+
+.dashboard-page .calendar-card .simple-calendar table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: collapse;
+}
+
+.dashboard-page .calendar-card .simple-calendar th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  padding: 0.5rem 0.75rem;
+  background: #ffffff;
+}
+
+.dashboard-page .calendar-card .simple-calendar td {
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+.dashboard-page .calendar-card .calendar-day {
+  min-height: 80px;
+  padding: 6px 8px;
+  background-color: #f9fafb;
+  font-size: 0.78rem;
+}
+
+.dashboard-page .calendar-card .simple-calendar .today .calendar-day {
+  background-color: #e3f6fb !important;
+  box-shadow: inset 0 0 0 2px $kamizero-teal;
+}
+
+.dashboard-page .calendar-card .calendar-day .date-number {
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #4b5563;
+}
+
+.dashboard-page .calendar-card .calendar-day .calendar-event,
+.dashboard-page .calendar-card .calendar-day a {
+  display: block;
+  margin-top: 2px;
+  text-decoration: none;
+  font-size: 0.78rem;
+  color: $kamizero-navy;
+  font-weight: 600;
+}
+
+/* Prev/Next */
+.dashboard-page .calendar-card .simple-calendar .calendar-heading {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.dashboard-page .calendar-card .simple-calendar .calendar-heading a {
+  color: $kamizero-navy;
+  text-decoration: none;
+}
+
+/* ============================================================
+   UPCOMING EVENTS LIST
+   ============================================================ */
+
+.dashboard-page .events-list {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.dashboard-page .events-list .list-group-item {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  border-left: none;
+  border-right: none;
+  border-color: #f3f4f6;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #ffffff;
+  padding: 0.9rem 1.4rem;
+}
+
+.dashboard-page .events-list .list-group-item:first-child {
+  border-top: none;
+}
+
+.dashboard-page .events-list .list-group-item:last-child {
+  border-bottom: none;
+}
+
+.dashboard-page .events-list .fw-semibold {
+  display: block;
+  color: $kamizero-navy;
+  font-size: 0.8rem;
+}
+
+.dashboard-page .events-list a {
+  text-decoration: none;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.dashboard-page .events-list .list-group-item.text-muted {
+  font-size: 0.85rem;
+  color: #9ca3af !important;
+}
+
+/* ============================================================
+   RESPONSIVE – MOBILE WELCOME CARD FIX
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .dashboard-page .welcome-card {
+    padding: 1.25rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  /* OVERRIDE Bootstrap d-flex so text never disappears */
+  .dashboard-page .welcome-card .card-body {
+    display: block; /* kills flex on mobile */
+  }
+
+  .dashboard-page .welcome-logo-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .dashboard-page .welcome-logo {
+    height: 180px;
+    max-width: 70%;
+    object-fit: contain;
+  }
+
+  /* text block */
+  .dashboard-page .welcome-card .flex-grow-1 {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+
+  .dashboard-page .welcome-line-1,
+  .dashboard-page .welcome-line-2,
+  .dashboard-page .welcome-line-3,
+  .dashboard-page .welcome-line-4 {
+    text-align: center;
+  }
+
+  .dashboard-page .welcome-line-1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-page .welcome-line-2 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-page .welcome-line-3 {
+    font-size: 15px;
+    margin-top: 4px;
+  }
+
+  .dashboard-page .welcome-line-4 {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+}

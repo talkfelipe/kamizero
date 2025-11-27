@@ -1,65 +1,90 @@
-<div class="container my-2">
-  <!-- BACK BUTTON & ALL NOTICES -->
-  <div class="my-3">
-    <%= link_to "←　Back", dashboard_path, class: "text-decoration-none text-secondary" %>
+<div class="container notice-page notices-page">
+
+  <!-- KAMIZERO TOP CARD (same as create page) -->
+  <%= render "shared/kamizero_top_card" %>
+
+  <!-- BACK + PAGE TITLE + SUBTITLE (same as create header) -->
+  <div class="notice-header">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
+    <% end %>
+
     <h2>All Notices</h2>
+    <p>Browse All Notices sent to Parents <i class="fa-solid fa-angles-down"></i></p>
   </div>
-  <!-- NEED TO CHANGE THIS CODE LATER BECAUSE SEARCH FUNCTION DOES NOT WORK -->
-  <%= simple_form_for :filters, url: notices_path, method: :get, html: { class: "notice-filters" } do |f| %>
-    <!-- Search -->
-    <div class="filter-item search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <%= f.input :q,
-        wrapper: false,
-        label: false,
-        input_html: {
-          placeholder: "Search notices...",
-          class: "filter-input",
-          value: params.dig(:filters, :q)
-        } %>
+
+  <!-- MAIN WHITE CARD (wraps filters + list) -->
+  <div class="notice-index-card">
+
+    <!-- FILTERS (original) -->
+    <div class="notices-filters-card">
+      <%= simple_form_for :filters, url: notices_path, method: :get,
+                          html: { class: "notice-filters" } do |f| %>
+
+        <!-- Search -->
+        <div class="filter-item search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <%= f.input :q,
+            wrapper: false,
+            label: false,
+            input_html: {
+              placeholder: "Search notices...",
+              class: "filter-input",
+              value: params.dig(:filters, :q)
+            } %>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-item">
+          <%= f.input :category,
+            collection: [["All Categories", ""], ["General", "General"], ["Event", "Event"]],
+            selected: params.dig(:filters, :category),
+            label: false,
+            wrapper: false,
+            input_html: {
+              class: "filter-select",
+              onchange: "this.form.submit();"
+            } %>
+        </div>
+
+        <!-- Clear -->
+        <div>
+          <%= link_to "CLEAR", notices_path, class: "filter-clear" %>
+        </div>
+
+      <% end %>
     </div>
-    <!-- Category Filter -->
-    <div class="filter-item">
-      <%= f.input :category,
-        collection: [["All Categories", ""], ["General", "General"], ["Event", "Event"]],
-        selected: params.dig(:filters, :category),
-        label: false,
-        wrapper: false,
-        input_html: {
-          class: "filter-select",
-          onchange: "this.form.submit();"
-        } %>
-    </div>
-    <!-- Read Status（今は枠だけ） -->
-    <div>
-      <%= link_to "Clear", notices_path, class: "filter-clear" %>
-    </div>
-  <% end %>
-  <!-- CONTENT PART -->
-  <div class="notices-page">
+
+    <!-- NOTICES LIST (original) -->
     <div class="notices-list">
       <% @notices.each do |notice| %>
         <%= link_to notice_path(notice), class: "notice-card position-relative" do %>
+
           <div class="notice-card-icon">
             <i class="fa-regular fa-file-lines"></i>
+
             <!-- Category Badge -->
             <span class="badge rounded-pill position-absolute top-0 end-0 m-3
-                <%= notice.category == "Event" ? "bg-warning" : "bg-dark" %>">
+              <%= notice.category == "Event" ? "bg-warning" : "bg-dark" %>">
               <%= notice.category %>
             </span>
           </div>
+
           <!-- Main Content -->
           <div class="notice-card-main">
             <div class="notice-card-header">
               <h2 class="notice-card-title"><%= notice.title %></h2>
               <p class="notice-card-date"><%= notice.created_at.strftime("%Y-%m-%d") %></p>
             </div>
+
             <p class="notice-card-body">
               <%= truncate(strip_tags(notice.content), length: 100) %>
             </p>
           </div>
+
         <% end %>
       <% end %>
     </div>
+
   </div>
 </div>

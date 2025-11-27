@@ -21,6 +21,15 @@
   height: auto;
 }
 
+/* spacing between navbar items */
+.navbar-nav .nav-item {
+  margin-right: 1rem;   /* adjust 0.8–1.2rem if needed */
+}
+
+/* last item should not push the icon too far */
+.navbar-nav .nav-item:last-child {
+  margin-right: 0;
+}
 
 /* ============================================================
    NORMAL PAGES NAV WRAPPER (Bootstrap container-fluid)
@@ -58,6 +67,20 @@
 
 .nav-kamizero:hover {
   color: #007ea7 !important;
+}
+
+.kamizero-brand-text {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: #14bec0;       /* same navy as nav links */
+  text-transform: uppercase;
+  margin-left: 0.35rem;
+}
+
+.navbar-brand:hover .kamizero-brand-text {
+  color: #007ea7 !important;   /* same hover color */
 }
 
 

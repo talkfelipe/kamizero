@@ -15,8 +15,7 @@
 
 @import "components/navbar_kamizero";
 
-@import "components/welcome_card";
-@import "components/notices_card";
+@import "components/dashboard_card";
 @import "components/calendar";
 @import "components/events_card";
 @import "components/buttons";
@@ -28,3 +27,7 @@
 @import "components/auth";
 
 @import "components/subscription";
+
+@import "components/new_notice";
+
+@import "components/kamizero_top_card";

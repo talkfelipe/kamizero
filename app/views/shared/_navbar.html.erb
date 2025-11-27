@@ -1,18 +1,24 @@
 <nav class="navbar navbar-expand-sm navbar-light navbar-lewagon">
 
   <% if devise_controller? %>
-    <!-- AUTH PAGES: no Bootstrap constraints -->
+    <!-- AUTH PAGES -->
     <div class="nav-inner-auth">
   <% else %>
-    <!-- NORMAL PAGES: keep Bootstrap container -->
+    <!-- NORMAL PAGES -->
     <div class="container-fluid">
   <% end %>
 
-      <%= link_to dashboard_path, class: "navbar-brand" do %>
-        <%= image_tag "KAMIZERO LOGO THUMB.png" %>
+      <%= link_to dashboard_path, class: "navbar-brand d-flex align-items-center" do %>
+        <%= image_tag "KAMIZERO LOGO THUMB.png", class: "me-2" %>
+        <span class="kamizero-brand-text"><i class="fa-solid fa-angles-left"></i>DASHBOARD</span>
       <% end %>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -21,31 +27,78 @@
 
           <% if user_signed_in? %>
 
+            <% if current_user.role == "teacher" %>
+              <li class="nav-item">
+                <%= link_to new_notice_path,
+                            class: "nav-link nav-kamizero nav-create-notice" do %>
+                  <i class="fa-solid fa-square-plus"></i>
+                  CREATE NOTICE
+                <% end %>
+              </li>
+            <% end %>
+
             <li class="nav-item active">
-              <%= link_to "NOTICES", "/notices", class: "nav-link nav-kamizero" %>
+              <%= link_to "NOTICES",
+                          "/notices",
+                          class: "nav-link nav-kamizero" %>
             </li>
 
             <li class="nav-item">
-              <%= link_to "EVENTS", "/notices/events", class: "nav-link nav-kamizero" %>
+              <%= link_to "EVENTS",
+                          "/notices/events",
+                          class: "nav-link nav-kamizero" %>
             </li>
 
-            <!-- DROPDOWN WITH FONT AWESOME ICON -->
+            <li class="nav-item">
+              <%= link_to new_subscription_path,
+                          class: "nav-link nav-kamizero nav-new-subscription" do %>
+                <i class="fa-solid fa-clone me-1"></i>
+                NEW SUBSCRIPTION
+              <% end %>
+            </li>
+
+            <!-- DROPDOWN WITH USER'S SUBSCRIPTIONS -->
             <li class="nav-item dropdown">
-              <a href="#" id="navbarDropdown" class="nav-link" data-bs-toggle="dropdown">
-                <i class="fa-solid fa-list" style="font-size: 1.3rem; color:#003049;"></i>
+              <a href="#" id="navbarDropdown" class="nav-link"
+                data-bs-toggle="dropdown">
+                <i class="fa-solid fa-list"
+                  style="font-size: 1.3rem; color:#003049;"></i>
               </a>
 
-              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <%= link_to "Action", "#", class: "dropdown-item" %>
-                <%= link_to "Another action", "#", class: "dropdown-item" %>
-                <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
+              <div class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropdown">
+
+                <% if current_user.respond_to?(:subscriptions) && current_user.subscriptions.any? %>
+
+                  <% current_user.subscriptions.each do |s| %>
+                    <% label = [s.school, s.grade, s.classroom]
+                              .map { |v| v.respond_to?(:name) ? v.name : v }
+                              .reject(&:blank?)
+                              .join(" ") %>
+
+                    <%= link_to label, "#", class: "dropdown-item" %>
+                  <% end %>
+
+                  <div class="dropdown-divider"></div>
+                <% end %>
+
+                <%= link_to "Add New Subscription",
+                            new_subscription_path,
+                            class: "dropdown-item" %>
+
+                <%= link_to "Log Out",
+                            destroy_user_session_path,
+                            data: { turbo_method: :delete },
+                            class: "dropdown-item" %>
               </div>
             </li>
 
           <% else %>
 
             <li class="nav-item">
-              <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+              <%= link_to "Login",
+                          new_user_session_path,
+                          class: "nav-link" %>
             </li>
 
           <% end %>
