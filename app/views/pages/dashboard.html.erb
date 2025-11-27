@@ -30,13 +30,16 @@
       <%= link_to "VIEW ALL", notices_path, class: "btn button-view-all btn-sm" %>
     </div>
     <ul class="list-group list-group-flush notices-list">
-      <% if @notices.present? %>
-        <% @notices.each do |notice| %>
+      <% if @unread_notices.present? %>
+        <% @unread_notices.each do |notice| %>
           <li class="list-group-item">
-            <div class="fw-semibold"><%= notice.title %></div>
-            <small class="text-muted">
-              <%= notice.published_on&.strftime("%Y-%m-%d") %>
-            </small>
+            <%= link_to notice_path(notice),
+                        class: "text-decoration-none text-reset d-block" do %>
+              <div class="fw-semibold"><%= notice.title %></div>
+              <small class="text-muted">
+                <%= notice.created_at&.strftime("%Y-%m-%d") %>
+              </small>
+            <% end %>
           </li>
         <% end %>
       <% else %>
