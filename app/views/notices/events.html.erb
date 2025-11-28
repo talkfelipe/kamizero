@@ -40,7 +40,7 @@
                 <div class="me-3">
                   <small class="fw-semibold">
                     <%= event.date.strftime("%B %d") %>
-                    <p><%= event.start_time.strftime("%H:%M") %> - <%= event.end_time.strftime("%H:%M") %></p>
+                    <p><%= event.start_time&.strftime("%H:%M") %> - <%= event.end_time&.strftime("%H:%M") %></p>
                   </small>
                 </div>
                 <div class="flex-grow-1">

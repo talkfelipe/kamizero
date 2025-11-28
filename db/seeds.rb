@@ -119,12 +119,12 @@ Subscription.create(
   classroom: "A"
 )
 
-Subscription.create(
-  user: parent1,
-  school: school2,
-  grade: "5",
-  classroom: "A"
-)
+# Subscription.create(
+#   user: parent1,
+#   school: school2,
+#   grade: "5",
+#   classroom: "A"
+# )
 
 Notice.create!(
   school: school1,
