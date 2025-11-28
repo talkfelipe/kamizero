@@ -67,6 +67,7 @@
         </div>
 
     </div>
+    <img src="#" alt="" data-document-upload-target="preview">
     <%= f.input :attachment, as: :file, label: 'Add Attachment', input_html: { data: { action: "change->document-upload#handleFileChange" } }%>
     <div class="d-flex justify-content-end m-3">
     <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>

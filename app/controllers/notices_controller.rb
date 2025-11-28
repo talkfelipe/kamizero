@@ -1,7 +1,7 @@
 class NoticesController < ApplicationController
   def show
     @notice = Notice.find(params[:id])
-   # For those who read the show page will change the status to true.
+    # For those who read the show page will change the status to true.
     # Used find_or_initialize_by in order to avoid having multiple action of
     # status = true by looking at same show page several times
     read = ReadNotification.find_or_initialize_by(
@@ -59,7 +59,8 @@ class NoticesController < ApplicationController
 
   def scan_file
     text = params[:text]
-    hash_data = Notice.extract_title_and_content(text)
+    hash_data = JSON.parse(Notice.extract_title_and_content(text))
+
     # TODO get info from image
     @notice = Notice.new(
       title: hash_data["title"],
