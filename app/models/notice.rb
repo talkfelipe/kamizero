@@ -27,25 +27,19 @@ class Notice < ApplicationRecord
 
   def self.extract_title_and_content(text)
     prompt = <<~PROMPT
-    You will be given an input text containing a notice. Your task is to extract and structure the information into a JSON object with the following keys:
+    You will be given a block of text in #{text}.
 
-    - "title": The title of the notice.
-    - "content": The full body content of the notice.
+    Extract the title and the remaining body as content.
 
-    Return only the JSON object in the following format:
+    Assume:
+    -	Title: Select the line that best represents the main topic or purpose of the text — typically the first line or a prominent heading. Choose only the portion that clearly serves as the title.
+    -	Content: Extract the remaining text that effectively communicates the core message of the notice. Exclude redundant or non-essential information.
+
+    Format the output like this:
     {
-      "title": "<Extracted title>",
-      "content": "<Extracted full body content>"
+      "title": "[extracted title]",
+      "content": "[remaining content]"
     }
-
-    Input text:
-    Example: Kami Zero Dummy Event Notice
-              Sample School Event
-              Date: 2025-03-15
-              Start time: 09:00
-              End time: 11:30
-              This is a dummy Word document for testing file upload and parsing in the Kami Zero app.
-
     PROMPT
     response = RubyLLM.chat.ask(prompt)
     response.content
