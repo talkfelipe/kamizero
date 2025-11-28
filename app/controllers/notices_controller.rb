@@ -1,16 +1,26 @@
 class NoticesController < ApplicationController
   def show
     @notice = Notice.find(params[:id])
+
+  end
+
+  def mark_as_read
+    notice = Notice.find(params[:id])
     # For those who read the show page will change the status to true.
     # Used find_or_initialize_by in order to avoid having multiple action of
     # status = true by looking at same show page several times
     read = ReadNotification.find_or_initialize_by(
       user: current_user,
-      notice: @notice
+      notice: notice
     )
     read.status = true
     read.save!
-    # ReadNotification.create(user: current_user, notice: @notice, status: true)
+
+    respond_to do |format|
+      format.json { head :no_content }
+      format.html { redirect_to notice_path(notice) } # 念のため
+    end
+
   end
 
   def index

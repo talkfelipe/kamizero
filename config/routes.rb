@@ -24,4 +24,8 @@ Rails.application.routes.draw do
 
   resources :subscriptions, only: [:new, :create]
 
+  resources :notices do
+    post :mark_as_read, on: :member
+  end
+
 end
