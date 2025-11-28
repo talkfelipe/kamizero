@@ -14,7 +14,13 @@
           <strong>Hi, <%= current_user.first_name %></strong>
         </p>
         <p class="mb-0 welcome-line-4">
-          <em><%= current_user.school.name %> School</em>
+          <% if current_user.role == "teacher" %>
+            <em><%= current_user.school.name %> School</em>
+          <% else %>
+            <% current_user.subscriptions.each do |subscription| %>
+            <em> <%= subscription.school.name  %>  School, Grade: <%= subscription.grade %>, Classroom: <%= subscription.classroom %></em>
+            <% end %>
+          <% end %>
         </p>
       </div>
     </div>
