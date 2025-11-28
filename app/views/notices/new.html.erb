@@ -1,8 +1,5 @@
 <div class="container notice-page">
 
-  <!-- KAMIZERO TOP CARD -->
-  <%= render "shared/kamizero_top_card" %>
-
   <!-- PAGE HEADER: BACK + TITLE + SUBTITLE -->
   <div class="notice-header">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
@@ -55,9 +52,6 @@
 
       <h3>TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
 
-
-    <%= f.input :content, placeholder: "Enter the full notice comment here...", input_html: { data: { "document-upload-target": "content" } } %>
-    <h3>Target Audience</h3>
       <div class="row">
         <div class="col-6">
           <%= f.input :grade, collection: Notice::GRADES %>

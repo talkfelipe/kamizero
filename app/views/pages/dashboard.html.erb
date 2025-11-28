@@ -1,3 +1,11 @@
+<%# ============================================================
+    BUILD SCHOOL → COLOR INDEX MAP (1,2,3...) FOR TAGS & CALENDAR
+    ============================================================ %>
+<% school_color_index = {} %>
+<% current_user.subscriptions.includes(:school).map(&:school).uniq.each_with_index do |school, idx| %>
+  <% school_color_index[school.id] = idx + 1 %>
+<% end %>
+
 <div class="container my-4 dashboard-page">
 
   <!-- WELCOME CARD -->
@@ -7,21 +15,38 @@
         <%= image_tag "KAMIZERO LOGO MAIN.png", class: "welcome-logo img-fluid" %>
       </div>
       <div class="flex-grow-1">
-        <p class="mb-1 welcome-line-1">WELCOME TO KAMIZERO</p>
-        <p class="mb-1 welcome-line-2">Managing School Notices Paperlessly</p>
-
-        <p class="mb-0 welcome-line-3">
-          <strong>Hi, <%= current_user.first_name %></strong>
-        </p>
-        <p class="mb-0 welcome-line-4">
-          <em><%= current_user.school.name %> School</em>
+        <p class="mb-1 kamizero-tagline">
+          Managing School Notices Paperlessly
         </p>
       </div>
     </div>
   </div>
+
+  <!-- Dashboard Welcome HEADER -->
+  <div class="dashboard-header">
+    <p class="mb-0 welcome-user">
+      <strong>Welcome, <%= current_user.first_name %>!</strong>
+    </p>
+
+    <% if current_user.subscriptions.present? %>
+      <div class="dashboard-schools mt-1">
+        <% current_user.subscriptions.each do |subscription| %>
+          <% school = subscription.school %>
+          <% color_idx = school_color_index[school.id] %>
+          <p class="mb-0 school-tag school-tag-<%= color_idx %>">
+            <%= school.name %> School
+          </p>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="mb-0 current-subscription">
+        No active subscriptions yet
+      </p>
+    <% end %>
+  </div>
+
   <!-- NEW NOTICES CARD -->
   <div class="card dashboard-card mb-4">
-
     <div class="card-header d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
         <i class="fa-solid fa-bell me-2"></i>
@@ -50,10 +75,13 @@
       <% end %>
     </ul>
   </div>
+
   <!-- SCROLL TARGET FOR PREVIOUS/TODAY/NEXT -->
   <div id="calendar-section"></div>
+
   <!-- CALENDAR + UPCOMING EVENTS -->
   <div class="row g-3 mb-4 calendar-events-row">
+
     <!-- CALENDAR CARD -->
     <div class="col-md-8">
       <div class="card calendar-card h-100">
@@ -62,9 +90,15 @@
           <%= month_calendar do |date| %>
             <div class="calendar-day">
               <span class="date-number"><%= date.day %></span>
+
               <% if @events_for_day[date] %>
                 <% @events_for_day[date].each do |event| %>
-                  <%= link_to "#{event.title}", notice_path(event) %>
+                  <% color_idx = school_color_index[event.school_id] %>
+                  <% classes = ["calendar-event"] %>
+                  <% classes << "school-tag-#{color_idx}" if color_idx %>
+                  <%= link_to notice_path(event), class: classes.join(" ") do %>
+                    <%= event.title %>
+                  <% end %>
                 <% end %>
               <% end %>
             </div>
@@ -72,6 +106,7 @@
         </div>
       </div>
     </div>
+
     <!-- UPCOMING EVENTS CARD -->
     <div class="col-md-4">
       <div class="card events-card">
@@ -85,11 +120,11 @@
               <% if event.date >= Date.current %>
                 <li class="list-group-item d-flex">
                   <%= link_to notice_path(event), class: "d-flex w-100 text-decoration-none text-reset p-3" do %>
-                  <div class="me-3">
-                    <small class="fw-semibold"><%= event.date&.strftime("%Y-%m-%d") %></small>
-                  </div>
-                  <div class="flex-grow-1"><%= event.title %></div>
-                <% end %>
+                    <div class="me-3">
+                      <small class="fw-semibold"><%= event.date&.strftime("%m-%d") %></small>
+                    </div>
+                    <div class="flex-grow-1"><%= event.title %></div>
+                  <% end %>
                 </li>
               <% end %>
             <% end %>
