@@ -43,6 +43,11 @@ class NoticesController < ApplicationController
     filters = params[:filters] || {}
     query = filters[:q]
     category = filters[:category]
+    school_id = filters[:school_id]
+
+    if school_id.present?
+      @notices = @notices.where(school_id: school_id)
+    end
 
     # if query exist, we will use the query
     if query.present?
