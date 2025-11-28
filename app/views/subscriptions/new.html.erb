@@ -1,23 +1,21 @@
 <div class="container my-4 subscription-page">
 
-  <!-- WELCOME CARD (for subscription page) -->
+  <!-- WELCOME CARD (Subscription Page – matches Dashboard structure) -->
   <div class="card welcome-card mb-4">
     <div class="card-body d-flex align-items-center">
       <div class="welcome-logo-wrapper me-3">
         <%= image_tag "KAMIZERO LOGO MAIN.png", class: "welcome-logo img-fluid" %>
       </div>
 
-      <div class="flex-grow-1 welcome-text">
-        <p class="mb-1 welcome-line-1">WELCOME TO KAMIZERO</p>
-        <p class="mb-1 welcome-line-2">Managing School Notices Paperlessly</p>
-
-        <p class="mb-0 welcome-line-4">
-          SETUP YOUR SCHOOL SUBSCRIPTION BELOW <i class="fa-solid fa-angles-down"></i>
+      <div class="flex-grow-1">
+        <p class="mb-1 kamizero-tagline">
+          Managing School Notices Paperlessly
         </p>
       </div>
     </div>
   </div>
   <!-- END WELCOME CARD -->
+
 
 
   <!-- HEADER + BACK LINK -->
@@ -26,8 +24,8 @@
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
 
-    <h2>Hi, <%= current_user.first_name %></h2>
-    <p>Select the School, Grade, and Classroom you wish to subscribe to <i class="fa-solid fa-angles-down"></i></p>
+    <h2>Welcome, <%= current_user.first_name %>!</h2>
+    <p>Select the SCHOOL, GRADE, and CLASSROOM to setup SUBSCRIPTION </p>
   </div>
 
   <!-- SUBSCRIPTION FORM CARD -->
