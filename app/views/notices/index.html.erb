@@ -44,6 +44,19 @@
             } %>
         </div>
 
+        <!-- School Filter -->
+        <div class="filter-item">
+          <%= f.input :school_id,
+            collection: [ ["meguro", "school1"], ["shingawa", "school2"]],
+            selected: params.dig(:filters, :school_id),
+            label: false,
+            wrapper: false,
+            input_html: {
+              class: "filter-select",
+              onchange: "this.form.submit();"
+            } %>
+        </div>
+
         <!-- Clear -->
         <div>
           <%= link_to "CLEAR", notices_path, class: "filter-clear" %>

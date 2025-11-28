@@ -107,10 +107,17 @@ parent1 = User.create(
   password: "123456",
 )
 
-subscription = Subscription.create(
+Subscription.create(
   user: parent1,
   school: school1,
   grade: "3",
+  classroom: "A"
+)
+
+Subscription.create(
+  user: parent1,
+  school: school2,
+  grade: "5",
   classroom: "A"
 )
 

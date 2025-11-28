@@ -5,15 +5,13 @@
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
-
     <h2>Create New Notice</h2>
     <p>Send a New Notice to Parents <i class="fa-solid fa-angles-down"></i></p>
   </div>
   <!-- FORM CARD -->
   <div class="notice-card">
     <%= simple_form_for @notice, html: { data: { controller: "conditional-form document-upload" } } do |f| %>
-    <%= f.input :title, placeholder: "e.g., Sports day", input_html: { data: { "document-upload-target": "title" } } %>
-
+      <%= f.input :title, placeholder: "e.g., Sports day", input_html: { data: { "document-upload-target": "title" } } %>
       <%= f.input :category,
                   collection: Notice::CATEGORIES,
                   input_html: {
@@ -22,15 +20,11 @@
                       action: "change->conditional-form#toggleDependentField"
                     }
                   } %>
-
-      <div data-conditional-form-target="dependentField"
-           data-show-if="Event"
-           class="hidden">
+      <div data-conditional-form-target="dependentField" data-show-if="Event" class="hidden">
         <%= f.input :date,
                     as: :string,
                     placeholder: "yyyy/mm/dd",
                     input_html: { data: { controller: "flatpickr" } } %>
-
         <div class="row">
           <div class="col-6">
             <%= f.input :start_time,
@@ -46,10 +40,7 @@
           </div>
         </div>
       </div>
-
-      <%= f.input :content,
-                  placeholder: "Enter the full notice content here. " %>
-
+      <%= f.input :content, placeholder: "Enter the full notice comment here...", input_html: { style: "height: 300px;" ,data: { "document-upload-target": "content" } } %>
       <h3>TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
 
       <div class="row">
@@ -59,15 +50,15 @@
         <div class="col-6">
           <%= f.input :classroom, collection: Notice::CLASSROOMS %>
         </div>
-
-    </div>
-    <img src="#" alt="" data-document-upload-target="preview">
-    <%= f.input :attachment, as: :file, label: 'Add Attachment', input_html: { data: { action: "change->document-upload#handleFileChange" } }%>
-    <div class="d-flex justify-content-end m-3">
-    <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
-    <%= f.button :submit, class: "btn btn-dark" %>
       </div>
-    <% end %>
-  </div>
-
+      <%= f.input :attachment, as: :file, label: 'Add Attachment', input_html: { data: { action: "change->document-upload#handleFileChange" } }%>
+      <div class="d-flex justify-content-end m-3">
+        <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
+        <%= f.button :submit, class: "btn btn-dark" %>
+      </div>
+      <div>
+        <img src="" data-document-upload-target="preview" style="width: 600px;">
+      </div>
+    </div>
+  <% end %>
 </div>

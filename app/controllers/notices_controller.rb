@@ -1,39 +1,42 @@
 class NoticesController < ApplicationController
   def show
     @notice = Notice.find(params[:id])
+
+  end
+
+  def mark_as_read
+    notice = Notice.find(params[:id])
     # For those who read the show page will change the status to true.
     # Used find_or_initialize_by in order to avoid having multiple action of
     # status = true by looking at same show page several times
     read = ReadNotification.find_or_initialize_by(
       user: current_user,
-      notice: @notice
+      notice: notice
     )
     read.status = true
     read.save!
-    # ReadNotification.create(user: current_user, notice: @notice, status: true)
+
+    respond_to do |format|
+      format.json { head :no_content }
+      format.html { redirect_to notice_path(notice) } # 念のため
+    end
+
   end
 
   def index
     #teacher can see all the notices of the school
     if current_user.role == "teacher"
-      base_scope = current_user.school.notices
+      @notices = current_user.school.notices
     else
-    #parents can see only notices of subscribed items
-      base_scope = Notice.none #none
-
-      #creating subscription data to put it into base_scope
-      current_user.subscriptions.each do |subs|
-        scope_for_sub =
-          subs.school.notices.where(
-            grade: [subs.grade, "All"],
-            classroom: [subs.classroom, "All"]
-          )
-        base_scope = base_scope.or(scope_for_sub)
-        #.or will add up subscription into base_scope
-      end
-
-      # eliminating same data ex: all grade for two children needs to be only one
-      base_scope = base_scope.distinct
+      grades = current_user.subscriptions.pluck(:grade) + ["All"]
+      classrooms = current_user.subscriptions.pluck(:classroom) + ["All"]
+      @notices = Notice.includes(school: [:notices,:subscriptions])
+        .where(school: {
+          subscriptions: { user: current_user }
+          },
+          grade: grades,
+          classroom: classrooms
+        )
     end
 
     # get the parameters of filters
@@ -41,20 +44,15 @@ class NoticesController < ApplicationController
     query = filters[:q]
     category = filters[:category]
 
-    # without the filter
-    scoped = base_scope
-
     # if query exist, we will use the query
     if query.present?
-      scoped = scoped.search_by_filters(query)
+      @notices = @notices.search_by_filters(query)
     end
 
     # if category exist, we will use the category
     if category.present?
-      scoped = scoped.where(category: category)
+      @notices = @notices.where(category: category)
     end
-
-    @notices = scoped
   end
 
   def scan_file
