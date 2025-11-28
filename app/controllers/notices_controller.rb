@@ -72,10 +72,14 @@ class NoticesController < ApplicationController
   end
 
   def events
+    date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.today
+    # Start and end of the visible month
+    start_of_month = date.beginning_of_month
+    end_of_month   = date.end_of_month
     if current_user.role == "teacher"
-      @events = current_user.school.notices.where(category: "Event")
+      @events = current_user.school.notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
     else
-      @events = current_user.notices.where(category: "Event")
+      @events = current_user.notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
     end
     @events_for_day = @events.group_by(&:date)
   end
