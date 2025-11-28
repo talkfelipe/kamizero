@@ -1,10 +1,16 @@
 <%# ============================================================
-    BUILD SCHOOL → COLOR INDEX MAP (1,2,3...) FOR TAGS & CALENDAR
+    BUILD SCHOOL → COLOR INDEX MAP (STABLE 1,2,3...) FOR TAGS & CALENDAR
     ============================================================ %>
 <% school_color_index = {} %>
-<% current_user.subscriptions.includes(:school).map(&:school).uniq.each_with_index do |school, idx| %>
-  <% school_color_index[school.id] = idx + 1 %>
-<% end %>
+<%
+  # Unique schools from current user's subscriptions
+  schools = current_user.subscriptions.includes(:school).map(&:school).uniq
+
+  # Stable order so colors do NOT change on refresh
+  schools.sort_by(&:id).each_with_index do |school, idx|
+    school_color_index[school.id] = idx + 1   # 1,2,3... used by SCSS .school-tag-n
+  end
+%>
 
 <div class="container my-4 dashboard-page">
 
@@ -79,7 +85,7 @@
   <!-- SCROLL TARGET FOR PREVIOUS/TODAY/NEXT -->
   <div id="calendar-section"></div>
 
-  <!-- CALENDAR + UPCOMING EVENTS -->
+  <!-- CALENDAR + MONTHLY EVENTS -->
   <div class="row g-3 mb-4 calendar-events-row">
 
     <!-- CALENDAR CARD -->
@@ -91,7 +97,7 @@
             <div class="calendar-day">
               <span class="date-number"><%= date.day %></span>
 
-              <% if @events_for_day[date] %>
+              <% if @events_for_day[date].present? %>
                 <% @events_for_day[date].each do |event| %>
                   <% color_idx = school_color_index[event.school_id] %>
                   <% classes = ["calendar-event"] %>
@@ -107,11 +113,11 @@
       </div>
     </div>
 
-    <!-- UPCOMING EVENTS CARD -->
+    <!-- MONTHLY EVENTS CARD -->
     <div class="col-md-4">
       <div class="card events-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <span>UPCOMING EVENTS</span>
+          <span>MONTHLY EVENTS</span>
           <%= link_to "VIEW ALL", events_notices_path, class: "btn button-view-all btn-sm" %>
         </div>
         <ul class="list-group list-group-flush events-list">

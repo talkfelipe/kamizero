@@ -64,9 +64,8 @@ $kamizero-navy: #0097b2;
   font-size: 40px;
   line-height: 1.2;
   text-align: center;
-  color: #0097b2;   /* FIXED — Kamizero teal/navy */
+  color: #0097b2;
 }
-
 
 /* ============================================================
    DASHBOARD HEADER – USER + SCHOOLS
@@ -91,7 +90,7 @@ $kamizero-navy: #0097b2;
   gap: 0.4rem;
 }
 
-/* Base school-pill tag */
+/* Base school-pill tag – color comes from dynamic map */
 .dashboard-page .school-tag {
   display: inline-block;
   padding: 4px 10px;
@@ -100,6 +99,7 @@ $kamizero-navy: #0097b2;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   color: #ffffff;
+  background: transparent;
 }
 
 /* ============================================================
@@ -132,29 +132,44 @@ $kamizero-navy: #0097b2;
 }
 
 /* ============================================================
-   UNREAD NOTICES LIST
+   UNREAD NOTICES LIST — IMPROVED SEPARATION
    ============================================================ */
 
 .dashboard-page .notices-list {
-  max-height: 350px;
+  max-height: calc(3 * 4.5rem); /* show approx 3 notices */
   overflow-y: auto;
+  background: #ffffff;
+  border-top: 1px solid #f1f5f9;
 }
 
+/* Each notice item */
 .dashboard-page .notices-list .list-group-item {
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  border-left: none;
-  border-right: none;
-  border-color: #f3f4f6;
-  padding: 0.9rem 1.4rem;
+  padding: 1rem 1.4rem;
+  background: #ffffff;
+  border: none;
+  border-bottom: 1px solid #f1f5f9;
 }
 
+/* Remove top & bottom border duplicates */
 .dashboard-page .notices-list .list-group-item:first-child {
   border-top: none;
 }
 
 .dashboard-page .notices-list .list-group-item:last-child {
   border-bottom: none;
+}
+
+/* Date style */
+.dashboard-page .notices-list .list-group-item small {
+  color: #6b7280;
+}
+
+/* Title styling */
+.dashboard-page .notices-list .list-group-item .fw-semibold {
+  color: #111827;
+  font-weight: 700;
 }
 
 /* ============================================================
@@ -206,7 +221,7 @@ $kamizero-navy: #0097b2;
   color: #4b5563;
 }
 
-/* Base calendar event style */
+/* Base calendar event style – color comes from dynamic map */
 .calendar-event {
   display: inline-block;
   padding: 2px 6px;
@@ -216,6 +231,8 @@ $kamizero-navy: #0097b2;
   color: #ffffff !important;
   margin-top: 2px;
   text-decoration: none !important;
+  background: transparent;
+  border: none; /* no outline; color is set in map below */
 }
 
 /* Prev/Next */
@@ -252,6 +269,7 @@ $kamizero-navy: #0097b2;
   padding: 0.9rem 1.4rem;
 }
 
+/* remove top & bottom borders */
 .dashboard-page .events-list .list-group-item:first-child {
   border-top: none;
 }
@@ -260,11 +278,16 @@ $kamizero-navy: #0097b2;
   border-bottom: none;
 }
 
+/* DATE BLOCK — DO NOT WRAP */
 .dashboard-page .events-list .fw-semibold {
   color: $kamizero-navy;
   font-size: 0.8rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 52px; /* enough for MM-DD */
 }
 
+/* TITLE LINK */
 .dashboard-page .events-list a {
   text-decoration: none;
   color: #111827;
@@ -272,6 +295,7 @@ $kamizero-navy: #0097b2;
   font-size: 0.9rem;
 }
 
+/* Empty-state text */
 .dashboard-page .events-list .list-group-item.text-muted {
   font-size: 0.85rem;
   color: #9ca3af !important;
@@ -281,18 +305,20 @@ $kamizero-navy: #0097b2;
    SCHOOL COLORS (USED ON DASHBOARD + CALENDAR)
    ============================================================ */
 
-$school-colors: #14bec0, #0097b2, #f1c40f, #e74c3c, #2ecc71;
+/* Meguro = teal, Shinagawa = warm coral, others continue from palette */
+$school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
 
-/* Assign colors to both dashboard school tags and calendar events */
 @for $i from 1 through 50 {
   $index: ($i - 1) % length($school-colors) + 1;
+  $color: nth($school-colors, $index);
 
   .dashboard-page .school-tag-#{$i},
   .calendar-event.school-tag-#{$i} {
-    background-color: nth($school-colors, $index);
+    background-color: $color !important; /* solid fill */
+    border: none;
+    color: #ffffff !important;
   }
 }
-
 
 /* ============================================================
    RESPONSIVE – MOBILE
