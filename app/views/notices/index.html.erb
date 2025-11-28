@@ -47,7 +47,10 @@
         <!-- School Filter -->
         <div class="filter-item">
           <%= f.input :school_id,
-            collection: [ ["meguro", "school1"], ["shingawa", "school2"]],
+            collection: [["All schools", ""]]+
+                        current_user.subscriptions
+                                    .includes(:school)
+                                    .map { |s| [s.school.name, s.school.id]},
             selected: params.dig(:filters, :school_id),
             label: false,
             wrapper: false,
