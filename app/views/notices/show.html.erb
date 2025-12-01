@@ -1,13 +1,11 @@
 <!-- NOTICE SHOW PAGE -->
 <div class="notice-page notice-show-page">
-
   <!-- HEADER: back link + optional subtext -->
   <div class="notice-header notice-show-header my-3">
-    <%= link_to notices_path, class: "text-decoration-none notice-back-link" do %>
+    <%= link_to :back, class: "text-decoration-none notice-back-link" do %>
       <i class="fa-solid fa-arrow-left-long me-1"></i>
-      Back to Notices
+      Back
     <% end %>
-
     <!-- optional small description line under header if you want -->
     <!--
     <p class="notice-show-subtitle mb-0">
@@ -15,25 +13,21 @@
     </p>
     -->
   </div>
-
   <!-- MAIN NOTICE CARD (details) -->
   <div class="card notice-show-card shadow-sm bg-white">
     <div
       data-controller="mark-read"
       data-mark-read-url-value="<%= mark_as_read_notice_path(@notice, format: :json) %>">
       <div class="card-body position-relative">
-
         <!-- Category badge (Event / General) -->
         <span class="badge rounded-pill position-absolute top-0 end-0 m-3
           <%= @notice.category == "Event" ? "bg-warning" : "bg-dark" %>">
           <%= @notice.category == "Event" ? "Event" : "General" %>
         </span>
-
         <!-- Title -->
         <h2 class="card-title notice-show-title mb-3">
           <%= @notice.title %>
         </h2>
-
         <!-- School / Grade / Class pills -->
         <div class="mb-3 d-flex flex-wrap gap-2 notice-meta-pills">
           <span class="badge rounded-pill pill-meta">
@@ -46,22 +40,15 @@
             Class: <%= @notice.classroom %>
           </span>
         </div>
-
         <!-- Content -->
         <div class="mt-3 notice-show-content">
           <%= simple_format(@notice.content, class: "mb-0") %>
-
-          <% if @notice.attachment.attached? %>
-            <p class="mt-3 notice-attachment">
-              Attached file:
-              <%= link_to @notice.attachment.filename.to_s,
-                          url_for(@notice.attachment),
-                          target: "_blank",
-                          class: "attachment-link" %>
-            </p>
-          <% end %>
+          <div class="container mt-3">
+            <% if @notice.attachment.attached? %>
+              <%= image_tag @notice.attachment, alt: "Resource Image" %>
+            <% end %>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
