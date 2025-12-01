@@ -11,7 +11,7 @@
   <!-- FORM CARD -->
   <div class="notice-card">
     <%= simple_form_for @notice, html: { data: { controller: "conditional-form document-upload" } } do |f| %>
-      <%= f.input :title, placeholder: "e.g., Sports day", input_html: { data: { "document-upload-target": "title" } } %>
+      <%= f.input :attachment, as: :file, label: 'Add Attachment', input_html: { data: { action: "change->document-upload#handleFileChange" } }%>
       <%= f.input :category,
                   collection: Notice::CATEGORIES,
                   input_html: {
@@ -40,6 +40,7 @@
           </div>
         </div>
       </div>
+      <%= f.input :title, placeholder: "e.g., Sports day", input_html: { data: { "document-upload-target": "title" } } %>
       <%= f.input :content, placeholder: "Enter the full notice comment here...", input_html: { style: "height: 300px;" ,data: { "document-upload-target": "content" } } %>
       <h3>TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
 
@@ -51,7 +52,6 @@
           <%= f.input :classroom, collection: Notice::CLASSROOMS %>
         </div>
       </div>
-      <%= f.input :attachment, as: :file, label: 'Add Attachment', input_html: { data: { action: "change->document-upload#handleFileChange" } }%>
       <div class="d-flex justify-content-end m-3">
         <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
         <%= f.button :submit, class: "btn btn-dark" %>
