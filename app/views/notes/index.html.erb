@@ -1,0 +1,76 @@
+<div class="container notice-page notices-page">
+  <!-- BACK + PAGE TITLE + SUBTITLE (same as create header) -->
+  <div class="notice-header">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
+    <% end %>
+    <h2>All Notes</h2>
+    <p>Browse All Notes received<i class="fa-solid fa-angles-down"></i></p>
+  </div>
+  <!-- MAIN WHITE CARD (wraps filters + list) -->
+  <div class="notice-index-card">
+    <!-- FILTERS (original) -->
+    <div class="notices-filters-card">
+      <%= simple_form_for :filters, url: notes_path, method: :get,
+                          html: { class: "notice-filters" } do |f| %>
+        <!-- Search -->
+        <div class="filter-item search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <%= f.input :q,
+            wrapper: false,
+            label: false,
+            input_html: {
+              placeholder: "Search notes...",
+              class: "filter-input",
+              value: params.dig(:filters, :q)
+            } %>
+        </div>
+        <!-- School Filter -->
+        <% if current_user.role == "parent" %>
+          <div class="filter-item">
+            <%= f.input :school_id,
+            collection: [["All schools", ""]] +
+                        current_user.students
+                                    .includes(:school)
+                                    .map { |s| [s.school.name, s.school.id]},
+            selected: params.dig(:filters, :school_id),
+            label: false,
+            wrapper: false,
+            input_html: {
+              class: "filter-select",
+              onchange: "this.form.submit();"
+            } %>
+          </div>
+        <% end %>
+        <!-- Clear -->
+        <div>
+          <%= link_to "CLEAR", notes_path, class: "filter-clear" %>
+        </div>
+      <% end %>
+    </div>
+    <!-- NOTICES LIST (original) -->
+    <div class="notices-list">
+      <% @notes.each do |note| %>
+        <%= link_to note_path(note), class: "notice-card position-relative" do %>
+          <div class="notice-card-icon">
+            <i class="fa-regular fa-file-lines"></i>
+            <!-- Category Badge -->
+            <span class="badge rounded-pill position-absolute top-0 end-0 m-3
+              <%= note.title %>
+            </span>
+          </div>
+          <!-- Main Content -->
+          <div class="notice-card-main">
+            <div class="notice-card-header">
+              <h2 class="notice-card-title"><%= note.title %></h2>
+            </div>
+            <p class="notice-card-body">
+              <%= truncate(strip_tags(note.content), length: 100) %>
+              <%= truncate(strip_tags(note.reply), length: 100) %>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
