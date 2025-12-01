@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_26_020037) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_01_043538) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,18 +42,38 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_26_020037) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "classrooms", force: :cascade do |t|
+    t.string "grade"
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_classrooms_on_school_id"
+    t.index ["user_id"], name: "index_classrooms_on_user_id"
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
   create_table "notices", force: :cascade do |t|
     t.string "category"
     t.text "content"
     t.date "date"
-    t.string "classroom"
-    t.string "grade"
     t.bigint "school_id", null: false
+    t.bigint "classroom_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
     t.time "start_time"
     t.time "end_time"
+    t.index ["classroom_id"], name: "index_notices_on_classroom_id"
     t.index ["school_id"], name: "index_notices_on_school_id"
   end
 
@@ -75,15 +95,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_26_020037) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "subscriptions", force: :cascade do |t|
-    t.string "grade"
-    t.string "classroom"
+  create_table "students", force: :cascade do |t|
+    t.string "name"
+    t.bigint "classroom_id", null: false
     t.bigint "user_id", null: false
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_subscriptions_on_school_id"
-    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+    t.index ["classroom_id"], name: "index_students_on_classroom_id"
+    t.index ["school_id"], name: "index_students_on_school_id"
+    t.index ["user_id"], name: "index_students_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -105,10 +126,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_26_020037) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "classrooms", "schools"
+  add_foreign_key "classrooms", "users"
+  add_foreign_key "notes", "users"
+  add_foreign_key "notices", "classrooms"
   add_foreign_key "notices", "schools"
   add_foreign_key "read_notifications", "notices"
   add_foreign_key "read_notifications", "users"
-  add_foreign_key "subscriptions", "schools"
-  add_foreign_key "subscriptions", "users"
+  add_foreign_key "students", "classrooms"
+  add_foreign_key "students", "schools"
+  add_foreign_key "students", "users"
   add_foreign_key "users", "schools"
 end
