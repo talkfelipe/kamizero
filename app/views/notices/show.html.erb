@@ -51,6 +51,12 @@
         </div>
         <!-- Content -->
         <div class="mt-3 notice-show-content">
+          <% if @notice.category == "Event" %>
+            <div>Date: <%= @notice.date %></div>
+            <div>Start Time: <%= @notice.start_time&.strftime("%H:%M") %></div>
+            <div>End Time: <%= @notice.end_time&.strftime("%H:%M") %></div>
+          <% end %>
+
           <%= markdown(@notice.content) %>
           <div class="container mt-3">
             <% if @notice.attachment.attached? %>
@@ -58,6 +64,17 @@
             <% end %>
           </div>
         </div>
+       <!-- Google Calendar -->
+        <div class="mt-3">
+          <% if @notice.category == "Event" %>
+            <%= link_to "Add to Google Calendar",
+                google_calendar_url_for(@notice),
+                class: "btn button-view-all btn-sm",
+                target: "_blank",
+                rel: "noopener" %>
+          <% end %>
+        </div>
+
       </div>
     </div>
   </div>
