@@ -51,7 +51,7 @@
         </div>
         <!-- Content -->
         <div class="mt-3 notice-show-content">
-          <%= simple_format(@notice.content, class: "mb-0") %>
+          <%= markdown(@notice.content) %>
           <div class="container mt-3">
             <% if @notice.attachment.attached? %>
               <%= image_tag @notice.attachment, alt: "Resource Image" %>

@@ -26,20 +26,30 @@ class Notice < ApplicationRecord
 
   def self.extract_title_and_content(text)
     prompt = <<~PROMPT
-    You will be given a block of text in #{text}.
+      You will be given the full text of a school notice.
 
-    Extract the title and the remaining body as content.
+      Text:
+      #{text}
 
-    Assume:
-    -	Title: Select the line that best represents the main topic or purpose of the text — typically the first line or a prominent heading. Choose only the portion that clearly serves as the title.
-    -	Content: Extract the remaining text that effectively communicates the core message of the notice. Exclude redundant or non-essential information.
+      Your task:
+      1. Extract a concise title for the notice.
+      2. Rewrite the remaining body as clean, well-structured Markdown.
 
-    Format the output like this:
-    {
-      "title": "[extracted title]",
-      "content": "[remaining content]"
-    }
+      Requirements for the "content" field:
+      - Use headings (#, ##) where it makes sense.
+      - Use **bold** and *italics* where appropriate.
+      - Use bullet points for lists when helpful.
+      - Do NOT add any extra commentary.
+      - Make sure the Markdown stays inside a valid JSON string (escape quotes and newlines properly).
+
+      Output ONLY valid JSON in exactly this shape:
+
+      {
+        "title": "[extracted title]",
+        "content": "[remaining content in Markdown]"
+      }
     PROMPT
+
     response = RubyLLM.chat.ask(prompt)
     response.content
   end
