@@ -28,15 +28,7 @@ class NoticesController < ApplicationController
     if current_user.role == "teacher"
       @notices = current_user.school.notices
     else
-      grades = current_user.subscriptions.pluck(:grade) + ["All"]
-      classrooms = current_user.subscriptions.pluck(:classroom) + ["All"]
-      @notices = Notice.includes(school: [:notices,:subscriptions])
-        .where(school: {
-          subscriptions: { user: current_user }
-          },
-          grade: grades,
-          classroom: classrooms
-        )
+      @notices = current_user.all_notices
     end
 
     # get the parameters of filters
@@ -79,13 +71,14 @@ class NoticesController < ApplicationController
     if current_user.role == "teacher"
       @events = current_user.school.notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
     else
-      @events = current_user.notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
+      @events = current_user.all_notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
     end
     @events_for_day = @events.group_by(&:date)
   end
 
   def new
     @notice = Notice.new
+    @school = current_user.school
   end
 
   def create
@@ -101,6 +94,6 @@ class NoticesController < ApplicationController
   private
 
   def notice_params
-    params.require(:notice).permit(:title, :category, :date, :start_time, :end_time, :content, :grade, :classroom, :attachment, :school)
+    params.require(:notice).permit(:title, :category, :date, :start_time, :end_time, :content, :classroom_id, :attachment)
   end
 end

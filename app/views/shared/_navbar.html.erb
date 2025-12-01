@@ -50,10 +50,12 @@
             </li>
 
             <li class="nav-item">
-              <%= link_to new_subscription_path,
-                          class: "nav-link nav-kamizero nav-new-subscription" do %>
-                <i class="fa-solid fa-clone me-1"></i>
-                NEW SUBSCRIPTION
+              <% if current_user.role == "parent" %>
+                <%= link_to new_student_path,
+                            class: "nav-link nav-kamizero nav-new-subscription" do %>
+                  <i class="fa-solid fa-clone me-1"></i>
+                  NEW SUBSCRIPTION
+                <% end %>
               <% end %>
             </li>
 
@@ -68,10 +70,10 @@
               <div class="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDropdown">
 
-                <% if current_user.respond_to?(:subscriptions) && current_user.subscriptions.any? %>
+                <% if current_user.respond_to?(:students) && current_user.students.any? %>
 
-                  <% current_user.subscriptions.each do |s| %>
-                    <% label = [s.school, s.grade, s.classroom]
+                  <% current_user.students.each do |s| %>
+                    <% label = [s.school, s.classroom.grade, s.classroom.name]
                               .map { |v| v.respond_to?(:name) ? v.name : v }
                               .reject(&:blank?)
                               .join(" ") %>
@@ -83,7 +85,7 @@
                 <% end %>
 
                 <%= link_to "Add New Subscription",
-                            new_subscription_path,
+                            new_student_path,
                             class: "dropdown-item" %>
 
                 <%= link_to "Log Out",

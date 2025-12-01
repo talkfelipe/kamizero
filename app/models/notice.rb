@@ -7,8 +7,7 @@ class Notice < ApplicationRecord
   validates :category, presence: true
   validates :title, presence: true
   validates :content, presence: true
-  validates :classroom, presence: true
-  validates :grade, presence: true
+  belongs_to :classroom, optional: true
   has_one_attached :attachment
 
   CATEGORIES = ["Event", "General"]

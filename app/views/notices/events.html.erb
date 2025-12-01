@@ -5,7 +5,7 @@
   <% school_color_index = {} %>
   <%
     # Unique schools from current user's subscriptions
-    schools = current_user.subscriptions.includes(:school).map(&:school).uniq
+    schools = current_user.schools
 
     # Stable order so colors do NOT change on refresh
     schools.sort_by(&:id).each_with_index do |school, idx|

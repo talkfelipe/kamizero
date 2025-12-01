@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   resources :notices, only: [:destroy]
 
-  resources :subscriptions, only: [:new, :create]
+  resources :students, only: [:new, :create]
 
   resources :notices do
     post :mark_as_read, on: :member

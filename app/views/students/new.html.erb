@@ -1,12 +1,10 @@
 <div class="container my-4 subscription-page">
-
   <!-- WELCOME CARD (Subscription Page – matches Dashboard structure) -->
   <div class="card welcome-card mb-4">
     <div class="card-body d-flex align-items-center">
       <div class="welcome-logo-wrapper me-3">
         <%= image_tag "KAMIZERO LOGO MAIN.png", class: "welcome-logo img-fluid" %>
       </div>
-
       <div class="flex-grow-1">
         <p class="mb-1 kamizero-tagline">
           Managing School Notices Paperlessly
@@ -15,51 +13,43 @@
     </div>
   </div>
   <!-- END WELCOME CARD -->
-
-
-
   <!-- HEADER + BACK LINK -->
   <div class="subscription-header mb-4">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
-
     <h2>Welcome, <%= current_user.first_name %>!</h2>
     <p>Select the SCHOOL, GRADE, and CLASSROOM to setup SUBSCRIPTION </p>
   </div>
-
   <!-- SUBSCRIPTION FORM CARD -->
   <div class="card subscription-card p-4 shadow-sm rounded">
-
-    <%= simple_form_for @subscription, html: { data: { controller: "conditional-form" } } do |f| %>
-
+    <%= simple_form_for @student, html: { data: { controller: "conditional-form" } } do |f| %>
+      <%= f.input :name %>
       <%= f.association :school, label: "SCHOOL" %>
-
       <h3 class="mt-4 mb-3">TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
-
       <div class="row">
-        <div class="col-12 col-md-6">
-          <%= f.input :grade,
-                collection: Notice::SUBGRADES,
-                label: "GRADE *" %>
+        <div class="col-6">
+          <select name="classroom[grade]" id="student_classroom_id" class="form-select select optional">
+            <option value="" label=" "></option>
+            <% Notice::SUBGRADES.each do |grade| %>
+              <option value="<%= grade %>"><%= grade %></option>
+            <% end %>
+          </select>
         </div>
-
-        <div class="col-12 col-md-6">
-          <%= f.input :classroom,
-                collection: Notice::SUBCLASSROOMS,
-                label: "CLASSROOM *" %>
+        <div class="col-6">
+          <select name="classroom[name]" id="student_classroom_id" class="form-select select optional">
+            <option value="" label=" "></option>
+            <% Notice::SUBCLASSROOMS.each do |name| %>
+              <option value="<%= name %>"><%= name %></option>
+            <% end %>
+          </select>
         </div>
-      </div>
-
-      <div class="d-flex justify-content-end mt-4 gap-2">
-        <%= link_to "CANCEL", dashboard_path, class: "btn btn-light px-4" %>
-        <%= f.button :submit, "SUBSCRIBE",
+        <div class="d-flex justify-content-end mt-4 gap-2">
+          <%= link_to "CANCEL", dashboard_path, class: "btn btn-light px-4" %>
+          <%= f.button :submit, "SUBSCRIBE",
               class: "btn btn-dark px-4" %>
-      </div>
-
-    <% end %>
-
+        </div>
+      <% end %>
+    </div>
+    <!-- END SUBSCRIPTION FORM CARD -->
   </div>
-  <!-- END SUBSCRIPTION FORM CARD -->
-
-</div>

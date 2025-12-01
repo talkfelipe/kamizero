@@ -24,19 +24,9 @@ class PagesController < ApplicationController
       @unread_count   = @unread_notices.size
 
     else
-      @events = current_user.notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
+      @events = current_user.all_notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
 
-      base_scope = Notice.none #none
-      current_user.subscriptions.each do |subs|      #creating subscription data to put it into base_scope
-        scope_for_sub =
-          subs.school.notices.where(
-            grade: [subs.grade, "All"],
-            classroom: [subs.classroom, "All"]
-          )
-        base_scope = base_scope.or(scope_for_sub)   #.or will add up subscription into base_scope
-      end
-
-      base_scope = base_scope.distinct              # eliminating same data ex: all grade for two children needs to be only one
+      base_scope = current_user.all_notices
 
       read_ids = current_user.read_notifications    # distinguish notice which status is true
                              .where(status: true)
