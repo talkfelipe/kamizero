@@ -1,4 +1,18 @@
 <div class="notice-page events-page">
+  <%# ============================================================
+      BUILD SCHOOL → COLOR INDEX MAP (STABLE 1,2,3...) FOR TAGS & CALENDAR
+      ============================================================ %>
+  <% school_color_index = {} %>
+  <%
+    # Unique schools from current user's subscriptions
+    schools = current_user.subscriptions.includes(:school).map(&:school).uniq
+
+    # Stable order so colors do NOT change on refresh
+    schools.sort_by(&:id).each_with_index do |school, idx|
+      school_color_index[school.id] = idx + 1   # 1,2,3... used by SCSS .school-tag-n
+    end
+  %>
+
   <!-- BACK + PAGE TITLE + SUBTITLE -->
   <div class="notice-header">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
@@ -7,6 +21,7 @@
     <h2>All Events</h2>
     <p>View All Upcoming School Events <i class="fa-solid fa-angles-down"></i></p>
   </div>
+
   <!-- MAIN SECTION: CALENDAR + SIDE EVENTS -->
   <div class="row g-3 mb-4 events-main">
     <div class="col-8">
@@ -18,9 +33,15 @@
           <%= month_calendar do |date| %>
             <div class="calendar-day">
               <span class="date-number"><%= date.day %></span>
-              <% if @events_for_day[date] %>
+
+              <% if @events_for_day[date].present? %>
                 <% @events_for_day[date].each do |event| %>
-                  <%= link_to event.title, notice_path(event) %>
+                  <% color_idx = school_color_index[event.school_id] %>
+                  <% classes = ["calendar-event"] %>
+                  <% classes << "school-tag-#{color_idx}" if color_idx %>
+                  <%= link_to notice_path(event), class: classes.join(" ") do %>
+                    <%= event.title %>
+                  <% end %>
                 <% end %>
               <% end %>
             </div>
@@ -28,6 +49,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-4">
       <div class="card events-side-card">
         <div class="card-header d-flex justify-content-between align-items-center">
