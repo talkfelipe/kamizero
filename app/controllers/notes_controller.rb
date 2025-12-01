@@ -1,6 +1,7 @@
 class NotesController < ApplicationController
-  def index
 
+  def index
+    @notes = Notes.ll
   end
 
   def show
