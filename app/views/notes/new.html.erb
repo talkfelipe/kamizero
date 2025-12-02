@@ -1,0 +1,41 @@
+<div class="container notice-page">
+
+  <!-- PAGE HEADER: BACK + TITLE + SUBTITLE -->
+  <div class="notice-header">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
+    <% end %>
+    <h2>Create Notes</h2>
+    <p>Send a question to your teacher <i class="fa-solid fa-angles-down"></i></p>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="notice-card">
+    <%= simple_form_for [@student,@note],
+      html: { data: { controller: "conditional-form document-upload" } } do |f| %>
+
+      <%= f.input :title,
+                  collection: ["Attendance", "Early leave", "Late arrival", "Question Homework", "Question events", "Other inquiry"],
+                  input_html: { data: { "document-upload-target": "title" } } %>
+
+      <!-- Content input (label + textarea kept for manual entry) -->
+      <%= f.input :content,
+                  placeholder: "Enter the comment you want to make to your teacher here...",
+                  input_html: {
+                    style: "height: 300px;",
+                    data: { "document-upload-target": "content" }
+                  } %>
+
+      <!-- Clean HTML preview, shown after auto-fill (textarea will be hidden by JS) -->
+      <div class="mt-3 d-none notice-content-preview"
+           data-document-upload-target="contentPreview">
+      </div>
+
+      <div class="d-flex justify-content-end m-3">
+        <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
+        <%= f.button :submit, class: "btn btn-dark" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
