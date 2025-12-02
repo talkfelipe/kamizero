@@ -76,9 +76,9 @@
               <div class="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDropdown">
 
-                <% if current_user.respond_to?(:students) && current_user.students.any? %>
+                <% if current_user.respond_to?(:students) && current_user.children.any? %>
 
-                  <% current_user.students.each do |s| %>
+                  <% current_user.children.each do |s| %>
                     <% label = [s.school, s.classroom.grade, s.classroom.name]
                               .map { |v| v.respond_to?(:name) ? v.name : v }
                               .reject(&:blank?)

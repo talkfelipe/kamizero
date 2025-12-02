@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.students.any? || current_user.role == "teacher"
+    if current_user.children.any? || current_user.role == "teacher"
       dashboard_path
     else
       new_student_path

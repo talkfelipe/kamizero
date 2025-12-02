@@ -49,7 +49,7 @@
         <div class="filter-item">
           <%= f.input :school_id,
             collection: [["All schools", ""]] +
-                        current_user.students
+                        current_user.children
                                     .includes(:school)
                                     .map { |s| [s.school.name, s.school.id]},
             selected: params.dig(:filters, :school_id),

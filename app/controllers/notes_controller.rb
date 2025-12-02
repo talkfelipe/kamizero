@@ -1,7 +1,11 @@
 class NotesController < ApplicationController
 
   def index
-    @notes = Note.all
+    if current_user.role == "teacher"
+      @notes = current_user.notes
+    else
+      @notes = current_user.children_notes
+    end
   end
 
   def show
