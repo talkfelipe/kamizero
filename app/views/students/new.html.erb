@@ -30,7 +30,7 @@
       <div class="row">
         <div class="col-6">
           <select name="classroom[grade]" id="student_classroom_id" class="form-select select optional">
-            <option value="" label=" "></option>
+            <option value="" label="Grade"></option>
             <% Notice::SUBGRADES.each do |grade| %>
               <option value="<%= grade %>"><%= grade %></option>
             <% end %>
@@ -38,7 +38,7 @@
         </div>
         <div class="col-6">
           <select name="classroom[name]" id="student_classroom_id" class="form-select select optional">
-            <option value="" label=" "></option>
+            <option value="" label="Classroom"></option>
             <% Notice::SUBCLASSROOMS.each do |name| %>
               <option value="<%= name %>"><%= name %></option>
             <% end %>
