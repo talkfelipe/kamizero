@@ -1,10 +1,24 @@
 /* ============================================================
+   GOOGLE FONT IMPORT
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+
+/* ============================================================
+   KAMIZERO COLORS
+   ============================================================ */
+$kamizero-teal: #14bec0;
+$kamizero-teal-dark: darken(#14bec0, 10%);
+$kamizero-navy: #003049;
+
+
+/* ============================================================
    BASE NAVBAR
    ============================================================ */
 
 .navbar-lewagon {
   justify-content: space-between;
-  background: white;
+  background: #ffffff;
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid #e5e7eb;
@@ -12,7 +26,7 @@
 
 .navbar-teacher {
   justify-content: space-between;
-  background: #0A3D62;
+  background: #0a3d62;
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid #e5e7eb;
@@ -31,7 +45,7 @@
 
 /* spacing between navbar items */
 .navbar-nav .nav-item {
-  margin-right: 1rem;   /* adjust 0.8–1.2rem if needed */
+  margin-right: 1rem;
 }
 
 /* last item should not push the icon too far */
@@ -39,8 +53,9 @@
   margin-right: 0;
 }
 
+
 /* ============================================================
-   NORMAL PAGES NAV WRAPPER (Bootstrap container-fluid)
+   NORMAL PAGES NAV WRAPPER
    ============================================================ */
 
 .navbar .container-fluid {
@@ -50,7 +65,7 @@
 
 
 /* ============================================================
-   AUTH PAGES NAV WRAPPER (NO Bootstrap layout constraints)
+   AUTH PAGES NAV WRAPPER
    ============================================================ */
 
 .nav-inner-auth {
@@ -64,52 +79,65 @@
 
 
 /* ============================================================
-   NAV LINKS STYLING
+   NAV LINKS — KAMIZERO STYLE
    ============================================================ */
 
 .nav-kamizero {
+  font-family: "Poppins", sans-serif !important;
   font-weight: 600;
-  color: #003049 !important;
-  letter-spacing: 0.02em;
+  color: $kamizero-teal !important;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    color: $kamizero-teal-dark !important;
+  }
 }
 
-.nav-kamizero:hover {
-  color: #007ea7 !important;
-}
+
+/* ============================================================
+   BRAND TEXT (KAMIZERO)
+   ============================================================ */
 
 .kamizero-brand-text {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 1rem;
   letter-spacing: 0.02em;
-  color: #14bec0;       /* same navy as nav links */
+  color: $kamizero-teal;
   text-transform: uppercase;
   margin-left: 0.35rem;
 }
 
 .navbar-brand:hover .kamizero-brand-text {
-  color: #007ea7 !important;   /* same hover color */
+  color: $kamizero-teal-dark !important;
 }
 
 
 /* ============================================================
-   DROPDOWN TRIGGER ICON (FontAwesome “list”)
+   NAV ICONS (FontAwesome)
+   ============================================================ */
+
+.navbar i {
+  color: $kamizero-teal !important;
+  transition: 0.15s ease;
+}
+
+.navbar i:hover {
+  color: $kamizero-teal-dark !important;
+}
+
+
+/* ============================================================
+   DROPDOWN TRIGGER ICON (list icon)
    ============================================================ */
 
 .navbar-lewagon i.fa-list {
   font-size: 1.35rem;
-  color: #003049;
-  cursor: pointer;
-  transition: 0.15s ease;
-}
-
-.navbar-lewagon i.fa-list:hover {
-  color: #007ea7;
 }
 
 
 /* ============================================================
-   DROPDOWN MENU FIX
+   DROPDOWN MENU
    ============================================================ */
 
 .dropdown-menu {
@@ -124,5 +152,38 @@
 
 .dropdown-item:hover {
   background: #e8f7fa;
-  color: #003049;
+  color: $kamizero-navy;
+}
+
+
+/* ============================================================
+   NAVBAR LOGIN CTA — TEXT UNTIL HOVER
+   ============================================================ */
+
+.navbar-lewagon .nav-login-link {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  /* TEXT style — NOT a button */
+  padding: 0.25rem 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: $kamizero-teal !important;
+  text-decoration: none;
+
+  transition: all 0.15s ease;
+}
+
+/* Hover = becomes Kamizero CTA button */
+.navbar-lewagon .nav-login-link:hover {
+  padding: 0.25rem 1rem;
+  background-color: $kamizero-teal;
+  color: #ffffff !important;
+  border-radius: 0.55rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  text-decoration: none;
 }

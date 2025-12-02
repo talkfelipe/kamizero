@@ -1,0 +1,184 @@
+/* ============================================================
+   LANDING PAGE – KAMIZERO (FINAL VERSION)
+   ============================================================ */
+
+$kamizero-teal: #14bec0;
+$kamizero-navy: #0097b2;
+
+/* ------------------------------------------------------------
+   PAGE
+   ------------------------------------------------------------ */
+.landing-hero {
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f5f7;
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem 1rem 2rem;  // LESS GAP FROM NAVBAR
+
+  .container {
+    max-width: 1200px;
+  }
+
+  /* ----------------------------------------------------------
+     WELCOME CARD
+     ---------------------------------------------------------- */
+  .welcome-card {
+    border-radius: 16px;
+    padding: 1.25rem 1.75rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    border: none;
+    background: #ffffff;
+    margin: 0 auto 0.7rem;
+    width: 100%;
+  }
+
+  .welcome-card .card-body {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0;
+  }
+
+  /* ----------------------------------------------------------
+     LOGO
+     ---------------------------------------------------------- */
+  .welcome-logo-wrapper {
+    flex: 0 0 auto;
+  }
+
+  .welcome-logo {
+    height: 380px;              // BIG HERO LOGO
+    width: auto;
+    object-fit: contain;
+    padding: 0.6rem;
+    display: block;
+  }
+
+  /* ----------------------------------------------------------
+     TEXT
+     ---------------------------------------------------------- */
+  .welcome-text {
+    flex: 1 1 auto;
+    text-align: left;
+  }
+
+  .welcome-text p {
+    margin: 0;
+    color: $kamizero-navy;
+  }
+
+  .welcome-line-1 {
+    font-size: 2.7rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;   // NORMAL ENGLISH SPACING
+  }
+
+  .welcome-line-2 {
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin-top: 0.45rem;
+    letter-spacing: 0.02em;
+    color: #555555;
+  }
+
+  /* ----------------------------------------------------------
+     BUTTONS
+     ---------------------------------------------------------- */
+  .landing-actions {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.75rem;
+    padding-left: 0.25rem;
+  }
+
+  .landing-actions .btn {
+    font-weight: 600;
+    padding: 0.55rem 1.4rem;
+    border-radius: 10px;      // RECTANGULAR–ROUNDED
+    width: 140px;             // SAME WIDTH
+    text-align: center;
+  }
+
+  /* Navy button */
+  .btn-kamizero {
+    background-color: $kamizero-navy;
+    color: #fff;
+    border: none;
+  }
+
+  .btn-kamizero:hover {
+    background-color: darken($kamizero-navy, 5%);
+  }
+
+  /* Teal outline */
+  .btn-kamizero-outline {
+    background-color: transparent;
+    color: $kamizero-teal;
+    border: 2px solid $kamizero-teal;
+  }
+
+  .btn-kamizero-outline:hover {
+    background-color: $kamizero-teal;
+    color: #fff;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+
+  @media (max-width: 991.98px) {
+    .welcome-logo {
+      height: 260px;
+    }
+
+    .welcome-line-1 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    min-height: auto;
+    padding: 0.75rem 1rem 2rem;
+
+    .welcome-card {
+      padding: 1rem 1.1rem 1.4rem;
+    }
+
+    .welcome-card .card-body {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .welcome-text {
+      text-align: center;
+    }
+
+    .welcome-logo {
+      height: 180px;
+      padding: 0.4rem;
+    }
+
+    .welcome-line-1 {
+      font-size: 1.8rem;
+    }
+
+    .welcome-line-2 {
+      font-size: 0.95rem;
+    }
+
+    .landing-actions {
+      justify-content: center;
+      padding-left: 0;
+      flex-wrap: wrap;
+    }
+
+    .landing-actions .btn {
+      flex: 1 1 auto;
+    }
+  }
+}
