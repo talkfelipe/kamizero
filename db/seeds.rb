@@ -8,161 +8,110 @@ puts "Creating seeds"
 
 schools = ["Meguro", "Shinagawa"]
 surnames = ["Sato", "Suzuki", "Tanaka", "Yamada", "Ueno"]
+first_names = ["Ken", "Taro","Hiroshi", "Makoto", "Yuko", "Yuki", "Isao", "Kenichi"]
 notices_for_classroom = [
   {
+    title: "{{classroom}} Party",
     category: "Event",
-    content: "Dear Parents,We are excited to invite you to our upcoming class party! This will be a fun-filled afternoon with games, snacks, and activities.
+    content: "Dear Parents, we are excited to invite you to our upcoming class party! This will be a fun-filled afternoon with games, snacks, and activities.
               Time: 1:00 PM - 3:00 PM
               Please let us know if you can volunteer to help with: Bringing snacks Setting up decorations Organizing games
               We look forward to celebrating together!
-              Ms. Johnson
-              Event Date: December 5, 2025",
-    date: Date.new(2026, rand(1..4), rand(1..28)),
+              Ms. Johnson",
     start_time: "13:30:00",
     end_time: "14:30:00"
   },
   {
+    title: "Morning Assembly {{classroom}}",
     category: "Event",
-    content: "Dear Parents,We are excited to invite you to our upcoming class party! This will be a fun-filled afternoon with games, snacks, and activities.
-              Time: 1:00 PM - 3:00 PM
-              Location: Grade 3A Classroom
-              Please let us know if you can volunteer to help with: Bringing snacks Setting up decorations Organizing games
-              We look forward to celebrating together!
-              Ms. Johnson
-              Event Date: December 5, 2025",
-    date: Date.new(2026, rand(1..4), rand(1..28)),
-    start_time: "13:30:00",
+    content: "Hello Parents, our Grade {{classroom}} class will have a special morning assembly. Students will perform songs and short skits. Please join us if you can!",
+    start_time: "09:00:00",
+    end_time: "10:00:00"
+  },
+  {
+    title: "Science Fair {{classroom}}",
+    category: "Event",
+    content: "We're excited to announce the annual Science Fair for Grade {{classroom}}! Students will present projects they've been working on for weeks.",
+    start_time: "13:00:00",
     end_time: "14:30:00"
   },
   {
+    title: "Art Exhibition {{classroom}}",
     category: "Event",
-    content: "Dear Parents,We are excited to invite you to our upcoming class party! This will be a fun-filled afternoon with games, snacks, and activities.
-              Time: 1:00 PM - 3:00 PM
-              Location: Grade 2B Classroom
-              Please let us know if you can volunteer to help with: Bringing snacks Setting up decorations Organizing games
-              We look forward to celebrating together!
-              Ms. Johnson
-              Event Date: January 15, 2026",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "10:30:00",
+    content: "Parents are invited to view the creative artwork made by Grade {{classroom}} students. Light refreshments will be served.",
+    start_time: "10:00:00",
+    end_time: "11:00:00"
+  },
+  {
+    title: "Science Museum Trip {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} students will visit the city Science Museum. Please prepare packed lunches and comfortable walking shoes.",
+    start_time: "08:30:00",
+    end_time: "12:00:00",
+  },
+  {
+    title: "Graduation Ceremony {{classroom}}",
+    category: "Event",
+    content: "We are proud to invite parents to the Grade {{classroom}} graduation ceremony. Let's celebrate the students achievements together.",
+    start_time: "13:00:00",
+    end_time: "14:00:00"
+  },
+  {
+    title: "Winter Festival {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} students will host the Winter Festival featuring performances, games, and snack booths.",
+    start_time: "10:00:00",
+    end_time: "12:00:00"
+  },
+  {
+    title: "Math Quiz {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} students will participate in fun math activities and problem-solving challenges!",
+    start_time: "11:00:00",
+    end_time: "12:00:00"
+  },
+  {
+    title: "Summer Projects {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} will launch a small Summer Project where students choose a topic, collect information, and create a simple presentation. The teacher will explain expectations and share ideas. Families can support by talking with children about topics that interest them at home.",
+    start_time: "09:30:00",
+    end_time: "10:30:00"
+  },
+  {
+    title: "Water Play Day {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} will have a Water Play Day in the school yard, weather permitting. Students will use small buckets and sprinklers under teacher supervision. Please send a towel, change of clothes, and a plastic bag for wet items. Sandals are not allowed for safety reasons.",
+    start_time: "10:00:00",
+    end_time: "11:00:00"
+  },
+  {
+    title: "Summer Memory Sharing {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} will hold a Summer Memory Sharing circle in the classroom. Students may bring one photo or small object related to a summer experience and talk about it. This helps develop speaking skills and allows classmates to learn more about one another in a relaxed way.",
+    start_time: "09:30:00",
+    end_time: "10:30:00"
+  },
+  {
+    title: "Autumn Nature Walk {{classroom}}",
+    category: "Event",
+    content: "Grade {{classroom}} will take a short Autumn Nature Walk near the school. Students will look for seasonal changes, collect safe natural items, and write short reflection sentences back in class. Comfortable walking shoes and a small bag for collected items are recommended.",
+    start_time: "10:00:00",
     end_time: "11:30:00"
   },
   {
+    title: "Autumn Storytime {{classroom}}",
     category: "Event",
-    content: "Hello Parents, our Grade 1A class will have a special morning assembly. Students will perform songs and short skits. Please join us if you can!",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "09:00:00",
-    end_time: "10:00:00",
-    created_at: Date.new(2025, 10, 17)
-  },
-  {
-    category: "Event",
-    content: "We're excited to announce the annual Science Fair for Grade 3B! Students will present projects they've been working on for weeks.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "13:00:00",
-    end_time: "14:30:00",
-    created_at: Date.new(2025, 11, 1)
-  },
-  {
-    category: "Event",
-    content: "Parents are invited to view the creative artwork made by Grade 4C students. Light refreshments will be served.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "10:00:00",
-    end_time: "11:00:00",
-    created_at: Date.new(2025, 11, 12)
-  },
-  {
-    category: "Event",
-    content: "Grade 5A students will visit the city Science Museum. Please prepare packed lunches and comfortable walking shoes.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "08:30:00",
-    end_time: "12:00:00",
-    created_at: Date.new(2025, 9, 17)
-  },
-  {
-    category: "Event",
-    content: "We are proud to invite parents to the Grade 6A graduation ceremony. Let's celebrate the students achievements together.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "13:00:00",
-    end_time: "14:00:00",
-    created_at: Date.new(2025, 7, 17)
-  },
-
-  {
-    category: "Event",
-    content: "Grade 6 students will host the Winter Festival featuring performances, games, and snack booths.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "10:00:00",
-    end_time: "12:00:00",
-    created_at: Date.new(2025, 8, 17)
-  },
-
-  {
-    category: "Event",
-    content: "Grade 3A students will participate in fun math activities and problem-solving challenges!",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "11:00:00",
-    end_time: "12:00:00",
-    created_at: Date.new(2025, 9, 17)
-  },
-  {
-    category: "Event",
-    content: "Grade 4D will launch a small Summer Project where students choose a topic, collect information, and create a simple presentation. The teacher will explain expectations and share ideas. Families can support by talking with children about topics that interest them at home.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "09:30:00",
-    end_time: "10:30:00",
-    created_at: Date.new(2025, 6, 3)
-  },
-
-  {
-    category: "Event",
-    content: "Grade 1B will have a Water Play Day in the school yard, weather permitting. Students will use small buckets and sprinklers under teacher supervision. Please send a towel, change of clothes, and a plastic bag for wet items. Sandals are not allowed for safety reasons.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "10:00:00",
-    end_time: "11:00:00",
-    created_at: Date.new(2025, 6, 5)
-  },
-  {
-    category: "Event",
-    content: "Grade 2C will hold a Summer Memory Sharing circle in the classroom. Students may bring one photo or small object related to a summer experience and talk about it. This helps develop speaking skills and allows classmates to learn more about one another in a relaxed way.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "09:30:00",
-    end_time: "10:30:00",
-    created_at: Date.new(2025, 7, 29)
-  },
-  {
-    category: "Event",
-    content: "Grade 3B will take a short Autumn Nature Walk near the school. Students will look for seasonal changes, collect safe natural items, and write short reflection sentences back in class. Comfortable walking shoes and a small bag for collected items are recommended.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "10:00:00",
-    end_time: "11:30:00",
-    created_at: Date.new(2025, 8, 27)
-  },
-
-  {
-    category: "Event",
-    content: "Grade 4C will host a small Science Fair where students display simple experiments or research posters. Other classes may visit during the day, and families are invited to join in the final viewing session. This event encourages curiosity and clear scientific explanation.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
-    start_time: "13:30:00",
-    end_time: "15:00:00",
-    created_at: Date.new(2025, 8, 18)
-  },
-  {
-    category: "Event",
-    content: "Grade 1C will have a special Autumn Storytime in the classroom. The teacher will read seasonal picture books, and students will talk about their favorite scenes. This gentle activity supports listening skills, imagination, and enjoyment of books at a calm pace.",
-    date: Date.new(2020 + rand(5..6), rand(1..12), rand(1..28)),
+    content: "Grade {{classroom}} will have a special Autumn Storytime in the classroom. The teacher will read seasonal picture books, and students will talk about their favorite scenes. This gentle activity supports listening skills, imagination, and enjoyment of books at a calm pace.",
     start_time: "09:20:00",
-    end_time: "10:10:00",
-    created_at: Date.new(2025, 9, 7)
+    end_time: "10:10:00"
   },
-
   {
+    title: "Field Trip Briefing {{classroom}}",
     category: "Event",
-    content: "Grade 5A will hold a Field Trip Briefing for students and parents. The teacher will explain the destination, schedule, what to bring, and behavior expectations. There will also be a short Q&A time so that families can feel prepared and ask about any concerns.",
+    content: "Grade {{classroom}} will hold a Field Trip Briefing for students and parents. The teacher will explain the destination, schedule, what to bring, and behavior expectations. There will also be a short Q&A time so that families can feel prepared and ask about any concerns.",
     date: Date.new(2025, 10, 9),
     start_time: "18:00:00",
-    end_time: "19:00:00",
-    created_at: Date.new(2025, 9, 9)
+    end_time: "19:00:00"
   }
 
 ]
@@ -261,25 +210,21 @@ notices_general = [
     title: "New Cafeteria Menu",
     content: "Our cafeteria menu will change next month. Healthier options and more variety will be added.",
   },
-
   {
     category: "General",
     title: "Parent-Teacher Meeting Reminder",
     content: "Parent-teacher meetings will be held next week. Please check your child's class schedule for details.",
   },
-
   {
     category: "General",
     title: "After-School Program Registration",
     content: "Registrations for the after-school program are now open. Please sign up through the school website.",
   },
-
   {
     category: "General",
     title: "Holiday Break Notice",
     content: "The school will be closed for winter holiday from December 24 to January 4. Enjoy your break!",
   },
-
   {
     category: "General",
     title: "New Safety Rules on Campus",
@@ -303,7 +248,6 @@ notices_general = [
     end_time: "10:10:00",
     created_at: Date.new(2025, 6, 19)
   },
-
   {
     category: "Event",
     title: "All Grades Back-to-School Assembly",
@@ -312,7 +256,6 @@ notices_general = [
     start_time: "09:00:00",
     end_time: "10:00:00"
   },
-
   {
     category: "Event",
     title: "All School Autumn Sports Day",
@@ -322,7 +265,6 @@ notices_general = [
     end_time: "12:00:00",
     created_at: Date.new(2025, 8, 14)
   },
-
   {
     category: "Event",
     title: "All Grades Respect for the Aged Day Letters",
@@ -341,7 +283,6 @@ notices_general = [
     end_time: "15:30:00",
     created_at: Date.new(2025, 9, 17)
   },
-
   {
     category: "Event",
     title: "All School Autumn Safety Week Assembly",
@@ -355,17 +296,35 @@ notices_general = [
 
 schools.each do |school_name|
   school = School.create!(name: school_name)
+  puts "#{school.name} School created"
 
-  5.times do
-    school_notice = Notice.new(notices_general.sample)
+  notices_general.each_with_index do |attributes, i|
+    school_notice = Notice.new(attributes)
+    if school_notice.date
+      if school_notice.title.include?("Summer") || school_notice.title.include?("Water")
+        school_notice.date = school_notice.date.change(month: 9, year: 2026)
+      elsif school_notice.title.include?("Autumn")
+        school_notice.date = school_notice.date.change(month: 10, year: 2026)
+      elsif school_notice.title.include?("Winter")
+        school_notice.date = school_notice.date.change(month: 12, year: 2025)
+      elsif school_notice.title.include?("Graduation")
+        school_notice.date = school_notice.date.change(month: 3, year: 2026)
+      end
+      school_notice.created_at = school_notice.date.last_week
+      if school_notice.date > Date.today
+        school_notice.created_at = school_notice.created_at.change(year: 2025)
+      end
+    end
     school_notice.school = school
     school_notice.save!
+    puts "#{school.name} General Notice ##{i + 1} created"
   end
 
   classrooms = ("A".."D").to_a
 
   6.times do |grade|
     grade += 1
+    puts "#{school.name} Grade #{grade}..."
     teacher = User.create!(
       email: "teacher_#{grade}@#{school_name.downcase}.com",
       password: "123456",
@@ -374,12 +333,33 @@ schools.each do |school_name|
       role: "teacher",
       school: school
     )
+    puts "#{school.name} Grade #{grade} teacher created"
     classrooms.each do |classroom_name|
       classroom = Classroom.create!(grade: grade.to_s, name: classroom_name, school: school, user: teacher)
+      puts "#{school.name} #{classroom.grade}#{classroom.name} Grade created"
 
-      2.times do
-        notice_classroom = Notice.new(notices_for_classroom.sample)
-        notice_classroom.title = "#{grade} #{classroom_name} Party"
+      notices_for_classroom.each_with_index do |attributes, i|
+        puts "#{school.name} Grade #{grade}#{classroom_name} notice ##{i + 1} created"
+        random_date = [Date.new(2025, rand(11..12), rand(1..20)), Date.new(2026, rand(1..6), rand(1..28))]
+        notice_classroom = Notice.new(attributes)
+        notice_classroom.title = notice_classroom.title.gsub('{{classroom}}', "#{grade}#{classroom_name}")
+        notice_classroom.content = notice_classroom.content.gsub('{{classroom}}', "#{grade}#{classroom_name}")
+        notice_classroom.date = random_date.sample
+        if notice_classroom.title.include?("Summer") || notice_classroom.title.include?("Water")
+          notice_classroom.date = notice_classroom.date.change(month: 9, year: 2026)
+        elsif notice_classroom.title.include?("Autumn")
+          notice_classroom.date = notice_classroom.date.change(month: 10, year: 2026)
+        elsif notice_classroom.title.include?("Winter")
+          notice_classroom.date = notice_classroom.date.change(month: 12, year: 2025)
+        elsif notice_classroom.title.include?("Graduation")
+          notice_classroom.date = notice_classroom.date.change(month: 3, year: 2026)
+        end
+        notice_classroom.created_at = notice_classroom.date.last_week
+        if notice_classroom.date > Date.today
+          notice_classroom.created_at = notice_classroom.created_at.change(year: 2025)
+        end
+
+
         notice_classroom.classroom = classroom
         notice_classroom.school = school
         notice_classroom.save!
@@ -389,20 +369,34 @@ schools.each do |school_name|
 end
 
 
+meguro = School.find_by(name: "Meguro")
+
 parent1 = User.create!(
   email: "parent@meguro.com",
-  first_name: "Parent",
-  last_name:"Sato",
+  first_name: first_names.sample,
+  last_name: surnames.sample,
   password: "123456",
 )
+puts "Parent account created"
 
-school = School.all.sample
 
 Student.create!(
   user: parent1,
-  school: school,
-  classroom: Classroom.find_by(grade: "3", name: "A", school: school),
+  school: meguro,
+  classroom: Classroom.find_by(grade: "3", name: "A", school: meguro),
   name: parent1.last_name
 )
+puts "Student created"
+
+puts "#{School.count} Schools created"
+
+
+puts "#{Notice.where(classroom: nil).count} General Notices created"
+puts "#{Notice.where(category: 'Event').count} Event Notices created"
+puts "#{Student.count} Students created"
+puts "#{User.where(role: 'parent').count} Parents account created"
+puts "#{User.where(role: 'teacher').count} Teachers account created"
+
+puts "#{Note.count} Notes created"
 
 puts "done!"

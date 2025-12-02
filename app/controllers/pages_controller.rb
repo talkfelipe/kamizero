@@ -30,5 +30,6 @@ class PagesController < ApplicationController
     @unread_count   = @unread_notices.size
 
     @events_for_day = @events.group_by(&:date)
+
   end
 end
