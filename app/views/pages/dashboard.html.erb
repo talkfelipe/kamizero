@@ -26,6 +26,7 @@
       </div>
     </div>
   </div>
+
   <!-- Dashboard Welcome HEADER -->
   <div class="dashboard-header">
     <p class="mb-0 welcome-user">
@@ -42,64 +43,136 @@
         <% end %>
       </div>
     <% else %>
-      <p class="mb-0 current-subscription">
-        No active students yet
-      </p>
+      <% unless current_user.role == "teacher" %>
+        <p class="mb-0 current-subscription">
+          No active students yet
+        </p>
+      <% end %>
     <% end %>
   </div>
-  <!-- NEW NOTICES CARD -->
-  <div class="card dashboard-card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center gap-2">
-        <i class="fa-solid fa-bell me-2"></i>
-        <span class="fw-semibold">UNREAD NOTICES</span>
-        <span class="badge bg-danger ms-2">
-          <%= @unread_count || 0 %>
-        </span>
-      </div>
-      <%= link_to "VIEW ALL", notices_path, class: "btn button-view-all btn-sm" %>
-    </div>
-    <ul class="list-group list-group-flush notices-list">
-      <% if @unread_notices.present? %>
-        <% @unread_notices.each do |notice| %>
-          <li class="list-group-item">
-            <%= link_to notice_path(notice),
-                        class: "text-decoration-none text-reset d-block" do %>
-              <small class="text-muted">
-                <%= notice.created_at&.strftime("%Y-%m-%d") %>
-              </small>
-              <div class="fw-semibold"><%= notice.title %></div>
+
+  <!-- UNREAD NOTICES + NOTES ROW -->
+  <div class="row g-3 mb-4">
+
+    <!-- UNREAD NOTICES CARD (LEFT – 6 COLS) -->
+    <div class="col-md-6">
+      <div class="card dashboard-card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-bell me-2"></i>
+            <span class="fw-semibold">UNREAD NOTICES</span>
+            <span class="badge bg-danger ms-2">
+              <%= @unread_count || 0 %>
+            </span>
+          </div>
+          <%= link_to "VIEW ALL", notices_path, class: "btn button-view-all btn-sm" %>
+        </div>
+
+        <ul class="list-group list-group-flush notices-list">
+          <% if @unread_notices.present? %>
+            <% @unread_notices.each do |notice| %>
+              <li class="list-group-item unread-item">
+                <%= link_to notice_path(notice), class: "d-flex w-100 event-item text-decoration-none text-reset" do %>
+
+                  <!-- DATE PILL -->
+                  <div class="event-date-pill me-3">
+                    <div class="event-month"><%= notice.created_at.strftime("%b").upcase %></div>
+                    <div class="event-day"><%= notice.created_at.strftime("%-d") %></div>
+                  </div>
+
+                  <!-- TEXT CONTENT -->
+                  <div class="event-text flex-grow-1">
+                    <div class="event-title"><%= notice.title %></div>
+
+                    <div class="event-meta">
+                      <%= notice.created_at.strftime("%A") %>
+                      <% if notice.start_time.present? && notice.end_time.present? %>
+                        • <%= notice.start_time.strftime("%H:%M") %> - <%= notice.end_time.strftime("%H:%M") %>
+                      <% end %>
+                    </div>
+                  </div>
+
+                <% end %>
+              </li>
             <% end %>
-          </li>
-        <% end %>
-      <% else %>
-        <li class="list-group-item text-muted">No notices yet</li>
-      <% end %>
-    </ul>
+          <% else %>
+            <li class="list-group-item text-muted">No notices yet</li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NOTES CARD (RIGHT – 6 COLS) -->
+    <div class="col-md-6">
+      <div class="card dashboard-card notes-card h-100">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span class="fw-semibold">NOTES</span>
+          <%= link_to "VIEW ALL", "#", class: "btn button-view-all btn-sm" %>
+        </div>
+        <ul class="list-group list-group-flush">
+          <% if @notes.present? %>
+            <% @notes.each do |note| %>
+              <li class="list-group-item">
+                <!-- placeholder until routes/content exist -->
+                <%= link_to "#", class: "d-flex w-100 text-decoration-none text-reset" do %>
+                  <div class="flex-grow-1">
+                    <div class="event-title"><%= note.title %></div>
+                    <div class="event-meta"><%= note.created_at.strftime("%A") %></div>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="list-group-item text-muted bg-white">
+              No notes yet
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+
   </div>
+
   <!-- SCROLL TARGET FOR PREVIOUS/TODAY/NEXT -->
   <div id="calendar-section"></div>
 
   <!-- CALENDAR + MONTHLY EVENTS -->
   <div class="row g-3 mb-4 calendar-events-row">
     <!-- CALENDAR CARD -->
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="card calendar-card h-100">
         <div class="card-header">CALENDAR</div>
         <div class="card-body p-0">
           <%= month_calendar do |date| %>
+            <% day_events      = Array(@events_for_day[date]) %>
+            <% visible_events  = day_events.first(2) %>
+            <% remaining_count = [day_events.size - visible_events.size, 0].max %>
+
             <div class="calendar-day">
+              <!-- DATE (centered via CSS) -->
               <span class="date-number"><%= date.day %></span>
 
-              <% if @events_for_day[date].present? %>
-                <% @events_for_day[date].each do |event| %>
-                  <% color_idx = school_color_index[event.school_id] %>
-                  <% classes = ["calendar-event"] %>
-                  <% classes << "school-tag-#{color_idx}" if color_idx %>
-                  <%= link_to notice_path(event), class: classes.join(" ") do %>
-                    <%= event.title %>
-                  <% end %>
+              <!-- EVENTS: start time + title, each on its own line (no wrap to multiple rows per event) -->
+              <% visible_events.each do |event| %>
+                <% color_idx = school_color_index[event.school_id] %>
+                <% classes = ["calendar-event"] %>
+                <% classes << "school-tag-#{color_idx}" if color_idx %>
+
+                <%= link_to notice_path(event), class: classes.join(" ") do %>
+                  <% label_parts = [] %>
+                  <% label_parts << event.start_time.strftime("%H:%M") if event.start_time.present? %>
+                  <% label_parts << event.title %>
+                  <%= label_parts.join(" ") %>
                 <% end %>
+              <% end %>
+
+              <!-- "+N more events" line when there are more than 2 -->
+              <% if remaining_count.positive? %>
+                <div class="calendar-more-events">
+                  +<%= remaining_count %> event<%= "s" if remaining_count > 1 %>
+                </div>
               <% end %>
             </div>
           <% end %>
@@ -108,24 +181,51 @@
     </div>
 
     <!-- MONTHLY EVENTS CARD -->
-    <div class="col-md-4">
-      <div class="card events-card">
+    <div class="col-md-6">
+      <div class="card events-card h-100">
         <div class="card-header d-flex justify-content-between align-items-center">
           <span>MONTHLY EVENTS</span>
           <%= link_to "VIEW ALL", events_notices_path, class: "btn button-view-all btn-sm" %>
         </div>
+
         <ul class="list-group list-group-flush events-list">
           <% if @events.present? %>
             <% @events.order(date: :asc).each do |event| %>
-              <li class="list-group-item d-flex">
-                <%= link_to notice_path(event), class: "d-flex w-100 text-decoration-none text-reset p-3" do %>
-                  <div class="me-3">
-                    <small class="fw-semibold">
-                      <%= event.date.strftime("%B %d") %>
-                      <p><%= event.start_time&.strftime("%H:%M") %> - <%= event.end_time&.strftime("%H:%M") %></p>
-                    </small>
+              <li class="list-group-item">
+                <%= link_to notice_path(event),
+                            class: "event-item d-flex w-100 text-decoration-none text-reset" do %>
+
+                  <!-- DATE PILL -->
+                  <div class="event-date-pill me-3">
+                    <div class="event-month">
+                      <%= event.date.strftime("%b") %>
+                    </div>
+                    <div class="event-day">
+                      <%= event.date.strftime("%-d") %>
+                    </div>
                   </div>
-                  <div class="flex-grow-1"><%= event.title %></div>
+
+                  <!-- TEXT BLOCK -->
+                  <div class="event-text flex-grow-1">
+                    <div class="event-title">
+                      <%= event.title %>
+                    </div>
+                    <div class="event-meta">
+                      <% weekday_str = event.date.strftime("%A") %>
+                      <% time_str =
+                           if event.start_time && event.end_time
+                             "#{event.start_time.strftime("%H:%M")} - #{event.end_time.strftime("%H:%M")}"
+                           elsif event.start_time
+                             event.start_time.strftime("%H:%M")
+                           else
+                             nil
+                           end %>
+                      <%= weekday_str %>
+                      <% if time_str.present? %>
+                        &nbsp;·&nbsp;<%= time_str %>
+                      <% end %>
+                    </div>
+                  </div>
                 <% end %>
               </li>
             <% end %>

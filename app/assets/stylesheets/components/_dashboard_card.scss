@@ -1,18 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
 /* ============================================================
-   DASHBOARD PAGE – KAMIZERO STYLE
+   VARIABLES
    ============================================================ */
 
 $kamizero-teal: #14bec0;
 $kamizero-navy: #0097b2;
 
-/* ------------------------------------------------------------
-   WIDER DASHBOARD CONTAINER
-   ------------------------------------------------------------ */
+/* Meguro = teal, Shinagawa = warm coral, others continue from palette */
+$school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
+
+/* ============================================================
+   DASHBOARD PAGE WRAPPER
+   ============================================================ */
+
 .dashboard-page {
   max-width: 1200px;
   margin: 0 auto;
+  font-family: "Poppins", sans-serif;
 }
 
 /* ============================================================
@@ -34,7 +39,6 @@ $kamizero-navy: #0097b2;
   gap: 2rem;
 }
 
-/* logo block stays left */
 .dashboard-page .welcome-logo-wrapper {
   flex: 0 0 auto;
 }
@@ -46,7 +50,6 @@ $kamizero-navy: #0097b2;
   padding: 0.6rem 0.6rem;
 }
 
-/* text block – center tagline in remaining space */
 .dashboard-page .welcome-card .flex-grow-1 {
   display: flex;
   justify-content: center;
@@ -54,8 +57,7 @@ $kamizero-navy: #0097b2;
 }
 
 .dashboard-page .welcome-card p {
-  font-family: "Poppins", sans-serif;
-  color: #0097b2;
+  color: $kamizero-navy;
   margin: 0;
 }
 
@@ -64,7 +66,7 @@ $kamizero-navy: #0097b2;
   font-size: 40px;
   line-height: 1.2;
   text-align: center;
-  color: #0097b2;
+  color: $kamizero-navy !important;
 }
 
 /* ============================================================
@@ -74,7 +76,6 @@ $kamizero-navy: #0097b2;
 .dashboard-page .dashboard-header {
   margin-top: 0.75rem;
   margin-bottom: 1.5rem;
-  font-family: "Poppins", sans-serif;
 }
 
 .dashboard-page .welcome-user {
@@ -96,11 +97,75 @@ $kamizero-navy: #0097b2;
   padding: 4px 10px;
   border-radius: 9999px;
   font-size: 14px;
-  font-family: "Poppins", sans-serif;
   font-weight: 600;
   color: #ffffff;
   background: transparent;
 }
+
+/* ============================================================
+   UNREAD NOTICES — MATCH MONTHLY EVENTS STYLE
+   ============================================================ */
+
+.dashboard-page .notices-list .unread-item {
+  padding: 0.9rem 1.4rem;
+  border-left: none;
+  border-right: none;
+  border-color: #f3f4f6;
+  background: #ffffff;
+  display: flex;
+}
+
+.dashboard-page .notices-list .unread-item:first-child {
+  border-top: none;
+}
+
+.dashboard-page .notices-list .unread-item:last-child {
+  border-bottom: none;
+}
+
+/* Re-use event pill styling */
+.dashboard-page .notices-list .event-date-pill {
+  width: 52px;
+  min-width: 52px;
+  height: 72px;
+  border-radius: 12px;
+  border: 1px solid $kamizero-navy;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.dashboard-page .notices-list .event-month {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: $kamizero-navy;
+}
+
+.dashboard-page .notices-list .event-day {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: $kamizero-teal;
+}
+
+.dashboard-page .notices-list .event-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-page .notices-list .event-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $kamizero-navy;
+}
+
+.dashboard-page .notices-list .event-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
 
 /* ============================================================
    SHARED CARD SHELLS
@@ -116,23 +181,27 @@ $kamizero-navy: #0097b2;
   background: #ffffff;
 }
 
-/* Card headers */
 .dashboard-page .dashboard-card .card-header,
 .dashboard-page .calendar-card .card-header,
 .dashboard-page .events-card .card-header {
   background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
-  font-family: "Poppins", sans-serif;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
   color: $kamizero-navy;
-  padding: 0.9rem 1.4rem;
+
+  /* --- FIX HEADER HEIGHT --- */
+  height: 60px;              /* perfect uniform height */
+  display: flex;
+  align-items: center;       /* vertically center text/icons/buttons */
+  padding: 0 1.4rem;         /* horizontal padding only */
 }
 
+
 /* ============================================================
-   UNREAD NOTICES LIST — IMPROVED SEPARATION
+   UNREAD NOTICES LIST
    ============================================================ */
 
 .dashboard-page .notices-list {
@@ -142,9 +211,7 @@ $kamizero-navy: #0097b2;
   border-top: 1px solid #f1f5f9;
 }
 
-/* Each notice item */
 .dashboard-page .notices-list .list-group-item {
-  font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
   padding: 1rem 1.4rem;
   background: #ffffff;
@@ -152,7 +219,6 @@ $kamizero-navy: #0097b2;
   border-bottom: 1px solid #f1f5f9;
 }
 
-/* Remove top & bottom border duplicates */
 .dashboard-page .notices-list .list-group-item:first-child {
   border-top: none;
 }
@@ -161,19 +227,80 @@ $kamizero-navy: #0097b2;
   border-bottom: none;
 }
 
-/* Date style */
 .dashboard-page .notices-list .list-group-item small {
   color: #6b7280;
 }
 
-/* Title styling */
 .dashboard-page .notices-list .list-group-item .fw-semibold {
   color: #111827;
   font-weight: 700;
 }
 
+/* Hover for UNREAD NOTICES */
+.dashboard-page .notices-list .unread-item .event-item:hover .event-title {
+  text-decoration: underline;
+}
+
 /* ============================================================
-   CALENDAR
+   NOTES CARD  (matches UNREAD NOTICES + MONTHLY EVENTS style)
+   ============================================================ */
+
+.dashboard-page .notes-card {
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* Header style matches other dashboard cards */
+.dashboard-page .notes-card .card-header {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: $kamizero-navy;
+  padding: 0.9rem 1.4rem;
+}
+
+/* List container */
+.dashboard-page .notes-card .list-group-item {
+  font-size: 0.9rem;
+  border-left: none;
+  border-right: none;
+  border-color: #f3f4f6;
+  background: #ffffff !important; /* ensure white background */
+  padding: 0.9rem 1.4rem;
+}
+
+/* Empty-state style */
+.dashboard-page .notes-card .list-group-item.text-muted {
+  color: #9ca3af !important;
+  background: #ffffff !important;
+}
+
+/* Content block alignment */
+.dashboard-page .notes-card .event-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $kamizero-navy;
+}
+
+.dashboard-page .notes-card .event-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* Hover behavior matches MONTHLY EVENTS + UNREAD NOTICES */
+.dashboard-page .notes-card .list-group-item .event-item:hover .event-title {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   CALENDAR – GOOGLE-CALENDAR-INSPIRED CELLS
    ============================================================ */
 
 .dashboard-page .calendar-card .simple-calendar {
@@ -184,6 +311,7 @@ $kamizero-navy: #0097b2;
   width: 100%;
   margin-bottom: 0;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .dashboard-page .calendar-card .simple-calendar th {
@@ -193,6 +321,7 @@ $kamizero-navy: #0097b2;
   color: #6b7280;
   padding: 0.5rem 0.75rem;
   background: #ffffff;
+  text-align: center;
 }
 
 .dashboard-page .calendar-card .simple-calendar td {
@@ -201,11 +330,17 @@ $kamizero-navy: #0097b2;
   vertical-align: top;
 }
 
+/* Each cell */
 .dashboard-page .calendar-card .calendar-day {
-  min-height: 80px;
-  padding: 6px 8px;
+  min-height: 90px;
+  padding: 4px 4px;
   background-color: #f9fafb;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;       /* allow children to use full width */
+  justify-content: flex-start;
+  text-align: center;         /* centre the date text */
 }
 
 /* Today */
@@ -214,28 +349,58 @@ $kamizero-navy: #0097b2;
   box-shadow: inset 0 0 0 2px $kamizero-teal;
 }
 
+/* Date number visually centred */
 .dashboard-page .calendar-card .calendar-day .date-number {
-  display: inline-block;
+  display: block;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin: 0 auto 4px auto;   /* centre horizontally */
   color: #4b5563;
 }
 
-/* Base calendar event style – color comes from dynamic map */
+/* Base calendar event style – full-width pill, wraps inside cell */
 .calendar-event {
-  display: inline-block;
-  padding: 2px 6px;
+  display: block;
+  width: 100%;
+  margin-top: 2px;
+  padding: 2px 5px;
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: #ffffff !important;
-  margin-top: 2px;
   text-decoration: none !important;
   background: transparent;
-  border: none; /* no outline; color is set in map below */
+  border: none;
+  text-align: left;
+
+  /* ONE-LINE ONLY, truncate with ellipsis if too long */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  line-height: 1.2;
 }
 
-/* Prev/Next */
+
+/* time + title inside the pill */
+.calendar-event-time {
+  margin-right: 4px;
+  font-weight: 600;
+}
+
+.calendar-event-title {
+  font-weight: 500;
+}
+
+/* “+N more events” line inside a cell */
+.calendar-more-events {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $kamizero-navy;
+  cursor: pointer;
+}
+
+/* Prev/Next header on calendar */
 .dashboard-page .calendar-card .simple-calendar .calendar-heading {
   font-size: 0.85rem;
   font-weight: 600;
@@ -248,28 +413,23 @@ $kamizero-navy: #0097b2;
 }
 
 /* ============================================================
-   UPCOMING EVENTS LIST
+   MONTHLY EVENTS LIST – FIGMA STYLE
    ============================================================ */
 
 .dashboard-page .events-list {
-  max-height: 260px;
-  overflow-y: auto;
+  max-height: none;      /* use full height; no artificial cap */
+  overflow-y: visible;   /* let the card grow with items */
 }
 
 .dashboard-page .events-list .list-group-item {
-  font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
   border-left: none;
   border-right: none;
   border-color: #f3f4f6;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
   background: #ffffff;
   padding: 0.9rem 1.4rem;
 }
 
-/* remove top & bottom borders */
 .dashboard-page .events-list .list-group-item:first-child {
   border-top: none;
 }
@@ -278,24 +438,74 @@ $kamizero-navy: #0097b2;
   border-bottom: none;
 }
 
-/* DATE BLOCK — DO NOT WRAP */
-.dashboard-page .events-list .fw-semibold {
+/* Entire clickable row */
+.dashboard-page .events-card .event-item {
+  display: flex;
+  align-items: center;
+}
+
+/* DATE PILL (Dec / 5) – MONTHLY EVENTS (BRAND FILLED) */
+.dashboard-page .events-card .event-date-pill {
+  width: 52px;
+  min-width: 52px;
+  height: 72px;
+  border-radius: 14px;
+
+  /* brand gradient */
+  background: linear-gradient(145deg, $kamizero-teal 0%, $kamizero-navy 100%);
+  border: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* MONTH TEXT */
+.dashboard-page .events-card .event-date-pill .event-month {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #ffffff;
+  opacity: 0.9;
+  margin-bottom: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* DAY NUMBER */
+.dashboard-page .events-card .event-date-pill .event-day {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+
+/* TEXT BLOCK */
+.dashboard-page .events-card .event-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-page .events-card .event-title {
+  font-size: 0.95rem;
+  font-weight: 700;
   color: $kamizero-navy;
+}
+
+.dashboard-page .events-card .event-meta {
   font-size: 0.8rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-  min-width: 52px; /* enough for MM-DD */
+  color: #6b7280;
 }
 
-/* TITLE LINK */
-.dashboard-page .events-list a {
-  text-decoration: none;
-  color: #111827;
-  font-weight: 600;
-  font-size: 0.9rem;
+/* Hover */
+.dashboard-page .events-card .event-item:hover .event-title {
+  text-decoration: underline;
 }
 
-/* Empty-state text */
+/* Empty state */
 .dashboard-page .events-list .list-group-item.text-muted {
   font-size: 0.85rem;
   color: #9ca3af !important;
@@ -305,16 +515,13 @@ $kamizero-navy: #0097b2;
    SCHOOL COLORS (USED ON DASHBOARD + CALENDAR)
    ============================================================ */
 
-/* Meguro = teal, Shinagawa = warm coral, others continue from palette */
-$school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
-
 @for $i from 1 through 50 {
   $index: ($i - 1) % length($school-colors) + 1;
   $color: nth($school-colors, $index);
 
   .dashboard-page .school-tag-#{$i},
   .calendar-event.school-tag-#{$i} {
-    background-color: $color !important; /* solid fill */
+    background-color: $color !important;
     border: none;
     color: #ffffff !important;
   }
@@ -331,12 +538,11 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
     padding-right: 1rem;
   }
 
-  /* HIDE THE TOP BANNER (the FIRST .dashboard-card ONLY) */
+  /* Hide first top banner on small screens */
   .dashboard-page .dashboard-card:first-of-type {
     display: none !important;
   }
 
-  /* Dashboard header becomes top block */
   .dashboard-page .dashboard-header {
     text-align: center;
     margin-top: 1.5rem;
@@ -356,5 +562,46 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
 
   .dashboard-page .school-tag {
     font-size: 13px;
+  }
+
+  /* Calendar cells a bit shorter on mobile */
+  .dashboard-page .calendar-card .calendar-day {
+    min-height: 70px;
+    padding: 3px 3px;
+  }
+
+  .calendar-event {
+    font-size: 0.65rem;
+    padding: 2px 4px;
+  }
+
+  /* Monthly events pill smaller */
+  .dashboard-page .events-card .event-date-pill {
+    width: 46px;
+    min-width: 46px;
+    height: 66px;
+  }
+
+  .dashboard-page .events-card .event-title {
+    font-size: 0.9rem;
+  }
+
+  .dashboard-page .events-card .event-meta {
+    font-size: 0.75rem;
+  }
+}
+
+/* Even smaller devices */
+@media (max-width: 576px) {
+  .dashboard-page .calendar-card .simple-calendar th {
+    font-size: 0.7rem;
+  }
+
+  .dashboard-page .calendar-card .calendar-day {
+    min-height: 64px;
+  }
+
+  .dashboard-page .events-list {
+    max-height: none;
   }
 }
