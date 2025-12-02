@@ -7,6 +7,35 @@
     <h2>All Notes</h2>
     <p>Browse All Notes received<i class="fa-solid fa-angles-down"></i></p>
   </div>
+
+
+    <% if current_user.role == "parent" && @students_for_dropdown.present? %>
+      <div class="dropdown">
+        <button class="btn button-view-all dropdown-toggle"
+                type="button"
+                id="createNoteDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+          <i class="fa-solid fa-square-plus"></i>
+          CREATE NOTES
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createNoteDropdown">
+          <% @students_for_dropdown.each do |student| %>
+            <li>
+              <%= link_to new_student_note_path(student),
+                class: "dropdown-item" do %>
+                <i class="fa-solid fa-user-graduate me-1"></i>
+                <%= "#{student.name} (#{student.classroom.grade}#{student.classroom.name} Class)" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <div>
+
+  </div>
   <!-- MAIN WHITE CARD (wraps filters + list) -->
   <div class="notice-index-card">
     <!-- FILTERS (original) -->
