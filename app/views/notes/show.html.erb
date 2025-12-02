@@ -2,14 +2,13 @@
 <div class="notice-page notice-show-page">
   <!-- HEADER: back link + optional subtext -->
   <div class="notice-header notice-show-header my-3">
-    <%= link_to :back, class: "text-decoration-none text-secondary" do %>
+    <%= link_to notes_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
   </div>
   <!-- MAIN NOTICE CARD (details) -->
   <div class="card notice-show-card shadow-sm bg-white">
     <div class="card-body position-relative">
-      <!-- School / Grade / Class pills -->
       <div class="mb-3 d-flex flex-wrap gap-2 notice-meta-pills">
         <span class="badge rounded-pill pill-meta">
           Grade: <%= @note.student.classroom.grade %>
@@ -23,17 +22,16 @@
         <%= @note.title %>
       </h2>
       <p><%= @note.content %></p>
-    </div>
-  </div>
-  <div class="mt-3">
-    <!-- MAIN NOTICE CARD (details) -->
-    <div class="card notice-show-card shadow-sm bg-white">
-      <div class="card-body position-relative">
-        <%= simple_form_for @note do |f| %>
-          <%= f.input :reply, placeholder: "Enter the reply here...", input_html: { style: "height: 200px;" } %>
-          <%= f.button :submit, "Reply", class: "btn btn-dark" %>
-        <% end %>
-      </div>
+      <% if @note.reply.present? %>
+        <p>Reply: <%= @note.reply %></p>
+      <% else %>
+        <div class="card-body position-relative">
+          <%= simple_form_for @note do |f| %>
+            <%= f.input :reply, placeholder: "Enter the reply here...", input_html: { style: "height: 200px;" } %>
+            <%= f.button :submit, "Reply", class: "btn btn-dark" %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
