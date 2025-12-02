@@ -12,6 +12,52 @@
       <%= link_to note_path(note), class: "notice-card position-relative" do %>
         <div class="notice-card-icon">
           <i class="fa-solid fa-book"></i>
+
+
+    <% if current_user.role == "parent" && @students_for_dropdown.present? %>
+      <div class="dropdown">
+        <button class="btn button-view-all dropdown-toggle"
+                type="button"
+                id="createNoteDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+          <i class="fa-solid fa-square-plus"></i>
+          CREATE NOTES
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createNoteDropdown">
+          <% @students_for_dropdown.each do |student| %>
+            <li>
+              <%= link_to new_student_note_path(student),
+                class: "dropdown-item" do %>
+                <i class="fa-solid fa-user-graduate me-1"></i>
+                <%= "#{student.name} (#{student.classroom.grade}#{student.classroom.name} Class)" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <div>
+
+  </div>
+  <!-- MAIN WHITE CARD (wraps filters + list) -->
+  <div class="notice-index-card">
+    <!-- FILTERS (original) -->
+    <div class="notices-filters-card">
+      <%= simple_form_for :filters, url: notes_path, method: :get,
+                          html: { class: "notice-filters" } do |f| %>
+        <!-- Search -->
+        <div class="filter-item search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <%= f.input :q,
+            wrapper: false,
+            label: false,
+            input_html: {
+              placeholder: "Search notes...",
+              class: "filter-input",
+              value: params.dig(:filters, :q)
+            } %>
         </div>
         <!-- Main Content -->
         <div class="notice-card-main">
