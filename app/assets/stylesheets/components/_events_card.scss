@@ -1,5 +1,5 @@
 /* ============================================================
-   EVENTS PAGE – MIRRORED WITH CREATE NOTICE / NOTICES (FINAL)
+   EVENTS PAGE – MIRRORED WITH DASHBOARD CALENDAR + EVENTS
    ============================================================ */
 
 $kamizero-teal: #14bec0;
@@ -12,7 +12,7 @@ $kamizero-navy: #0097b2;
   margin: 0 auto;
 
   /* -----------------------------------------------
-     HEADER (same width, spacing, styling)
+     HEADER (aligned with notices / create notice)
      ----------------------------------------------- */
   .notice-header {
     margin: 0 auto 1rem;
@@ -42,146 +42,255 @@ $kamizero-navy: #0097b2;
     margin: 0;
   }
 
-  /* -----------------------------------------------
-     MAIN SECTION – calendar + side card alignment
-     ----------------------------------------------- */
-  .events-main {
-    margin: 0 auto 1rem;
-    padding-left: 0;
-    padding-right: 0;
-  }
+  /* ============================================================
+     SHARED CARD SHELLS (same as dashboard)
+     ============================================================ */
 
-  /* remove bootstrap gutters */
-  .events-main .row,
-  .events-main .col-8,
-  .events-main .col-4 {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  /* -----------------------------------------------
-     CALENDAR CARD + SIDE EVENTS CARD
-     ----------------------------------------------- */
-  .events-calendar-card,
-  .events-side-card {
+  .calendar-card,
+  .events-card {
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     border: 1px solid #e5e7eb;
-    background: #ffffff;
     overflow: hidden;
+    background: #ffffff;
   }
 
-  .events-calendar-card .card-header,
-  .events-side-card .card-header {
+  .calendar-card .card-header,
+  .events-card .card-header {
     background-color: #f9fafb;
     border-bottom: 1px solid #e5e7eb;
-    font-family: "Poppins";
     font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: $kamizero-navy;
     text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: $kamizero-navy;
+
+    /* match dashboard fixed header height */
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 1.4rem;
   }
 
-  /* -----------------------------------------------
-     CALENDAR TABLE (simple_calendar)
-     ----------------------------------------------- */
-  .events-calendar-card .simple-calendar table {
+  /* ============================================================
+     CALENDAR – SAME STYLE AS DASHBOARD
+     ============================================================ */
+
+  .calendar-card .simple-calendar {
+    font-family: "Poppins", sans-serif;
+  }
+
+  .calendar-card .simple-calendar table {
     width: 100%;
-    border-collapse: collapse;
     margin-bottom: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
   }
 
-  .events-calendar-card .simple-calendar th {
-    padding: 0.5rem 0.75rem;
+  .calendar-card .simple-calendar th {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #6b7280;
+    padding: 0.5rem 0.75rem;
+    background: #ffffff;
+    text-align: center;
   }
 
-  .events-calendar-card .simple-calendar td {
-    border: 1px solid #e5e7eb;
+  .calendar-card .simple-calendar td {
     padding: 0;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
   }
 
-  .calendar-day {
-    min-height: 80px;
-    padding: 6px 8px;
-    background: #f9fafb;
-    font-size: 0.78rem;
+  /* Each cell */
+  .calendar-card .calendar-day {
+    min-height: 90px;
+    padding: 4px 4px;
+    background-color: #f9fafb;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    text-align: center; /* centre the date text */
   }
 
-  .simple-calendar .today .calendar-day {
+  /* Today */
+  .calendar-card .simple-calendar .today .calendar-day {
     background-color: #e3f6fb !important;
     box-shadow: inset 0 0 0 2px $kamizero-teal;
   }
 
-  .calendar-day .date-number {
+  /* Date number visually centred */
+  .calendar-card .calendar-day .date-number {
+    display: block;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin: 0 auto 4px auto;
     color: #4b5563;
   }
 
-  .calendar-day a {
-    font-size: 0.78rem;
-    color: $kamizero-navy;
-    font-weight: 600;
-    text-decoration: none;
+  /* "+N more events" line inside a cell */
+  .calendar-more-events {
     margin-top: 2px;
-    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: $kamizero-navy;
+    cursor: pointer;
   }
 
-  .calendar-day a:hover {
-    color: $kamizero-teal;
+  /* Optional: calendar heading (prev / next / month) */
+  .calendar-card .simple-calendar .calendar-heading {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
   }
 
-  /* -----------------------------------------------
-     SIDE EVENTS LIST
-     ----------------------------------------------- */
+  .calendar-card .simple-calendar .calendar-heading a {
+    color: $kamizero-navy;
+    text-decoration: none;
+  }
+
+  /* ============================================================
+     MONTHLY EVENTS LIST – SAME AS DASHBOARD
+     ============================================================ */
+
   .events-list {
-    max-height: 260px;
-    overflow-y: auto;
+    max-height: none;      /* let the card grow with items */
+    overflow-y: visible;
   }
 
   .events-list .list-group-item {
-    font-family: "Poppins";
     font-size: 0.9rem;
-    background: #fff;
-    gap: 10px;
+    border-left: none;
+    border-right: none;
     border-color: #f3f4f6;
-    display: flex;
-    align-items: flex-start;
+    background: #ffffff;
+    padding: 0.9rem 1.4rem;
   }
 
-  .events-list .fw-semibold {
-    font-size: 0.8rem;
+  .events-list .list-group-item:first-child {
+    border-top: none;
+  }
+
+  .events-list .list-group-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Entire clickable row */
+  .events-card .event-item {
+    display: flex;
+    align-items: center;
+  }
+
+  /* DATE PILL (Dec / 5) – brand filled, same as dashboard */
+  .events-card .event-date-pill {
+    width: 52px;
+    min-width: 52px;
+    height: 72px;
+    border-radius: 14px;
+
+    background: linear-gradient(145deg, $kamizero-teal 0%, $kamizero-navy 100%);
+    border: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .events-card .event-date-pill .event-month {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #ffffff;
+    opacity: 0.9;
+    margin-bottom: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .events-card .event-date-pill .event-day {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  /* TEXT BLOCK */
+  .events-card .event-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .events-card .event-title {
+    font-size: 0.95rem;
+    font-weight: 700;
     color: $kamizero-navy;
   }
 
-  .events-list a {
-    color: #111827;
-    font-weight: 600;
-    text-decoration: none;
+  .events-card .event-meta {
+    font-size: 0.8rem;
+    color: #6b7280;
   }
 
-  .events-list a:hover {
-    color: $kamizero-teal;
+  /* Hover */
+  .events-card .event-item:hover .event-title {
     text-decoration: underline;
   }
 
-  /* -----------------------------------------------
-     MOBILE STACKING
-     ----------------------------------------------- */
+  /* Empty state */
+  .events-list .list-group-item.text-muted {
+    font-size: 0.85rem;
+    color: #9ca3af !important;
+  }
+
+  /* ============================================================
+     RESPONSIVE – MOBILE (align with dashboard)
+     ============================================================ */
+
   @media (max-width: 768px) {
-    .events-main .col-8,
-    .events-main .col-4 {
-      max-width: 100%;
-      flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    .calendar-card .calendar-day {
+      min-height: 70px;
+      padding: 3px 3px;
     }
 
-    .events-main .col-4 {
-      margin-top: 1rem;
+    .calendar-event {
+      font-size: 0.65rem;
+      padding: 2px 4px;
+    }
+
+    .events-card .event-date-pill {
+      width: 46px;
+      min-width: 46px;
+      height: 66px;
+    }
+
+    .events-card .event-title {
+      font-size: 0.9rem;
+    }
+
+    .events-card .event-meta {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .calendar-card .simple-calendar th {
+      font-size: 0.7rem;
+    }
+
+    .calendar-card .calendar-day {
+      min-height: 64px;
+    }
+
+    .events-list {
+      max-height: none;
     }
   }
 }

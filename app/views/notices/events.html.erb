@@ -5,7 +5,7 @@
   <% school_color_index = {} %>
   <%
     # Unique schools from current user's subscriptions
-    schools = current_user.schools
+    schools = current_user.students.includes(:school).map(&:school).uniq
 
     # Stable order so colors do NOT change on refresh
     schools.sort_by(&:id).each_with_index do |school, idx|
@@ -22,27 +22,41 @@
     <p>View All Upcoming School Events <i class="fa-solid fa-angles-down"></i></p>
   </div>
 
-  <!-- MAIN SECTION: CALENDAR + SIDE EVENTS -->
-  <div class="row g-3 mb-4 events-main">
-    <div class="col-8">
-      <div class="card events-calendar-card">
-        <div class="card-header">
-          CALENDAR <i class="fa-solid fa-calendar-days"></i>
-        </div>
+  <!-- CALENDAR + MONTHLY EVENTS (MATCH DASHBOARD STRUCTURE) -->
+  <div class="row g-3 mb-4 calendar-events-row">
+    <!-- CALENDAR CARD -->
+    <div class="col-md-6">
+      <div class="card calendar-card h-100">
+        <div class="card-header">CALENDAR</div>
         <div class="card-body p-0">
           <%= month_calendar do |date| %>
+            <% day_events      = Array(@events_for_day[date]) %>
+            <% visible_events  = day_events.first(2) %>
+            <% remaining_count = [day_events.size - visible_events.size, 0].max %>
+
             <div class="calendar-day">
+              <!-- DATE -->
               <span class="date-number"><%= date.day %></span>
 
-              <% if @events_for_day[date].present? %>
-                <% @events_for_day[date].each do |event| %>
-                  <% color_idx = school_color_index[event.school_id] %>
-                  <% classes = ["calendar-event"] %>
-                  <% classes << "school-tag-#{color_idx}" if color_idx %>
-                  <%= link_to notice_path(event), class: classes.join(" ") do %>
-                    <%= event.title %>
-                  <% end %>
+              <!-- EVENTS: start time + title -->
+              <% visible_events.each do |event| %>
+                <% color_idx = school_color_index[event.school_id] %>
+                <% classes = ["calendar-event"] %>
+                <% classes << "school-tag-#{color_idx}" if color_idx %>
+
+                <%= link_to notice_path(event), class: classes.join(" ") do %>
+                  <% label_parts = [] %>
+                  <% label_parts << event.start_time.strftime("%H:%M") if event.start_time.present? %>
+                  <% label_parts << event.title %>
+                  <%= label_parts.join(" ") %>
                 <% end %>
+              <% end %>
+
+              <!-- "+N more events" -->
+              <% if remaining_count.positive? %>
+                <div class="calendar-more-events">
+                  +<%= remaining_count %> event<%= "s" if remaining_count > 1 %>
+                </div>
               <% end %>
             </div>
           <% end %>
@@ -50,29 +64,58 @@
       </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card events-side-card">
+    <!-- MONTHLY EVENTS CARD -->
+    <div class="col-md-6">
+      <div class="card events-card h-100">
         <div class="card-header d-flex justify-content-between align-items-center">
           <span>MONTHLY EVENTS</span>
+          <%= link_to "VIEW ALL", events_notices_path, class: "btn button-view-all btn-sm" %>
         </div>
+
         <ul class="list-group list-group-flush events-list">
           <% if @events.present? %>
             <% @events.order(date: :asc).each do |event| %>
-              <li class="list-group-item d-flex">
-                <div class="me-3">
-                  <small class="fw-semibold">
-                    <%= event.date.strftime("%B %d") %>
-                    <p><%= event.start_time&.strftime("%H:%M") %> - <%= event.end_time&.strftime("%H:%M") %></p>
-                  </small>
-                </div>
-                <div class="flex-grow-1">
-                  <%= link_to event.title, notice_path(event) %>
-                </div>
+              <li class="list-group-item">
+                <%= link_to notice_path(event),
+                            class: "event-item d-flex w-100 text-decoration-none text-reset" do %>
+
+                  <!-- DATE PILL -->
+                  <div class="event-date-pill me-3">
+                    <div class="event-month">
+                      <%= event.date.strftime("%b") %>
+                    </div>
+                    <div class="event-day">
+                      <%= event.date.strftime("%-d") %>
+                    </div>
+                  </div>
+
+                  <!-- TEXT BLOCK -->
+                  <div class="event-text flex-grow-1">
+                    <div class="event-title">
+                      <%= event.title %>
+                    </div>
+                    <div class="event-meta">
+                      <% weekday_str = event.date.strftime("%A") %>
+                      <% time_str =
+                           if event.start_time && event.end_time
+                             "#{event.start_time.strftime("%H:%M")} - #{event.end_time.strftime("%H:%M")}"
+                           elsif event.start_time
+                             event.start_time.strftime("%H:%M")
+                           else
+                             nil
+                           end %>
+                      <%= weekday_str %>
+                      <% if time_str.present? %>
+                        &nbsp;·&nbsp;<%= time_str %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
               </li>
             <% end %>
           <% else %>
             <li class="list-group-item text-muted">
-              No upcoming events yet.
+              No upcoming events yet
             </li>
           <% end %>
         </ul>

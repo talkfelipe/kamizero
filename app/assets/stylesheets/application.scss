@@ -13,8 +13,6 @@
 
 @import "components/notices";
 
-@import "components/navbar_kamizero";
-
 @import "components/dashboard_card";
 @import "components/calendar";
 @import "components/events_card";
@@ -30,6 +28,6 @@
 
 @import "components/new_notice";
 
-@import "components/kamizero_top_card";
-
 @import "components/notice_show";
+
+@import "components/_landing";

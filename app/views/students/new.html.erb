@@ -13,6 +13,7 @@
     </div>
   </div>
   <!-- END WELCOME CARD -->
+
   <!-- HEADER + BACK LINK -->
   <div class="subscription-header mb-4">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
@@ -25,12 +26,12 @@
   <div class="card subscription-card p-4 shadow-sm rounded">
     <%= simple_form_for @student, html: { data: { controller: "conditional-form" } } do |f| %>
       <%= f.input :name %>
-      <%= f.association :school, label: "SCHOOL" %>
+      <%= f.association :school, label: "School" %>
       <h3 class="mt-4 mb-3">TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
       <div class="row">
         <div class="col-6">
           <select name="classroom[grade]" id="student_classroom_id" class="form-select select optional">
-            <option value="" label=" "></option>
+            <option value="" label="Grade"></option>
             <% Notice::SUBGRADES.each do |grade| %>
               <option value="<%= grade %>"><%= grade %></option>
             <% end %>
@@ -38,7 +39,7 @@
         </div>
         <div class="col-6">
           <select name="classroom[name]" id="student_classroom_id" class="form-select select optional">
-            <option value="" label=" "></option>
+            <option value="" label="Classroom"></option>
             <% Notice::SUBCLASSROOMS.each do |name| %>
               <option value="<%= name %>"><%= name %></option>
             <% end %>
