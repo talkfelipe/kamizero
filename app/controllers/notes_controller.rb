@@ -6,6 +6,7 @@ class NotesController < ApplicationController
       @notes = current_user.notes
     else
       @notes = current_user.children_notes
+      @students_for_dropdown = current_user.children
     end
   end
 
