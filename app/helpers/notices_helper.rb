@@ -9,13 +9,12 @@ module NoticesHelper
     end_time = notice.end_time || (notice.start_time + 1.hour)
     details = notice.content
 
-    start_dt = Time.zone.local(
-      date.year, date.month, date.day, start_time.hour-9, start_time.min, start_time.sec)
-    end_dt = Time.zone.local(
-      date.year, date.month, date.day, end_time.hour-9, end_time.min, end_time.sec)
+    # DateTime.new(year, month, day, hour, min, sec)
+    start_datetime = DateTime.new(date.year, date.month, date.day, start_time.hour, start_time.min, start_time.sec, '+09:00')
+    end_datetime = DateTime.new(date.year, date.month, date.day, end_time.hour, end_time.min, end_time.sec, '+09:00')
 
-    start_str = start_dt.utc.strftime("%Y%m%dT%H%M%SZ")
-    end_str   = end_dt.utc.strftime("%Y%m%dT%H%M%SZ")
+    start_str = start_datetime.utc.strftime("%Y%m%dT%H%M%SZ")
+    end_str   = end_datetime.utc.strftime("%Y%m%dT%H%M%SZ")
 
     params = {
       action: "TEMPLATE",
