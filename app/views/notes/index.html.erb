@@ -30,7 +30,7 @@
           <div class="filter-item">
             <%= f.input :school_id,
             collection: [["All schools", ""]] +
-                        current_user.students
+                        current_user.children
                                     .includes(:school)
                                     .map { |s| [s.school.name, s.school.id]},
             selected: params.dig(:filters, :school_id),
@@ -53,20 +53,24 @@
       <% @notes.each do |note| %>
         <%= link_to note_path(note), class: "notice-card position-relative" do %>
           <div class="notice-card-icon">
-            <i class="fa-regular fa-file-lines"></i>
-            <!-- Category Badge -->
-            <span class="badge rounded-pill position-absolute top-0 end-0 m-3
-              <%= note.title %>
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <div class="mb-3 d-flex flex-wrap gap-2 notice-meta-pills">
+            <span class="badge rounded-pill pill-meta">
+              Grade: <%= note.student.classroom.grade %>
+            </span>
+            <span class="badge rounded-pill pill-meta">
+              Class: <%= note.student.classroom.name %>
             </span>
           </div>
           <!-- Main Content -->
           <div class="notice-card-main">
             <div class="notice-card-header">
               <h2 class="notice-card-title"><%= note.title %></h2>
+              <p><%= note.student.name %></p>
             </div>
             <p class="notice-card-body">
               <%= truncate(strip_tags(note.content), length: 100) %>
-              <%= truncate(strip_tags(note.reply), length: 100) %>
             </p>
           </div>
         <% end %>

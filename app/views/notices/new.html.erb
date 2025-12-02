@@ -1,5 +1,4 @@
 <div class="container notice-page">
-
   <!-- PAGE HEADER: BACK + TITLE + SUBTITLE -->
   <div class="notice-header">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
@@ -8,7 +7,6 @@
     <h2>Create New Notice</h2>
     <p>Send a New Notice to Parents <i class="fa-solid fa-angles-down"></i></p>
   </div>
-
   <!-- FORM CARD -->
   <div class="notice-card">
     <%= simple_form_for @notice, html: { data: { controller: "conditional-form document-upload" } } do |f| %>
@@ -16,7 +14,6 @@
                   as: :file,
                   label: "Add Attachment",
                   input_html: { data: { action: "change->document-upload#handleFileChange" } } %>
-
       <%= f.input :category,
                   collection: Notice::CATEGORIES,
                   input_html: {
@@ -25,7 +22,6 @@
                       action: "change->conditional-form#toggleDependentField"
                     }
                   } %>
-
       <div data-conditional-form-target="dependentField"
            data-show-if="Event"
            class="hidden">
@@ -48,11 +44,9 @@
           </div>
         </div>
       </div>
-
       <%= f.input :title,
                   placeholder: "e.g., Sports day",
                   input_html: { data: { "document-upload-target": "title" } } %>
-
       <!-- Content input (label + textarea kept for manual entry) -->
       <%= f.input :content,
                   placeholder: "Enter the full notice comment here...",
@@ -60,31 +54,25 @@
                     style: "height: 300px;",
                     data: { "document-upload-target": "content" }
                   } %>
-
       <!-- Clean HTML preview, shown after auto-fill (textarea will be hidden by JS) -->
       <div class="mt-3 d-none notice-content-preview"
            data-document-upload-target="contentPreview"></div>
-
       <h3>TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
-
       <div class="row">
         <div class="col-6">
           <%= f.association :classroom, collection: [["ALL", ""]] + @school.classrooms.map{|classroom| ["#{classroom.grade}#{classroom.name}", classroom.id]}, include_blank: false %>
         </div>
       </div>
-
       <div class="d-flex justify-content-end m-3">
         <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
         <%= f.button :submit, class: "btn btn-dark" %>
       </div>
-
       <!-- Image/PDF preview (unchanged) -->
       <div>
         <img src=""
              data-document-upload-target="preview"
              style="max-width: 100%; height: auto; border-radius: 10px; border: 1px solid #d0d7de;">
       </div>
-
     <% end %>
   </div>
 </div>

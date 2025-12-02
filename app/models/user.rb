@@ -3,9 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  has_many :students, dependent: :destroy
+  has_many :children, class_name: :Student, dependent: :destroy
+
+  has_many :students, through: :classrooms
+  has_many :notes, through: :students
+
+  has_many :children_notes, through: :children, source: :notes
+
   has_many :schools, through: :students
-  has_many :classrooms, through: :students
+  has_many :classrooms
   has_many :notices, through: :schools
   validates :role, presence: true
   belongs_to :school, optional: true
@@ -15,4 +21,8 @@ class User < ApplicationRecord
   def all_notices
     self.notices.where(classroom: [self.classrooms, nil])
   end
+
+  # def all_notes
+  #   Note.where(student:{ classroom: self.classrooms })
+  # end
 end
