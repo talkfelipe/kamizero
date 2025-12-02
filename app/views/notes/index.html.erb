@@ -9,7 +9,7 @@
       <p>Browse all notes received <i class="fa-solid fa-angles-down"></i></p>
     </div>
     <!-- CREATE NOTES DROPDOWN (only for parents) -->
-    <div>
+
       <% if current_user.role == "parent" && @students_for_dropdown.present? %>
         <div class="dropdown mb-3">
           <button class="btn button-view-all dropdown-toggle"
@@ -31,12 +31,12 @@
             <% end %>
           </ul>
         </div>
-      </div>
+        <% end %>
     </div>
-  <% end %>
   <!-- MAIN WHITE CARD (wraps filters + list) -->
   <div class="notice-index-card">
     <!-- FILTERS -->
+    <% if current_user.role == "parent" %>
     <div class="notices-filters-card">
       <%= simple_form_for :filters, url: notes_path, method: :get,
                           html: { class: "notice-filters" } do |f| %>
@@ -57,12 +57,9 @@
               } %>
           </div>
         <% end %>
-        <!-- Clear -->
-        <div>
-          <%= link_to "CLEAR", notes_path, class: "filter-clear" %>
-        </div>
       <% end %>
     </div>
+    <% end %>
     <!-- NOTES LIST -->
     <div class="notices-list">
       <% @notes.each do |note| %>
