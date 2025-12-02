@@ -17,7 +17,7 @@ class Notice < ApplicationRecord
   CLASSROOMS = ["All", "A", "B", "C", "D"]
 
   pg_search_scope :search_by_filters,
-    against: [:content, :date, :grade, :classroom],
+    against: [:content, :date],
     using: {
       tsearch: {
         prefix: true

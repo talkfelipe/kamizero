@@ -26,9 +26,9 @@ class NoticesController < ApplicationController
   def index
     #teacher can see all the notices of the school
     if current_user.role == "teacher"
-      @notices = current_user.school.notices
+      @notices = current_user.teacher_notices
     else
-      @notices = current_user.all_notices
+      @notices = current_user.parent_notices
     end
 
     # get the parameters of filters
@@ -69,9 +69,9 @@ class NoticesController < ApplicationController
     start_of_month = date.beginning_of_month
     end_of_month   = date.end_of_month
     if current_user.role == "teacher"
-      @events = current_user.school.notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
+      @events = current_user.teacher_notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
     else
-      @events = current_user.all_notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
+      @events = current_user.parent_notices.where(category: "Event").where(date: start_of_month..end_of_month).order(:date, :start_time)
     end
     @events_for_day = @events.group_by(&:date)
   end
