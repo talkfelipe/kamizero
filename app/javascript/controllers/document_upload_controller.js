@@ -64,17 +64,29 @@ export default class extends Controller {
       })
         .then(response => response.json())
         .then(data => {
+          // Validate OCR response structure
+          if (!data.ParsedResults || !data.ParsedResults[0]) {
+            throw new Error("OCR failed: No parsed results returned")
+          }
+
           const textContent = data.ParsedResults[0].ParsedText
+
+          if (!textContent || textContent.trim() === "") {
+            throw new Error("OCR failed: No text could be extracted from the image")
+          }
+
           this.sendTextFromImage(textContent)
         })
         .catch(error => {
           console.error("OCR error:", error)
+          alert(error.message || "Failed to scan the document. Please try again or enter the details manually.")
           this.hideSpinner()
         })
     }
   }
 
-  sendTextFromImage(textContent) {
+  sendTextFromImage(textContent, retryCount = 0) {
+    const maxRetries = 2
     const formData = new FormData()
     const token = document.querySelector(`meta[name="csrf-token"]`).content
     formData.append("text", textContent)
@@ -86,9 +98,19 @@ export default class extends Controller {
       },
       body: formData
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`)
+        }
+        return response.json()
+      })
       .then(data => {
         console.log(data)
+
+        // Validate response has required fields
+        if (!data.title || !data.content) {
+          throw new Error("Failed to extract title and content from document")
+        }
 
         // keep values so the notice saves correctly
         this.titleTarget.value = data.title
@@ -107,7 +129,16 @@ export default class extends Controller {
       })
       .catch(error => {
         console.error("Error processing file:", error)
-        this.hideSpinner()
+
+        if (retryCount < maxRetries) {
+          console.log(`Retrying scan_file... attempt ${retryCount + 2} of ${maxRetries + 1}`)
+          setTimeout(() => {
+            this.sendTextFromImage(textContent, retryCount + 1)
+          }, 1000)
+        } else {
+          alert(error.message || "Failed to process the document. Please try again or enter the details manually.")
+          this.hideSpinner()
+        }
       })
   }
 }
