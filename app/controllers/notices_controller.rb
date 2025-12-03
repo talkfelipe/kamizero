@@ -50,6 +50,9 @@ class NoticesController < ApplicationController
     if category.present?
       @notices = @notices.where(category: category)
     end
+
+    @notices = @notices.order(created_at: :desc)
+
   end
 
   def scan_file

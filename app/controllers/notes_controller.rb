@@ -8,6 +8,9 @@ class NotesController < ApplicationController
       @notes = current_user.children_notes
       @students_for_dropdown = current_user.children
     end
+
+    @notes = @notes.order(created_at: :desc)
+
   end
 
   def show
