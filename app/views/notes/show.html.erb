@@ -7,9 +7,10 @@
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
   </div>
-
-  <!-- MAIN NOTE CARD (details) -->
-  <div class="card notice-show-card shadow-sm bg-white">
+  <!-- MAIN NOTICE CARD (details) -->
+  <div class="card notice-show-card shadow-sm bg-white"
+     data-controller="mark-read"
+    data-mark-read-url-value="<%= mark_as_read_note_path(@note, format: :json) %>">
     <div class="card-body position-relative">
 
       <!-- SECTION: NOTE FROM PARENT -->

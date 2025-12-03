@@ -2,7 +2,7 @@ include PgSearch::Model
 
 class Notice < ApplicationRecord
   belongs_to :school
-  has_many :read_notifications, dependent: :destroy
+  has_many :read_notifications, dependent: :destroy, as: :notification
   # has_many :read_users, through: :read_notifications, source: :user
   validates :category, presence: true
   validates :title, presence: true
@@ -51,7 +51,11 @@ class Notice < ApplicationRecord
     PROMPT
 
     response = RubyLLM.chat.ask(prompt)
-    response.content
+    raw_content = response.content
+
+    # Extract JSON from response (handle cases where LLM adds extra text)
+    json_match = raw_content.match(/\{[\s\S]*\}/)
+    json_match ? json_match[0] : raw_content
   end
 
 end

@@ -11,7 +11,7 @@ class NoticesController < ApplicationController
     # status = true by looking at same show page several times
     read = ReadNotification.find_or_initialize_by(
       user: current_user,
-      notice: notice
+      notification: notice
     )
     read.status = true
     read.save!
@@ -57,13 +57,29 @@ class NoticesController < ApplicationController
 
   def scan_file
     text = params[:text]
-    hash_data = JSON.parse(Notice.extract_title_and_content(text))
 
-    # TODO get info from image
-    @notice = Notice.new(
-      title: hash_data["title"],
-      content: hash_data["content"]
-    )
+    if text.blank?
+      render json: { error: "No text provided" }, status: :unprocessable_entity
+      return
+    end
+
+    begin
+      raw_json = Notice.extract_title_and_content(text)
+      hash_data = JSON.parse(raw_json)
+
+      if hash_data["title"].blank? || hash_data["content"].blank?
+        render json: { error: "Could not extract title and content" }, status: :unprocessable_entity
+        return
+      end
+
+      @notice = Notice.new(
+        title: hash_data["title"],
+        content: hash_data["content"]
+      )
+    rescue JSON::ParserError => e
+      Rails.logger.error("Failed to parse LLM response: #{e.message}")
+      render json: { error: "Failed to process document" }, status: :unprocessable_entity
+    end
   end
 
   def events
