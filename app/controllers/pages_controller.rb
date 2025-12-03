@@ -22,7 +22,7 @@ class PagesController < ApplicationController
 
     read_ids = current_user.read_notifications     # distinguish notice which status is true
                             .where(status: true)
-                            .select(:notice_id)
+                            .select(:notification_id)
 
     @unread_notices = base_scope                   # take out only unread_notices which status is true
                       .where.not(id: read_ids)
@@ -30,6 +30,7 @@ class PagesController < ApplicationController
     @unread_count   = @unread_notices.size
 
     @events_for_day = @events.group_by(&:date)
+
 
   end
 end

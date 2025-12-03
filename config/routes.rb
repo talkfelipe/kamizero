@@ -26,7 +26,9 @@ Rails.application.routes.draw do
     resources :notes, only: [:new, :create, :update]
   end
 
-  resources :notes, only: [:index, :show]
+  resources :notes, only: [:index, :show] do
+    post :mark_as_read, on: :member
+  end
 
   resources :notices do
     post :mark_as_read, on: :member

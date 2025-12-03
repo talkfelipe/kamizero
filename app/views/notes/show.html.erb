@@ -7,7 +7,9 @@
     <% end %>
   </div>
   <!-- MAIN NOTICE CARD (details) -->
-  <div class="card notice-show-card shadow-sm bg-white">
+  <div class="card notice-show-card shadow-sm bg-white"
+     data-controller="mark-read"
+    data-mark-read-url-value="<%= mark_as_read_note_path(@note, format: :json) %>">
     <div class="card-body position-relative">
       <div class="mb-3 d-flex flex-wrap gap-2 notice-meta-pills">
         <span class="badge rounded-pill pill-meta">

@@ -17,6 +17,27 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
   end
 
+  def mark_as_read
+    note = Note.find(params[:id])
+    # For those who read the show page will change the status to true.
+    # Used find_or_initialize_by in order to avoid having multiple action of
+    # status = true by looking at same show page several times
+    read = ReadNotification.find_or_initialize_by(
+      user: current_user,
+      notification: note
+    )
+    read.status = true
+    read.save!
+
+    respond_to do |format|
+      format.json { head :no_content }
+      format.html { redirect_to note_path(note) } # 念のため
+    end
+
+  end
+
+
+
   def new
     @note = @student.notes.new
   end
