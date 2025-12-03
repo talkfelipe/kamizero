@@ -34,4 +34,6 @@ Rails.application.routes.draw do
     post :mark_as_read, on: :member
   end
 
+  get "qr_scan", to: "pages#qr_scan"
+
 end

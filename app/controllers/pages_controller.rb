@@ -51,4 +51,7 @@ class PagesController < ApplicationController
     @events_for_day = @events.group_by(&:date)
 
   end
+
+  def qr_scan
+  end
 end

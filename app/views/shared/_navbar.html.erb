@@ -57,10 +57,10 @@
 
             <li class="nav-item">
               <% if current_user.role == "parent" %>
-                <%= link_to new_student_path,
+                <%= link_to qr_scan_path,
                             class: "nav-link nav-kamizero nav-new-subscription" do %>
                   <i class="fa-solid fa-clone me-1"></i>
-                  NEW SUBSCRIPTION
+                  Add Child
                 <% end %>
               <% end %>
             </li>
@@ -94,7 +94,7 @@
                   <div class="dropdown-divider"></div>
                 <% end %>
 
-                <%= link_to "Add New Subscription",
+                <%= link_to "Add Subscription",
                             new_student_path,
                             class: "dropdown-item" %>
 
