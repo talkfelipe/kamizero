@@ -69,6 +69,7 @@ export default class extends Controller {
       const formData = new FormData()
       const base64 = await this.toBase64(file)
       formData.append("base64Image", base64)
+      formData.append("OCREngine", 2)
 
       // existing image preview (kept)
       this.previewTarget.src = base64

@@ -28,7 +28,7 @@
     </div>
   </div>
 </div>
-<%= f.association :classroom, collection: [["ALL", ""]] + @school.classrooms.map{|classroom| ["#{classroom.grade}#{classroom.name}", classroom.id]}, include_blank: false %>
+<%= f.association :classroom, collection: [["ALL", ""]] + current_user.classrooms.map{|classroom| ["#{classroom.grade}#{classroom.name}", classroom.id]}, include_blank: false %>
 <%= f.input :title,
         placeholder: "e.g., Sports day",
         input_html: local_assigns[:title_data] || {} %>
