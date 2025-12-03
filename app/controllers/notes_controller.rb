@@ -52,8 +52,29 @@ class NotesController < ApplicationController
   end
 
   def update
+    @note = Note.find(params[:id])
 
+    # If a reply already exists, do nothing and just show the note
+    if @note.reply.present?
+      redirect_to note_path(@note)
+      return
+    end
+
+    # Only teachers are allowed to reply
+    unless current_user.role == "teacher"
+      redirect_to note_path(@note)
+      return
+    end
+
+    # First (and only) reply
+    if @note.update(note_params)
+      redirect_to note_path(@note), notice: "Reply was successfully saved."
+    else
+      render :show, status: :unprocessable_entity
+    end
   end
+
+
 
   private
 
@@ -62,7 +83,7 @@ class NotesController < ApplicationController
   end
 
   def note_params
-    params.require(:note).permit(:title, :content, :reply)
+    params.require(:note).permit(:reply)
   end
 
 end

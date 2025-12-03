@@ -1,16 +1,17 @@
 <!-- NOTE SHOW PAGE -->
-<div class="notice-page notice-show-page">
+<div class="container notice-page notice-show-page">
 
-  <!-- HEADER: back link -->
-  <div class="notice-header notice-show-header my-3">
-    <%= link_to notes_path, class: "notice-back-link text-decoration-none" do %>
+  <!-- HEADER: back link – same structure/classes as notices index -->
+  <div class="notice-header">
+    <%= link_to notes_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
   </div>
-  <!-- MAIN NOTICE CARD (details) -->
+
+  <!-- MAIN NOTE CARD (details) -->
   <div class="card notice-show-card shadow-sm bg-white"
-     data-controller="mark-read"
-    data-mark-read-url-value="<%= mark_as_read_note_path(@note, format: :json) %>">
+       data-controller="mark-read"
+       data-mark-read-url-value="<%= mark_as_read_note_path(@note, format: :json) %>">
     <div class="card-body position-relative">
 
       <!-- SECTION: NOTE FROM PARENT -->
@@ -43,18 +44,21 @@
       </h3>
 
       <% if @note.reply.present? %>
+        <!-- Already replied: show reply text only -->
         <p class="mb-0"><%= @note.reply %></p>
 
       <% elsif current_user.role == "teacher" %>
-        <%= simple_form_for @note do |f| %>
+        <!-- Teacher, no reply yet: show form -->
+        <%= simple_form_for [@note.student, @note], method: :patch do |f| %>
           <%= f.input :reply,
                       label: false,
                       placeholder: "Enter the reply here...",
                       input_html: { style: "height: 200px;" } %>
-          <%= f.button :submit, "Reply", class: "btn btn-dark" %>
+          <%= f.button :submit, "REPLY", class: "btn note-reply-button" %>
         <% end %>
 
       <% else %>
+        <!-- Parent view, no reply yet -->
         <p class="text-muted mb-0">No reply from the teacher yet.</p>
       <% end %>
 
