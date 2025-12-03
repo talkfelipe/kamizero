@@ -26,14 +26,18 @@
   <div class="card subscription-card p-4 shadow-sm rounded">
     <%= simple_form_for @student, html: { data: { controller: "conditional-form" } } do |f| %>
       <%= f.input :name %>
-      <%= f.association :school, label: "School" %>
+      <%= f.association :school,
+                        label: "School",
+                        selected: @student.school_id %>
       <h3 class="mt-4 mb-3">TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
       <div class="row">
         <div class="col-6">
           <select name="classroom[grade]" id="student_classroom_id" class="form-select select optional">
             <option value="" label="Grade"></option>
             <% Notice::SUBGRADES.each do |grade| %>
-              <option value="<%= grade %>"><%= grade %></option>
+                  <option value="<%= grade %>" <%= "selected" if grade.to_s == @selected_grade.to_s %>>
+                    <%= grade %>
+                  </option>
             <% end %>
           </select>
         </div>
@@ -41,7 +45,9 @@
           <select name="classroom[name]" id="student_classroom_id" class="form-select select optional">
             <option value="" label="Classroom"></option>
             <% Notice::SUBCLASSROOMS.each do |name| %>
-              <option value="<%= name %>"><%= name %></option>
+              <option value="<%= name %>" <%= "selected" if name.to_s == @selected_classroom.to_s %>>
+                <%= name %>
+              </option>
             <% end %>
           </select>
         </div>

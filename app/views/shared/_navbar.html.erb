@@ -78,11 +78,15 @@
 
                 <% if current_user.respond_to?(:students) && current_user.children.any? %>
 
-                  <% current_user.children.each do |s| %>
-                    <% label = [s.school, s.classroom.grade, s.classroom.name]
+                  <% current_user.children.select(&:persisted?).each do |s| %>
+                    <% label = [
+                            s.school&.name,
+                            s.classroom&.grade,
+                            s.classroom&.name
+                            ]
                               .map { |v| v.respond_to?(:name) ? v.name : v }
                               .reject(&:blank?)
-                              .join(" ") %>
+                              .compact.join(" ") %>
 
                     <%= link_to label, "#", class: "dropdown-item" %>
                   <% end %>
