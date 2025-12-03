@@ -10,10 +10,18 @@
   <!-- FORM CARD -->
   <div class="notice-card">
     <%= simple_form_for @notice, html: { data: { controller: "conditional-form document-upload" } } do |f| %>
-      <%= f.input :attachment,
-                  as: :file,
-                  label: "Add Attachment",
-                  input_html: { data: { action: "change->document-upload#handleFileChange" } } %>
+      <div class="position-relative">
+        <%= f.input :attachment,
+                    as: :file,
+                    label: "Add Attachment",
+                    input_html: { data: { action: "change->document-upload#handleFileChange", "document-upload-target": "fileInput" } } %>
+        <div class="spinner-overlay d-none" data-document-upload-target="spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Processing...</span>
+          </div>
+          <span class="ms-2">Processing attachment...</span>
+        </div>
+      </div>
       <%= f.input :category,
                   collection: Notice::CATEGORIES,
                   input_html: {
@@ -23,8 +31,8 @@
                     }
                   } %>
       <div data-conditional-form-target="dependentField"
-           data-show-if="Event"
-           class="hidden">
+          data-show-if="Event"
+          class="hidden">
         <%= f.input :date,
                     as: :string,
                     placeholder: "yyyy/mm/dd",
@@ -56,7 +64,7 @@
                   } %>
       <!-- Clean HTML preview, shown after auto-fill (textarea will be hidden by JS) -->
       <div class="mt-3 d-none notice-content-preview"
-           data-document-upload-target="contentPreview"></div>
+          data-document-upload-target="contentPreview"></div>
       <h3>TARGET AUDIENCE <i class="fa-solid fa-angles-down"></i></h3>
       <div class="row">
         <div class="col-6">
@@ -70,8 +78,8 @@
       <!-- Image/PDF preview (unchanged) -->
       <div>
         <img src=""
-             data-document-upload-target="preview"
-             style="max-width: 100%; height: auto; border-radius: 10px; border: 1px solid #d0d7de;">
+            data-document-upload-target="preview"
+            style="max-width: 100%; height: auto; border-radius: 10px; border: 1px solid #d0d7de;">
       </div>
     <% end %>
   </div>

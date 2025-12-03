@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   // added contentPreview target
-  static targets = ["title", "content", "preview", "contentPreview"]
+  static targets = ["title", "content", "preview", "contentPreview", "spinner", "fileInput"]
 
   connect() {
     console.log(this.titleTarget, this.contentTarget)
@@ -13,7 +13,26 @@ export default class extends Controller {
     const file = event.target.files[0]
     if (!file) return
 
+    this.showSpinner()
     this.OCRscan(file)
+  }
+
+  showSpinner() {
+    if (this.hasSpinnerTarget) {
+      this.spinnerTarget.classList.remove("d-none")
+    }
+    if (this.hasFileInputTarget) {
+      this.fileInputTarget.disabled = true
+    }
+  }
+
+  hideSpinner() {
+    if (this.hasSpinnerTarget) {
+      this.spinnerTarget.classList.add("d-none")
+    }
+    if (this.hasFileInputTarget) {
+      this.fileInputTarget.disabled = false
+    }
   }
 
   toBase64(file) {
@@ -48,6 +67,10 @@ export default class extends Controller {
           const textContent = data.ParsedResults[0].ParsedText
           this.sendTextFromImage(textContent)
         })
+        .catch(error => {
+          console.error("OCR error:", error)
+          this.hideSpinner()
+        })
     }
   }
 
@@ -79,6 +102,12 @@ export default class extends Controller {
 
         // hide only the textarea (label stays visible)
         this.contentTarget.classList.add("d-none")
+
+        this.hideSpinner()
+      })
+      .catch(error => {
+        console.error("Error processing file:", error)
+        this.hideSpinner()
       })
   }
 }
