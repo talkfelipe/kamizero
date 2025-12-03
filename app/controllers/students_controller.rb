@@ -1,6 +1,16 @@
 class StudentsController < ApplicationController
   def new
-    @student = Student.new
+    @student = current_user.children.new
+    if params[:name].present?
+      @student.name = params[:name]
+    end
+
+    if params[:school_id].present?
+      @student.school_id = params[:school_id]
+    end
+
+    @selected_grade = params[:grade]
+    @selected_classroom = params[:classroom]
   end
 
   def create

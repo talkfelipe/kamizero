@@ -84,3 +84,6 @@ gem "ruby_llm", "~> 1.2.0"
 
 
 gem "kramdown"
+
+gem "rqrcode"
+gem "rqrcode_png"
