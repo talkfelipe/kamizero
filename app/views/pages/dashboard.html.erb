@@ -62,7 +62,7 @@
             <i class="fa-solid fa-bell me-2"></i>
             <span class="fw-semibold">UNREAD NOTICES</span>
             <span class="badge bg-danger ms-2">
-              <%= @unread_count || 0 %>
+              <%= @unread_count_notices || 0 %>
             </span>
           </div>
           <%= link_to "VIEW ALL", notices_path, class: "btn button-view-all btn-sm" %>
@@ -91,7 +91,6 @@
                       <% end %>
                     </div>
                   </div>
-
                 <% end %>
               </li>
             <% end %>
@@ -105,28 +104,42 @@
     <!-- NOTES CARD (RIGHT – 6 COLS) -->
     <div class="col-md-6">
       <div class="card dashboard-card notes-card h-100">
-
         <div class="card-header d-flex justify-content-between align-items-center">
-          <span class="fw-semibold">NOTES</span>
-          <%= link_to "VIEW ALL", "#", class: "btn button-view-all btn-sm" %>
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-bell me-2"></i>
+              <span class="fw-semibold">NOTES</span>
+              <span class="badge bg-danger ms-2">
+               <%= @unread_count_notes || 0 %>
+              </span>
+          </div>
+          <%= link_to "VIEW ALL", notes_path, class: "btn button-view-all btn-sm" %>
         </div>
-        <ul class="list-group list-group-flush">
-          <% if @notes.present? %>
-            <% @notes.each do |note| %>
-              <li class="list-group-item">
-                <!-- placeholder until routes/content exist -->
-                <%= link_to "#", class: "d-flex w-100 text-decoration-none text-reset" do %>
-                  <div class="flex-grow-1">
+
+        <ul class="list-group list-group-flush notices-list">
+          <% if @unread_notes.present? %>
+            <% @unread_notes.each do |note| %>
+              <li class="list-group-item unread-item">
+                <%= link_to note_path(note), class: "d-flex w-100 event-item text-decoration-none text-reset" do %>
+
+                  <!-- DATE PILL -->
+                  <div class="event-date-pill me-3">
+                    <div class="event-month"><%= note.created_at.strftime("%b").upcase %></div>
+                    <div class="event-day"><%= note.created_at.strftime("%-d") %></div>
+                  </div>
+
+                  <!-- TEXT CONTENT -->
+                  <div class="event-text flex-grow-1">
                     <div class="event-title"><%= note.title %></div>
-                    <div class="event-meta"><%= note.created_at.strftime("%A") %></div>
+
+
+                    <div class="event-meta">
+                      <%= note.created_at.strftime("%A") %></div>
                   </div>
                 <% end %>
               </li>
             <% end %>
           <% else %>
-            <li class="list-group-item text-muted bg-white">
-              No notes yet
-            </li>
+            <li class="list-group-item text-muted bg-white">No notes yet</li>
           <% end %>
         </ul>
       </div>
