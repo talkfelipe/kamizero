@@ -23,7 +23,6 @@
 
   .notice-header a.text-secondary {
     font-size: 0.95rem;
-    letter-spacing: 0.04em;
     text-transform: uppercase;
     display: inline-block;
     margin-bottom: 0.35rem;
@@ -40,6 +39,23 @@
 
   .notice-header a.text-secondary:hover {
     text-decoration: underline !important;
+  }
+
+  .notice-header h2 {
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+    color: #003049;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .notice-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.96rem;
+
+    i {
+      margin-left: 6px;
+    }
   }
 
   /* ----------------------------------------------------------
@@ -76,7 +92,6 @@
     font-size: 20px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: normal;
     color: #0097b2;
     margin: 0 0 0.75rem 0;
   }
@@ -108,7 +123,6 @@
     font-weight: 600;
     padding: 8px 22px;
     border-radius: 6px;
-    letter-spacing: 0.03em;
     text-transform: uppercase;
     box-shadow: none;
   }
@@ -135,6 +149,7 @@
     font-weight: 500;
     padding: 6px 10px;
     border-radius: 9999px;
+    font-family: "Poppins", sans-serif;
   }
 
   /* RESPONSIVE */
