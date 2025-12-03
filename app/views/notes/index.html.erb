@@ -5,10 +5,10 @@
       <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
         <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
       <% end %>
-      <h2>All Notes</h2>
-      <p>Browse all notes received <i class="fa-solid fa-angles-down"></i></p>
+      <h2>All Messages</h2>
+      <p>View All Messages<i class="fa-solid fa-angles-down"></i></p>
     </div>
-    <!-- CREATE NOTES DROPDOWN (only for parents) -->
+    <!-- CREATE Message DROPDOWN (only for parents) -->
 
       <% if current_user.role == "parent" && @students_for_dropdown.present? %>
         <div class="dropdown mb-3">
@@ -18,7 +18,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
             <i class="fa-solid fa-square-plus"></i>
-            CREATE NOTES
+            CREATE MESSAGE
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createNoteDropdown">
             <% @students_for_dropdown.each do |student| %>
@@ -60,7 +60,7 @@
       <% end %>
     </div>
     <% end %>
-    <!-- NOTES LIST -->
+    <!-- MESSAGES LIST -->
     <div class="notices-list">
       <% @notes.each do |note| %>
         <%= link_to note_path(note), class: "notice-card position-relative" do %>
