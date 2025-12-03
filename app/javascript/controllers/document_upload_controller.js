@@ -3,10 +3,28 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   // added contentPreview target
-  static targets = ["title", "content", "preview", "contentPreview", "spinner", "fileInput"]
+  static targets = ["title", "content", "preview", "contentPreview", "spinner", "fileInput", "formFields", "previewContainer"]
 
   connect() {
-    console.log(this.titleTarget, this.contentTarget)
+    // Hide attachment section when switching away from the upload tab
+    document.addEventListener('shown.bs.tab', this.handleTabChange.bind(this))
+  }
+
+  disconnect() {
+    document.removeEventListener('shown.bs.tab', this.handleTabChange.bind(this))
+  }
+
+  handleTabChange(event) {
+    // Check if the "Create from uploaded file" tab is now active
+    const isUploadTabActive = event.target.id === 'home-tab'
+
+    // Show/hide the attachment field based on active tab
+    if (this.hasFileInputTarget) {
+      const attachmentWrapper = this.fileInputTarget.closest('.position-relative')
+      if (attachmentWrapper) {
+        attachmentWrapper.style.display = isUploadTabActive ? '' : 'none'
+      }
+    }
   }
 
   async handleFileChange(event) {
@@ -124,6 +142,16 @@ export default class extends Controller {
 
         // hide only the textarea (label stays visible)
         this.contentTarget.classList.add("d-none")
+
+        // show the form fields after content is loaded
+        if (this.hasFormFieldsTarget) {
+          this.formFieldsTarget.classList.remove("d-none")
+        }
+
+        // show the image preview after content is generated
+        if (this.hasPreviewContainerTarget) {
+          this.previewContainerTarget.classList.remove("d-none")
+        }
 
         this.hideSpinner()
       })
