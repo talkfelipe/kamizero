@@ -1,14 +1,23 @@
-<!-- NOTICE SHOW PAGE -->
+<!-- NOTE SHOW PAGE -->
 <div class="notice-page notice-show-page">
-  <!-- HEADER: back link + optional subtext -->
+
+  <!-- HEADER: back link -->
   <div class="notice-header notice-show-header my-3">
-    <%= link_to notes_path, class: "text-decoration-none text-secondary" do %>
+    <%= link_to notes_path, class: "notice-back-link text-decoration-none" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
   </div>
-  <!-- MAIN NOTICE CARD (details) -->
+
+  <!-- MAIN NOTE CARD (details) -->
   <div class="card notice-show-card shadow-sm bg-white">
     <div class="card-body position-relative">
+
+      <!-- SECTION: NOTE FROM PARENT -->
+      <h3 class="note-section-heading">
+        NOTE FROM PARENT
+      </h3>
+
+      <!-- Meta pills -->
       <div class="mb-3 d-flex flex-wrap gap-2 notice-meta-pills">
         <span class="badge rounded-pill pill-meta">
           Grade: <%= @note.student.classroom.grade %>
@@ -17,21 +26,37 @@
           Class: <%= @note.student.classroom.name %>
         </span>
       </div>
-      <!-- Content -->
-      <h2 class="card-title notice-show-title mb-3">
+
+      <!-- NOTE title + content -->
+      <h4 class="note-title">
         <%= @note.title %>
-      </h2>
-      <p><%= @note.content %></p>
+      </h4>
+      <p class="mb-4"><%= @note.content %></p>
+
+      <!-- SECTION SEPARATOR BEFORE REPLY -->
+      <hr class="note-section-separator">
+
+      <!-- SECTION: REPLY FROM TEACHER -->
+      <h3 class="note-section-heading">
+        REPLY FROM TEACHER
+      </h3>
+
       <% if @note.reply.present? %>
-        <p>Reply: <%= @note.reply %></p>
+        <p class="mb-0"><%= @note.reply %></p>
+
+      <% elsif current_user.role == "teacher" %>
+        <%= simple_form_for @note do |f| %>
+          <%= f.input :reply,
+                      label: false,
+                      placeholder: "Enter the reply here...",
+                      input_html: { style: "height: 200px;" } %>
+          <%= f.button :submit, "Reply", class: "btn btn-dark" %>
+        <% end %>
+
       <% else %>
-        <div class="card-body position-relative">
-          <%= simple_form_for @note do |f| %>
-            <%= f.input :reply, placeholder: "Enter the reply here...", input_html: { style: "height: 200px;" } %>
-            <%= f.button :submit, "Reply", class: "btn btn-dark" %>
-          <% end %>
-        </div>
+        <p class="text-muted mb-0">No reply from the teacher yet.</p>
       <% end %>
+
     </div>
   </div>
 </div>
