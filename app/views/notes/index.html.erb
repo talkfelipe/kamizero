@@ -1,97 +1,116 @@
-<div class="container notice-page notices-page">
-  <!-- BACK + PAGE TITLE + SUBTITLE -->
-  <div class="notice-header d-flex justify-content-between align-items-end">
-    <div>
-      <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
-        <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
-      <% end %>
-      <h2>All Messages</h2>
-      <p>View All Messages<i class="fa-solid fa-angles-down"></i></p>
-    </div>
-    <!-- CREATE Message DROPDOWN (only for parents) -->
+<div class="container note-page notes-page">
 
-      <% if current_user.role == "parent" && @students_for_dropdown.present? %>
-        <div class="dropdown mb-3">
-          <button class="btn button-view-all dropdown-toggle"
-                  type="button"
-                  id="createNoteDropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false">
-            <i class="fa-solid fa-square-plus"></i>
-            CREATE MESSAGE
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createNoteDropdown">
-            <% @students_for_dropdown.each do |student| %>
-              <li>
-                <%= link_to new_student_note_path(student), class: "dropdown-item" do %>
-                  <i class="fa-solid fa-user-graduate me-1"></i>
-                  <%= "#{student.name} (#{student.classroom.grade}#{student.classroom.name} Class)" %>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-        <% end %>
+  <!-- HEADER – EXACT SAME STRUCTURE AS NOTICES INDEX -->
+  <div class="note-header">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
+    <% end %>
+
+    <h2>All Messages</h2>
+    <p>View All Messages<i class="fa-solid fa-angles-down"></i></p>
+  </div>
+
+  <!-- HEADER ACTIONS (parent only) - OUTSIDE note-index-card like notices -->
+  <% if current_user.role == "parent" && @students_for_dropdown.present? %>
+    <div class="notes-header-actions">
+      <div class="dropdown">
+        <button class="btn button-view-all dropdown-toggle"
+                type="button"
+                id="createNoteDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+          <i class="fa-solid fa-square-plus"></i>
+          CREATE MESSAGE
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createNoteDropdown">
+          <% @students_for_dropdown.each do |student| %>
+            <li>
+              <%= link_to new_student_note_path(student), class: "dropdown-item" do %>
+                <i class="fa-solid fa-user-graduate me-1"></i>
+                <%= "#{student.name} (#{student.classroom.grade}#{student.classroom.name} Class)" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  <!-- MAIN WHITE CARD (wraps filters + list) -->
-  <div class="notice-index-card">
-    <!-- FILTERS -->
-    <% if current_user.role == "parent" %>
-    <div class="notices-filters-card">
+  <% end %>
+
+  <!-- FILTERS (parents only) - OUTSIDE note-index-card like notices -->
+  <% if current_user.role == "parent" %>
+    <div class="notes-filters-card">
       <%= simple_form_for :filters, url: notes_path, method: :get,
-                          html: { class: "notice-filters" } do |f| %>
-        <!-- School Filter (parents only) -->
-        <% if current_user.role == "parent" %>
-          <div class="filter-item">
-            <%= f.input :school_id,
-              collection: [["All schools", ""]] +
-                          current_user.children
-                                      .includes(:school)
-                                      .map { |child| [child.school.name, child.school.id] },
-              selected: params.dig(:filters, :school_id),
-              label: false,
-              wrapper: false,
-              input_html: {
-                class: "filter-select",
-                onchange: "this.form.submit();"
-              } %>
-          </div>
-        <% end %>
+                          html: { class: "note-filters" } do |f| %>
+
+        <div class="filter-item">
+          <%= f.input :school_id,
+            collection: [["All schools", ""]] +
+                        current_user.children
+                                    .includes(:school)
+                                    .map { |child| [child.school.name, child.school.id] },
+            selected: params.dig(:filters, :school_id),
+            label: false,
+            wrapper: false,
+            input_html: {
+              class: "filter-select",
+              onchange: "this.form.submit();"
+            } %>
+        </div>
+
+        <div>
+          <%= link_to "CLEAR", notes_path, class: "filter-clear" %>
+        </div>
       <% end %>
     </div>
-    <% end %>
-    <!-- MESSAGES LIST -->
-    <div class="notices-list">
+  <% end %>
+
+  <!-- MESSAGES LIST / EMPTY STATE - NO WRAPPER CARD -->
+  <div class="notes-list">
+    <% if @notes.present? %>
       <% @notes.each do |note| %>
-        <%= link_to note_path(note), class: "notice-card position-relative" do %>
+        <%= link_to note_path(note), class: "note-card position-relative" do %>
           <!-- Icon -->
-          <div class="notice-card-icon">
+          <div class="note-card-icon">
             <i class="fa-solid fa-book"></i>
           </div>
+
           <!-- Main Content -->
-          <div class="notice-card-main">
+          <div class="note-card-main">
             <!-- Grade / Class pills -->
-            <div class="mb-3 d-flex flex-wrap gap-2 notice-meta-pills">
-              <span class="badge rounded-pill pill-meta" id="pills">
+            <div class="mb-3 d-flex flex-wrap gap-2 note-meta-pills">
+              <span class="badge rounded-pill pill-meta">
                 Grade: <%= note.student.classroom.grade %>
               </span>
-              <span class="badge rounded-pill pill-meta" id="pills">
+              <span class="badge rounded-pill pill-meta">
                 Class: <%= note.student.classroom.name %>
               </span>
             </div>
+
             <!-- Student name -->
-            <p>Name: <%= note.student.name %></p>
+            <p class="note-student-name">
+              Name: <%= note.student.name %>
+            </p>
+
             <!-- Title -->
-            <div class="notice-card-header">
-              <h2 class="notice-card-title"><%= note.title %></h2>
+            <div class="note-card-header">
+              <h2 class="note-card-title"><%= note.title %></h2>
             </div>
+
             <!-- Content preview -->
-            <p class="notice-card-body">
+            <p class="note-card-body">
               <%= truncate(strip_tags(note.content), length: 100) %>
             </p>
           </div>
-        <% end %> <!-- end link_to block -->
-      <% end %> <!-- end @notes.each -->
-    </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="notes-empty-state">
+        <div class="notes-empty-icon">
+          <i class="fa-regular fa-message"></i>
+        </div>
+        <h3>No messages yet</h3>
+        <p>Messages sent by Parents and Replies by Teachers will appear here.</p>
+      </div>
+    <% end %>
   </div>
 </div>

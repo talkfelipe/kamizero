@@ -1,11 +1,14 @@
 <!-- NOTE SHOW PAGE -->
 <div class="container notice-page notice-show-page">
 
-  <!-- HEADER: back link – same structure/classes as notices index -->
+  <!-- HEADER: back + title + subtitle (matches notices index) -->
   <div class="notice-header">
     <%= link_to notes_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
+
+    <h2>Message Details</h2>
+    <p>View this message and reply<i class="fa-solid fa-angles-down"></i></p>
   </div>
 
   <!-- MAIN NOTE CARD (details) -->
