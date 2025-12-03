@@ -10,6 +10,9 @@ class Notice < ApplicationRecord
   belongs_to :classroom, optional: true
   has_one_attached :attachment
 
+  scope :templates, -> { where(is_template: true) }
+  scope :not_templates, -> { where(is_template: [false, nil]) }
+
   CATEGORIES = ["Event", "General"]
   SUBGRADES = ["1", "2", "3", "4", "5", "6"]
   SUBCLASSROOMS = ["A", "B", "C", "D"]
