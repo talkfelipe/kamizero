@@ -10,8 +10,8 @@
 
   <!-- MAIN NOTE CARD (details) -->
   <div class="card notice-show-card shadow-sm bg-white"
-       data-controller="mark-read"
-       data-mark-read-url-value="<%= mark_as_read_note_path(@note, format: :json) %>">
+      data-controller="mark-read"
+      data-mark-read-url-value="<%= mark_as_read_note_path(@note, format: :json) %>">
     <div class="card-body position-relative">
 
       <!-- SECTION: NOTE FROM PARENT -->
@@ -49,7 +49,7 @@
 
       <% elsif current_user.role == "teacher" %>
         <!-- Teacher, no reply yet: show form -->
-        <%= simple_form_for [@note.student, @note], method: :patch do |f| %>
+        <%= simple_form_for @note, method: :patch do |f| %>
           <%= f.input :reply,
                       label: false,
                       placeholder: "Enter the reply here...",
