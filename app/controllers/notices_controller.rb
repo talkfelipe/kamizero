@@ -11,7 +11,7 @@ class NoticesController < ApplicationController
     # status = true by looking at same show page several times
     read = ReadNotification.find_or_initialize_by(
       user: current_user,
-      notice: notice
+      notification: notice
     )
     read.status = true
     read.save!

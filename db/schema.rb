@@ -81,10 +81,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_085615) do
   create_table "read_notifications", force: :cascade do |t|
     t.boolean "status", default: false
     t.bigint "user_id", null: false
-    t.bigint "notice_id", null: false
+    t.bigint "notification_id"
+    t.string "notification_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["notice_id"], name: "index_read_notifications_on_notice_id"
+    t.index ["notification_type", "notification_id"], name: "idx_on_notification_type_notification_id_4a878fc935"
     t.index ["user_id"], name: "index_read_notifications_on_user_id"
   end
 
@@ -132,7 +133,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_085615) do
   add_foreign_key "notes", "students"
   add_foreign_key "notices", "classrooms"
   add_foreign_key "notices", "schools"
-  add_foreign_key "read_notifications", "notices"
   add_foreign_key "read_notifications", "users"
   add_foreign_key "students", "classrooms"
   add_foreign_key "students", "schools"
