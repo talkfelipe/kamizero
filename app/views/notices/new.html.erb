@@ -38,54 +38,10 @@
             </div>
           </div>
           <div class="d-none" data-document-upload-target="formFields">
-            <%= f.input :category,
-                    collection: Notice::CATEGORIES,
-                    input_html: {
-                      data: {
-                        "conditional-form-target" => "selector",
-                        action: "change->conditional-form#toggleDependentField"
-                      }
-                    } %>
-            <div data-conditional-form-target="dependentField"
-            data-show-if="Event"
-            class="hidden">
-              <%= f.input :date,
-                      as: :string,
-                      placeholder: "yyyy/mm/dd",
-                      input_html: { data: { controller: "flatpickr" } } %>
-              <div class="row">
-                <div class="col-6">
-                  <%= f.input :start_time,
-                          as: :string,
-                          placeholder: "10:30:00",
-                          input_html: { data: { controller: "timepicker" } } %>
-                </div>
-                <div class="col-6">
-                  <%= f.input :end_time,
-                          as: :string,
-                          placeholder: "11:30:00",
-                          input_html: { data: { controller: "timepicker" } } %>
-                </div>
-              </div>
-            </div>
-            <%= f.association :classroom, collection: [["ALL", ""]] + @school.classrooms.map{|classroom| ["#{classroom.grade}#{classroom.name}", classroom.id]}, include_blank: false %>
-            <%= f.input :title,
-                    placeholder: "e.g., Sports day",
-                    input_html: { data: { "document-upload-target": "title" } } %>
-            <!-- Content input (label + textarea kept for manual entry) -->
-            <%= f.input :content,
-                    placeholder: "Enter the full notice comment here...",
-                    input_html: {
-                      style: "height: 300px;",
-                      data: { "document-upload-target": "content" }
-                    } %>
-            <!-- Clean HTML preview, shown after auto-fill (textarea will be hidden by JS) -->
-            <div class="mt-3 d-none notice-content-preview"
-            data-document-upload-target="contentPreview"></div>
-            <div class="d-flex justify-content-end m-3">
-              <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
-              <%= f.button :submit, class: "btn btn-dark" %>
-            </div>
+            <%= render "form_fields", f: f,
+                title_data: { data: { "document-upload-target": "title" } },
+                content_data: { data: { "document-upload-target": "content" } },
+                content_preview: true %>
           </div>
           <!-- Image/PDF preview (hidden until content is generated) -->
           <div class="d-none" data-document-upload-target="previewContainer">
@@ -97,50 +53,63 @@
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <%= simple_form_for @notice, html: { id: "notice-blank-form", data: { controller: "conditional-form" } } do |f| %>
-          <%= f.input :category,
-                    collection: Notice::CATEGORIES,
-                    input_html: {
-                      data: {
-                        "conditional-form-target" => "selector",
-                        action: "change->conditional-form#toggleDependentField"
-                      }
-                    } %>
-          <div data-conditional-form-target="dependentField"
-            data-show-if="Event"
-            class="hidden">
-            <%= f.input :date,
-                      as: :string,
-                      placeholder: "yyyy/mm/dd",
-                      input_html: { data: { controller: "flatpickr" } } %>
-            <div class="row">
-              <div class="col-6">
-                <%= f.input :start_time,
-                          as: :string,
-                          placeholder: "10:30:00",
-                          input_html: { data: { controller: "timepicker" } } %>
-              </div>
-              <div class="col-6">
-                <%= f.input :end_time,
-                          as: :string,
-                          placeholder: "11:30:00",
-                          input_html: { data: { controller: "timepicker" } } %>
-              </div>
-            </div>
-          </div>
-          <%= f.association :classroom, collection: [["ALL", ""]] + @school.classrooms.map{|classroom| ["#{classroom.grade}#{classroom.name}", classroom.id]}, include_blank: false %>
-          <%= f.input :title, placeholder: "e.g., Sports day" %>
-          <!-- Content input (label + textarea kept for manual entry) -->
-          <%= f.input :content,
-                  placeholder: "Enter the full notice comment here...",
-                  input_html: { style: "height: 300px;" } %>
-          <div class="d-flex justify-content-end m-3">
-            <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
-            <%= f.button :submit, class: "btn btn-dark" %>
-          </div>
+          <%= render "form_fields", f: f %>
         <% end %>
       </div>
       <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <p class="text-muted mb-4">Select a template below to pre-fill the form with content you can customize.</p>
+        <div class="row">
+          <% @templates.each do |template| %>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                <div class="card-body">
+                  <span class="badge <%= template.category == 'Event' ? 'bg-warning' : 'bg-secondary' %> mb-2"><%= template.category %></span>
+                  <h5 class="card-title"><%= template.title %></h5>
+                  <p class="card-text text-muted small"><%= truncate(template.content, length: 100) %></p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                  <button type="button"
+                          class="btn btn-dark btn-sm w-100 use-template-btn"
+                          data-category="<%= template.category %>"
+                          data-title="<%= template.title %>"
+                          data-content="<%= template.content %>">
+                    Use this template
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".use-template-btn").forEach(function(button) {
+      button.addEventListener("click", function() {
+        const category = this.dataset.category;
+        const title = this.dataset.title;
+        const content = this.dataset.content;
+
+        const blankForm = document.getElementById("notice-blank-form");
+        if (!blankForm) return;
+
+        const categorySelect = blankForm.querySelector("select[name='notice[category]']");
+        const titleInput = blankForm.querySelector("input[name='notice[title]']");
+        const contentTextarea = blankForm.querySelector("textarea[name='notice[content]']");
+
+        if (categorySelect) {
+          categorySelect.value = category;
+          categorySelect.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+        if (titleInput) titleInput.value = title;
+        if (contentTextarea) contentTextarea.value = content;
+
+        // Switch to the blank form tab
+        const blankFormTab = document.getElementById("profile-tab");
+        if (blankFormTab) blankFormTab.click();
+      });
+    });
+  });
+</script>

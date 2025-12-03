@@ -6,6 +6,148 @@ School.destroy_all
 
 puts "Creating seeds"
 
+# Notice Templates (will be created for each school)
+NOTICE_TEMPLATES = [
+  {
+    category: "Event",
+    title: "Field Trip Permission",
+    content: "Dear Parents,
+
+We are planning a **field trip** for our class. Please review the details below and sign the permission slip.
+
+## Trip Details
+
+- **Destination:** *[Enter destination]*
+- **Date:** *[Enter date]*
+- **Departure Time:** *[Enter time]*
+- **Return Time:** *[Enter time]*
+
+## What to Bring
+
+- Packed lunch and water bottle
+- Comfortable walking shoes
+- Weather-appropriate clothing
+
+---
+
+Please return the signed permission slip by **[deadline date]**.
+
+*Thank you for your support!*"
+  },
+  {
+    category: "General",
+    title: "Parent-Teacher Conference",
+    content: "Dear Parents,
+
+We would like to invite you to our upcoming **Parent-Teacher Conference** to discuss your child's progress.
+
+## Conference Details
+
+- **Date:** *[Enter date]*
+- **Time Slots Available:** *[Enter available times]*
+- **Location:** *[Enter location/classroom]*
+
+## Topics to Discuss
+
+1. Academic progress
+2. Social development
+3. Areas for improvement
+4. Goals for the upcoming term
+
+---
+
+Please reply to confirm your preferred time slot.
+
+*We look forward to meeting with you!*"
+  },
+  {
+    category: "Event",
+    title: "School Event Invitation",
+    content: "Dear Parents,
+
+You are cordially invited to attend our upcoming **school event**!
+
+## Event Details
+
+- **Event Name:** *[Enter event name]*
+- **Date:** *[Enter date]*
+- **Time:** *[Enter start time] - [Enter end time]*
+- **Location:** *[Enter location]*
+
+## What to Expect
+
+- Student performances
+- Activities and games
+- Refreshments
+
+---
+
+We hope to see you there!
+
+*Warm regards,*
+**[Teacher Name]**"
+  },
+  {
+    category: "General",
+    title: "Homework and Study Tips",
+    content: "Dear Parents,
+
+Here are some helpful tips to support your child's learning at home.
+
+## Daily Homework Routine
+
+- Set a consistent time and quiet place for homework
+- Review assignments together when needed
+- Encourage breaks every **20-30 minutes**
+
+## Reading at Home
+
+- Read together for at least **15 minutes** daily
+- Discuss the story and ask questions
+- Visit the library regularly
+
+## Upcoming Assignments
+
+- *[List any upcoming projects or tests]*
+
+---
+
+Please reach out if you have any questions about your child's homework.
+
+*Best regards,*
+**[Teacher Name]**"
+  },
+  {
+    category: "General",
+    title: "Classroom Supply Request",
+    content: "Dear Parents,
+
+We are running low on some classroom supplies and would appreciate any donations.
+
+## Items Needed
+
+- Tissues
+- Hand sanitizer
+- Colored pencils
+- Glue sticks
+- Construction paper
+
+## Optional Donations
+
+- Board games for indoor recess
+- Books for classroom library
+
+---
+
+*Any contribution, big or small, is greatly appreciated!*
+
+Thank you for your continued support.
+
+*Best regards,*
+**[Teacher Name]**"
+  }
+]
+
 schools = ["Meguro", "Shinagawa"]
 surnames = ["Sato", "Suzuki", "Tanaka", "Yamada", "Ueno"]
 first_names = ["Ken", "Taro","Hiroshi", "Makoto", "Yuko", "Yuki", "Isao", "Kenichi"]
@@ -297,6 +439,12 @@ notices_general = [
 schools.each do |school_name|
   school = School.create!(name: school_name)
   puts "#{school.name} School created"
+
+  # Create notice templates for this school
+  NOTICE_TEMPLATES.each do |template_attrs|
+    Notice.create!(template_attrs.merge(school: school, is_template: true))
+    puts "#{school.name} Template '#{template_attrs[:title]}' created"
+  end
 
   notices_general.each_with_index do |attributes, i|
     school_notice = Notice.new(attributes)
