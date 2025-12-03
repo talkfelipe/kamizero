@@ -25,6 +25,7 @@ class User < ApplicationRecord
   has_many :notices, through: :school
   has_many :read_notifications
   has_many :read_notices, through: :read_notifications, source: :notice
+  has_many :read_notes, through: :read_notificatiosn, source: :note
 
   def parent_notices
     self.parent_general_notices.where(classroom: [nil, self.children_classrooms])
