@@ -82,6 +82,15 @@ class NoticesController < ApplicationController
     end
   end
 
+  def preview_markdown
+    content = params[:content]
+    title = params[:title]
+
+    html_content = content.present? ? helpers.markdown(content) : ""
+
+    render json: { title: title, content_html: html_content }
+  end
+
   def events
     date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.today
     # Start and end of the visible month
