@@ -37,6 +37,7 @@ class Notice < ApplicationRecord
       Your task:
       1. Extract a concise title for the notice.
       2. Rewrite the remaining body as clean, well-structured Markdown.
+      3. Fill the content with the original language of the text.
 
       Requirements for the "content" field:
       - Use headings (#, ##) where it makes sense.

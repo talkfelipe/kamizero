@@ -106,9 +106,12 @@
         if (titleInput) titleInput.value = title;
         if (contentTextarea) contentTextarea.value = content;
 
-        // Switch to the blank form tab
+        // Switch to the blank form tab using Bootstrap 5 Tab API
         const blankFormTab = document.getElementById("profile-tab");
-        if (blankFormTab) blankFormTab.click();
+        if (blankFormTab) {
+          const tab = new bootstrap.Tab(blankFormTab);
+          tab.show();
+        }
       });
     });
   });
