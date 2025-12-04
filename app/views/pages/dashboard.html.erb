@@ -1,16 +1,80 @@
 <%# ============================================================
-    BUILD SCHOOL → COLOR INDEX MAP (STABLE 1,2,3...) FOR TAGS & CALENDAR
+    BUILD SCHOOL → COLOR MAP (DYNAMIC HSL - INFINITE COLORS)
+    FIX 3: Colors generated dynamically from school ID
+    Each school ID produces unique, deterministic color
     ============================================================ %>
-<% school_color_index = {} %>
 <%
-  # Unique schools from current user's subscriptions
+  # Helper method to generate pastel color from school ID
+  def generate_school_color(school_id)
+    # Golden angle distribution for good color spacing
+    hue = (school_id * 137.508) % 360
+
+    # Adjust hue to prefer cool spectrum with some warm accents
+    # Cool range: 180-300 (blues, greens, purples)
+    # Warm range: 0-60 (oranges, browns)
+    if hue > 300 || hue < 60
+      # Warm side - shift to earth tones (oranges, browns)
+      hue = ((hue % 60) * 0.5) + 15  # 15-45 range (orange-brown)
+    elsif hue >= 60 && hue < 180
+      # Avoid yellows/limes - shift to cool
+      hue = ((hue - 60) * 0.5) + 180  # Shift to blue-green range
+    end
+    # else: already in cool range (180-300), keep as is
+
+    # Pastel tone: moderate saturation, high lightness
+    saturation = 55 + (school_id % 15)  # 55-70% for soft colors
+    lightness = 70 + (school_id % 10)   # 70-80% for pastel
+
+    "hsl(#{hue.round}, #{saturation}%, #{lightness}%)"
+  end
+
+  # Helper to get darker version for text
+  def generate_school_color_dark(school_id)
+    hue = (school_id * 137.508) % 360
+
+    if hue > 300 || hue < 60
+      hue = ((hue % 60) * 0.5) + 15
+    elsif hue >= 60 && hue < 180
+      hue = ((hue - 60) * 0.5) + 180
+    end
+
+    # Darker for text readability
+    saturation = 60 + (school_id % 15)
+    lightness = 35 + (school_id % 10)
+
+    "hsl(#{hue.round}, #{saturation}%, #{lightness}%)"
+  end
+
+  school_colors = {}
   schools = current_user.children.includes(:school).map(&:school).uniq
 
-  # Stable order so colors do NOT change on refresh
-  schools.sort_by(&:id).each_with_index do |school, idx|
-    school_color_index[school.id] = idx + 1   # 1,2,3... used by SCSS .school-tag-n
+  schools.each do |school|
+    school_colors[school.id] = {
+      light: generate_school_color(school.id),
+      dark: generate_school_color_dark(school.id)
+    }
   end
 %>
+
+<style>
+  /* Generate dynamic school color classes */
+  <% school_colors.each do |school_id, colors| %>
+    /* School ID <%= school_id %> colors */
+    .school-tag-<%= school_id %>,
+    .calendar-event.school-tag-<%= school_id %> {
+      background-color: <%= colors[:light] %> !important;
+      color: #ffffff !important;
+    }
+
+    .event-date-pill-<%= school_id %> {
+      background: linear-gradient(145deg, <%= colors[:light] %> 0%, <%= colors[:dark] %> 100%) !important;
+    }
+
+    .event-title-<%= school_id %> {
+      color: <%= colors[:dark] %> !important;
+    }
+  <% end %>
+</style>
 
 <div class="container my-4 dashboard-page">
   <!-- WELCOME CARD -->
@@ -36,8 +100,7 @@
       <div class="dashboard-schools mt-1">
         <% current_user.children.each do |student| %>
           <% school = student.school %>
-          <% color_idx = school_color_index[school.id] %>
-          <p class="mb-0 school-tag school-tag-<%= color_idx %>">
+          <p class="mb-0 school-tag school-tag-<%= school.id %>">
             <%= school.name %> School
           </p>
         <% end %>
@@ -107,7 +170,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center gap-2">
             <i class="fa-solid fa-bell me-2"></i>
-              <span class="fw-semibold">NOTES</span>
+              <span class="fw-semibold">MESSAGES</span>
               <span class="badge bg-danger ms-2">
                <%= @unread_count_notes || 0 %>
               </span>
@@ -169,9 +232,7 @@
 
               <!-- EVENTS: start time + title, each on its own line (no wrap to multiple rows per event) -->
               <% visible_events.each do |event| %>
-                <% color_idx = school_color_index[event.school_id] %>
-                <% classes = ["calendar-event"] %>
-                <% classes << "school-tag-#{color_idx}" if color_idx %>
+                <% classes = ["calendar-event", "school-tag-#{event.school_id}"] %>
 
                 <%= link_to notice_path(event), class: classes.join(" ") do %>
                   <% label_parts = [] %>
@@ -208,8 +269,8 @@
                 <%= link_to notice_path(event),
                             class: "event-item d-flex w-100 text-decoration-none text-reset" do %>
 
-                  <!-- DATE PILL -->
-                  <div class="event-date-pill me-3">
+                  <!-- FIX 2: DATE PILL with school color gradient -->
+                  <div class="event-date-pill event-date-pill-<%= event.school_id %> me-3">
                     <div class="event-month">
                       <%= event.date.strftime("%b") %>
                     </div>
@@ -220,7 +281,8 @@
 
                   <!-- TEXT BLOCK -->
                   <div class="event-text flex-grow-1">
-                    <div class="event-title">
+                    <!-- FIX 2: Title with school color -->
+                    <div class="event-title event-title-<%= event.school_id %>">
                       <%= event.title %>
                     </div>
                     <div class="event-meta">

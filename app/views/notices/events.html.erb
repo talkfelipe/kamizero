@@ -1,17 +1,73 @@
 <div class="notice-page events-page">
   <%# ============================================================
-      BUILD SCHOOL → COLOR INDEX MAP (STABLE 1,2,3...) FOR TAGS & CALENDAR
+      BUILD SCHOOL → COLOR MAP (DYNAMIC HSL - INFINITE COLORS)
+      Generate CSS custom properties for each school
       ============================================================ %>
-  <% school_color_index = {} %>
   <%
-    # Unique schools from current user's subscriptions
+    # Helper method to generate pastel color from school ID
+    def generate_school_color(school_id)
+      hue = (school_id * 137.508) % 360
+
+      if hue > 300 || hue < 60
+        hue = ((hue % 60) * 0.5) + 15
+      elsif hue >= 60 && hue < 180
+        hue = ((hue - 60) * 0.5) + 180
+      end
+
+      saturation = 55 + (school_id % 15)
+      lightness = 70 + (school_id % 10)
+
+      "hsl(#{hue.round}, #{saturation}%, #{lightness}%)"
+    end
+
+    def generate_school_color_dark(school_id)
+      hue = (school_id * 137.508) % 360
+
+      if hue > 300 || hue < 60
+        hue = ((hue % 60) * 0.5) + 15
+      elsif hue >= 60 && hue < 180
+        hue = ((hue - 60) * 0.5) + 180
+      end
+
+      saturation = 60 + (school_id % 15)
+      lightness = 35 + (school_id % 10)
+
+      "hsl(#{hue.round}, #{saturation}%, #{lightness}%)"
+    end
+
+    school_colors = {}
     schools = current_user.students.includes(:school).map(&:school).uniq
 
-    # Stable order so colors do NOT change on refresh
-    schools.sort_by(&:id).each_with_index do |school, idx|
-      school_color_index[school.id] = idx + 1   # 1,2,3... used by SCSS .school-tag-n
+    schools.each do |school|
+      school_colors[school.id] = {
+        light: generate_school_color(school.id),
+        dark: generate_school_color_dark(school.id)
+      }
     end
   %>
+
+  <style>
+    :root {
+      <% school_colors.each do |school_id, colors| %>
+        --school-<%= school_id %>-light: <%= colors[:light] %>;
+        --school-<%= school_id %>-dark: <%= colors[:dark] %>;
+      <% end %>
+    }
+
+    <% school_colors.each_key do |school_id| %>
+      .calendar-event.school-tag-<%= school_id %>,
+      a.calendar-event.school-tag-<%= school_id %> {
+        background: var(--school-<%= school_id %>-light) !important;
+        background-color: var(--school-<%= school_id %>-light) !important;
+      }
+      .event-date-pill-<%= school_id %> {
+        background: linear-gradient(145deg, var(--school-<%= school_id %>-light), var(--school-<%= school_id %>-dark)) !important;
+      }
+      .event-title-<%= school_id %> {
+        color: var(--school-<%= school_id %>-dark) !important;
+      }
+    <% end %>
+  </style>
 
   <!-- BACK + PAGE TITLE + SUBTITLE -->
   <div class="notice-header">
@@ -22,7 +78,7 @@
     <p>View All Upcoming School Events <i class="fa-solid fa-angles-down"></i></p>
   </div>
 
-  <!-- CALENDAR + MONTHLY EVENTS (MATCH DASHBOARD STRUCTURE) -->
+  <!-- CALENDAR + MONTHLY EVENTS -->
   <div class="row g-3 mb-4 calendar-events-row">
     <!-- CALENDAR CARD -->
     <div class="col-md-6">
@@ -30,20 +86,15 @@
         <div class="card-header">CALENDAR</div>
         <div class="card-body p-0">
           <%= month_calendar do |date| %>
-            <% day_events      = Array(@events_for_day[date]) %>
-            <% visible_events  = day_events.first(2) %>
+            <% day_events = Array(@events_for_day[date]) %>
+            <% visible_events = day_events.first(2) %>
             <% remaining_count = [day_events.size - visible_events.size, 0].max %>
 
             <div class="calendar-day">
-              <!-- DATE -->
               <span class="date-number"><%= date.day %></span>
 
-              <!-- EVENTS: start time + title -->
               <% visible_events.each do |event| %>
-                <% color_idx = school_color_index[event.school_id] %>
-                <% classes = ["calendar-event"] %>
-                <% classes << "school-tag-#{color_idx}" if color_idx %>
-
+                <% classes = ["calendar-event", "school-tag-#{event.school_id}"] %>
                 <%= link_to notice_path(event), class: classes.join(" ") do %>
                   <% label_parts = [] %>
                   <% label_parts << event.start_time.strftime("%H:%M") if event.start_time.present? %>
@@ -52,7 +103,6 @@
                 <% end %>
               <% end %>
 
-              <!-- "+N more events" -->
               <% if remaining_count.positive? %>
                 <div class="calendar-more-events">
                   +<%= remaining_count %> event<%= "s" if remaining_count > 1 %>
@@ -76,34 +126,23 @@
           <% if @events.present? %>
             <% @events.order(date: :asc).each do |event| %>
               <li class="list-group-item">
-                <%= link_to notice_path(event),
-                            class: "event-item d-flex w-100 text-decoration-none text-reset" do %>
-
-                  <!-- DATE PILL -->
-                  <div class="event-date-pill me-3">
-                    <div class="event-month">
-                      <%= event.date.strftime("%b") %>
-                    </div>
-                    <div class="event-day">
-                      <%= event.date.strftime("%-d") %>
-                    </div>
+                <%= link_to notice_path(event), class: "event-item d-flex w-100 text-decoration-none text-reset" do %>
+                  <div class="event-date-pill event-date-pill-<%= event.school_id %> me-3">
+                    <div class="event-month"><%= event.date.strftime("%b") %></div>
+                    <div class="event-day"><%= event.date.strftime("%-d") %></div>
                   </div>
 
-                  <!-- TEXT BLOCK -->
                   <div class="event-text flex-grow-1">
-                    <div class="event-title">
+                    <div class="event-title event-title-<%= event.school_id %>">
                       <%= event.title %>
                     </div>
                     <div class="event-meta">
                       <% weekday_str = event.date.strftime("%A") %>
-                      <% time_str =
-                           if event.start_time && event.end_time
-                             "#{event.start_time.strftime("%H:%M")} - #{event.end_time.strftime("%H:%M")}"
-                           elsif event.start_time
-                             event.start_time.strftime("%H:%M")
-                           else
-                             nil
-                           end %>
+                      <% time_str = if event.start_time && event.end_time
+                                      "#{event.start_time.strftime("%H:%M")} - #{event.end_time.strftime("%H:%M")}"
+                                    elsif event.start_time
+                                      event.start_time.strftime("%H:%M")
+                                    end %>
                       <%= weekday_str %>
                       <% if time_str.present? %>
                         &nbsp;·&nbsp;<%= time_str %>
@@ -114,9 +153,7 @@
               </li>
             <% end %>
           <% else %>
-            <li class="list-group-item text-muted">
-              No upcoming events yet
-            </li>
+            <li class="list-group-item text-muted">No upcoming events yet</li>
           <% end %>
         </ul>
       </div>
