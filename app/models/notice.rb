@@ -32,7 +32,7 @@ class Notice < ApplicationRecord
       You will be given the full text of a school notice.
 
       Text:
-      #{text}
+      #{text.gsub(",", ".")}
 
       Your task:
       1. Extract a concise title for the notice.
