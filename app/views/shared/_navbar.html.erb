@@ -10,20 +10,17 @@
 
       <%= link_to dashboard_path, class: "navbar-brand d-flex align-items-center" do %>
         <%= image_tag "KAMIZERO LOGO THUMB.png", class: "me-2" %>
-        <span class="kamizero-brand-text"><i class="fa-solid fa-angles-left"></i>DASHBOARD</span>
+        <%# FIX 1: Hide "DASHBOARD" text on specific pages %>
+        <% hide_dashboard_text = [dashboard_path, root_path, new_user_session_path, new_user_registration_path].include?(request.path) %>
+        <span class="kamizero-brand-text <%= 'd-none' if hide_dashboard_text %>">
+          <i class="fa-solid fa-angles-left"></i>DASHBOARD
+        </span>
       <% end %>
 
-      <button class="navbar-toggler" type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
+      <%# Desktop: Show horizontal nav + dropdown %>
+      <%# Mobile: Show ONLY the dropdown (no separate hamburger) %>
+      <div class="d-none d-sm-flex navbar-desktop-nav">
+        <ul class="navbar-nav">
 
           <% if user_signed_in? %>
 
@@ -55,26 +52,25 @@
                           class: "nav-link nav-kamizero" %>
             </li>
 
-            <li class="nav-item">
-              <% if current_user.role == "parent" %>
+            <% if current_user.role == "parent" %>
+              <li class="nav-item">
                 <%= link_to qr_scan_path,
                             class: "nav-link nav-kamizero nav-new-subscription" do %>
                   <i class="fa-solid fa-clone me-1"></i>
                   Add Child
                 <% end %>
-              <% end %>
-            </li>
+              </li>
+            <% end %>
 
-            <!-- DROPDOWN WITH USER'S SUBSCRIPTIONS -->
+            <%# Desktop: User dropdown %>
             <li class="nav-item dropdown">
-              <a href="#" id="navbarDropdown" class="nav-link"
+              <a href="#" id="navbarDropdownDesktop" class="nav-link"
                 data-bs-toggle="dropdown">
-                <i class="fa-solid fa-list"
-                  style="font-size: 1.3rem; color:#003049;"></i>
+                <i class="fa-solid fa-list navbar-dropdown-icon"></i>
               </a>
 
               <div class="dropdown-menu dropdown-menu-end"
-                  aria-labelledby="navbarDropdown">
+                  aria-labelledby="navbarDropdownDesktop">
 
                 <% if current_user.respond_to?(:students) && current_user.children.any? %>
 
@@ -86,7 +82,7 @@
                             ]
                               .map { |v| v.respond_to?(:name) ? v.name : v }
                               .reject(&:blank?)
-                              .compact.join(" ") %>
+                              .compact.join(" ").upcase %>
 
                     <%= link_to label, "#", class: "dropdown-item" %>
                   <% end %>
@@ -94,14 +90,10 @@
                   <div class="dropdown-divider"></div>
                 <% end %>
 
-                <%= link_to "Add Subscription",
-                            new_student_path,
-                            class: "dropdown-item" %>
-
                 <%= link_to "LOG OUT",
                             destroy_user_session_path,
                             data: { turbo_method: :delete },
-                            class: "dropdown-item" %>
+                            class: "dropdown-item dropdown-item-logout" %>
               </div>
             </li>
 
@@ -118,6 +110,69 @@
 
         </ul>
       </div>
+
+      <%# Mobile: Single dropdown with ALL items %>
+      <% if user_signed_in? %>
+        <div class="d-sm-none navbar-mobile-nav">
+          <div class="dropdown">
+            <a href="#" id="navbarDropdownMobile" class="nav-link"
+              data-bs-toggle="dropdown">
+              <i class="fa-solid fa-list navbar-dropdown-icon"></i>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdownMobile">
+
+              <%# Mobile: All navigation items %>
+              <% if current_user.role == "teacher" %>
+                <%= link_to "CREATE NOTICE", new_notice_path, class: "dropdown-item" %>
+              <% end %>
+
+              <%= link_to "NOTICES", "/notices", class: "dropdown-item" %>
+              <%= link_to "EVENTS", "/notices/events", class: "dropdown-item" %>
+              <%= link_to "MESSAGES", "/notes", class: "dropdown-item" %>
+
+              <% if current_user.role == "parent" %>
+                <%= link_to "ADD CHILD", qr_scan_path, class: "dropdown-item" %>
+              <% end %>
+
+              <div class="dropdown-divider"></div>
+
+              <%# Subscriptions list in ALL CAPS %>
+              <% if current_user.respond_to?(:students) && current_user.children.any? %>
+
+                <% current_user.children.select(&:persisted?).each do |s| %>
+                  <% label = [
+                          s.school&.name,
+                          s.classroom&.grade,
+                          s.classroom&.name
+                          ]
+                            .map { |v| v.respond_to?(:name) ? v.name : v }
+                            .reject(&:blank?)
+                            .compact.join(" ").upcase %>
+
+                  <%= link_to label, "#", class: "dropdown-item" %>
+                <% end %>
+
+                <div class="dropdown-divider"></div>
+              <% end %>
+
+              <%= link_to "LOG OUT",
+                          destroy_user_session_path,
+                          data: { turbo_method: :delete },
+                          class: "dropdown-item dropdown-item-logout" %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <%# Mobile: Login link when not signed in %>
+        <div class="d-sm-none">
+          <%= link_to new_user_session_path,
+                      class: "nav-link nav-login-link" do %>
+            LOG IN
+          <% end %>
+        </div>
+      <% end %>
 
     </div>
 </nav>
