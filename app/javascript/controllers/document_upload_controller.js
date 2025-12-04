@@ -70,6 +70,7 @@ export default class extends Controller {
       const base64 = await this.toBase64(file)
       formData.append("base64Image", base64)
       formData.append("OCREngine", 2)
+      formData.append("language", "auto")
 
       // existing image preview (kept)
       this.previewTarget.src = base64
@@ -83,6 +84,8 @@ export default class extends Controller {
       })
         .then(response => response.json())
         .then(data => {
+          console.log(data);
+
           // Validate OCR response structure
           if (!data.ParsedResults || !data.ParsedResults[0]) {
             throw new Error("OCR failed: No parsed results returned")
