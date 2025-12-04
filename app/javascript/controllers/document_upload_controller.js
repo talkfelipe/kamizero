@@ -8,6 +8,10 @@ export default class extends Controller {
   connect() {
     // Hide attachment section when switching away from the upload tab
     document.addEventListener('shown.bs.tab', this.handleTabChange.bind(this))
+    if (location.hash == "") {
+      location.hash = "r"
+      location.reload()
+    }
   }
 
   disconnect() {
@@ -69,8 +73,8 @@ export default class extends Controller {
       const formData = new FormData()
       const base64 = await this.toBase64(file)
       formData.append("base64Image", base64)
-      formData.append("OCREngine", 2)
-      formData.append("language", "auto")
+      // formData.append("OCREngine", 2)
+      // formData.append("language", "auto")
 
       // existing image preview (kept)
       this.previewTarget.src = base64
