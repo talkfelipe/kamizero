@@ -39,6 +39,12 @@
         <%= @note.created_at.strftime("%Y/%m/%d")%>
         </span>
       </h4>
+
+      <!-- Student name -->
+      <p class="note-student-name">
+        Name: <%= @note.student.name %>
+      </p>
+
       <p class="mb-4"><%= @note.content %></p>
 
       <!-- SECTION SEPARATOR BEFORE REPLY -->

@@ -83,15 +83,20 @@
               </span>
             </div>
 
+            <!-- Title -->
+            <div class="note-card-header">
+              <h2 class="note-card-title">
+                <%= note.title %>
+                <span style="font-size: 0.85rem; font-weight: normal; margin-left: 0.5rem;">
+                  <%= note.created_at.strftime("%Y/%m/%d") %>
+                </span>
+              </h2>
+            </div>
+
             <!-- Student name -->
             <p class="note-student-name">
               Name: <%= note.student.name %>
             </p>
-
-            <!-- Title -->
-            <div class="note-card-header">
-              <h2 class="note-card-title"><%= note.title %></h2>
-            </div>
 
             <!-- Content preview -->
             <p class="note-card-body">
