@@ -60,9 +60,7 @@
           </div>
           <div class="mt-3">
             <% if @notice.category == "Event" %>
-              <%= link_to google_calendar_url_for(@notice), target: "_blank", rel: "noopener" do %>
-                <h3><i class="fa-solid fa-calendar-plus text-black"></i></h3>
-              <% end %>
+              <%= link_to "Add to Google calendar", google_calendar_url_for(@notice), class: "btn btn-primary text-white",target: "_blank", rel: "noopener" %>
             <% end %>
           </div>
         </div>
