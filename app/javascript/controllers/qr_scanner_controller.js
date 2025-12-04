@@ -29,7 +29,7 @@ export default class extends Controller {
 
     this.scanner = new Html5QrcodeScanner(
       this.readerTarget.id,
-      { fps: 10, qrbox: 250 },
+      { fps: 10, qrbox: 250, facingMode: "environment" },
       false
     )
 
