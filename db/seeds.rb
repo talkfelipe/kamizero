@@ -148,7 +148,7 @@ Thank you for your continued support.
   }
 ]
 
-schools = ["Meguro", "Shinagawa"]
+schools = ["Sunrise", "Harmony", "Evergreen"]
 surnames = ["Sato", "Suzuki", "Tanaka", "Yamada", "Ueno"]
 first_names = ["Ken", "Taro","Hiroshi", "Makoto", "Yuko", "Yuki", "Isao", "Kenichi"]
 notices_for_classroom = [
@@ -517,10 +517,11 @@ schools.each do |school_name|
 end
 
 
-meguro = School.find_by(name: "Meguro")
+sunrise = School.find_by(name: "Sunrise")
+harmony = School.find_by(name: "Harmony")
 
 parent1 = User.create!(
-  email: "parent@meguro.com",
+  email: "parent@sunrise.com",
   first_name: first_names.sample,
   last_name: surnames.sample,
   password: "123456",
@@ -530,8 +531,16 @@ puts "Parent account created"
 
 Student.create!(
   user: parent1,
-  school: meguro,
-  classroom: Classroom.find_by(grade: "3", name: "A", school: meguro),
+  school: sunrise,
+  classroom: Classroom.find_by(grade: "3", name: "A", school: sunrise),
+  name: parent1.last_name
+)
+puts "Student created"
+
+Student.create!(
+  user: parent1,
+  school: harmony,
+  classroom: Classroom.find_by(grade: "1", name: "B", school: harmony),
   name: parent1.last_name
 )
 puts "Student created"
