@@ -1,15 +1,31 @@
-<div class="container my-4" data-controller="qr-scanner">
-  <h2 class="mb-3">Scan QR Code</h2>
-  <p class="text-muted">
-    Please read QR Code from this screen.
-  </p>
+<div class="container my-4 qr-scanner-page" data-controller="qr-scanner">
+  <!-- HEADER + BACK LINK -->
+  <div class="qr-scanner-header mb-4">
+    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
+    <% end %>
+    <h2>Scan QR Code</h2>
+    <p>Point your camera at a KAMIZERO QR code to subscribe</p>
+  </div>
 
-  <button data-qr-scanner-target="retryBtn"
-          data-action="click->qr-scanner#retry"
-          class="btn btn-outline-secondary my-3 d-none">
-    Camera did not start? Click here to retry.
-  </button>
+  <!-- QR SCANNER CARD -->
+  <div class="card qr-scanner-card shadow-sm">
+    <div class="card-header">
+      <i class="fa-solid fa-qrcode me-2"></i> QR Code Scanner
+    </div>
+    <div class="card-body">
+      <div class="qr-reader-wrapper">
+        <div id="qr-reader" data-qr-scanner-target="reader"></div>
+      </div>
 
-  <div id="qr-reader" data-qr-scanner-target="reader" style="width: 320px; max-width: 100%;"></div>
-  <div data-qr-scanner-target="result" class="mt-3 text-muted"></div>
+      <button data-qr-scanner-target="retryBtn"
+              data-action="click->qr-scanner#retry"
+              class="btn btn-qr-retry d-none">
+        <i class="fa-solid fa-rotate-right me-2"></i> Camera did not start? Click here to retry.
+      </button>
+
+      <div data-qr-scanner-target="result" class="qr-result"></div>
+    </div>
+  </div>
+  <!-- END QR SCANNER CARD -->
 </div>
