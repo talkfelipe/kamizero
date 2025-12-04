@@ -1,13 +1,14 @@
 <div class="container note-page notes-page">
 
   <!-- HEADER – EXACT SAME STRUCTURE AS NOTICES INDEX -->
+<div class="note-header d-flex justify-content-between align-items-center">
   <div class="note-header">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
 
-    <h2>All Messages</h2>
-    <p>View All Messages<i class="fa-solid fa-angles-down"></i></p>
+    <h2>Messages</h2>
+    <p>View Messages<i class="fa-solid fa-angles-down"></i></p>
   </div>
 
   <!-- HEADER ACTIONS (parent only) - OUTSIDE note-index-card like notices -->
@@ -35,7 +36,7 @@
       </div>
     </div>
   <% end %>
-
+</div>
   <!-- FILTERS (parents only) - OUTSIDE note-index-card like notices -->
   <% if current_user.role == "parent" %>
     <div class="notes-filters-card">
@@ -55,10 +56,6 @@
               class: "filter-select",
               onchange: "this.form.submit();"
             } %>
-        </div>
-
-        <div>
-          <%= link_to "CLEAR", notes_path, class: "filter-clear" %>
         </div>
       <% end %>
     </div>
