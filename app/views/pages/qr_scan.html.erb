@@ -1,85 +1,15 @@
-<div class="container my-4">
+<div class="container my-4" data-controller="qr-scanner">
   <h2 class="mb-3">Scan QR Code</h2>
   <p class="text-muted">
     Please read QR Code from this screen.
   </p>
 
-  <!-- Retry Button -->
-  <button id="retry-btn" class="btn btn-outline-secondary my-3 d-none">
+  <button data-qr-scanner-target="retryBtn"
+          data-action="click->qr-scanner#retry"
+          class="btn btn-outline-secondary my-3 d-none">
     Camera did not start? Click here to retry.
   </button>
 
-  <div id="qr-reader" style="width: 320px; max-width: 100%;"></div>
-  <div id="qr-result" class="mt-3 text-muted"></div>
+  <div id="qr-reader" data-qr-scanner-target="reader" style="width: 320px; max-width: 100%;"></div>
+  <div data-qr-scanner-target="result" class="mt-3 text-muted"></div>
 </div>
-
-<!-- Library to read QR Code from CDN -->
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
-<script>
-  // <!-- Using turbo to load -->
-  document.addEventListener("turbo:load", function() {
-  // <!-- prevent not to launch camera beside this app -->
-    const qrRegionId = "qr-reader";
-    const qrRegion = document.getElementById(qrRegionId);
-    const retryBtn = document.getElementById("retry-btn");
-
-    if (!qrRegion) return;
-
-    function onScanSuccess(decodedText, decodedResult) {
-      // scanned words will be input into decodedText and will be showed
-      const resultEl = document.getElementById("qr-result");
-      if (resultEl) {
-        resultEl.innerText = "Scanned: " + decodedText;
-      }
-
-      // put the scanned words into URL
-      try {
-        const url = new URL(decodedText);
-
-        // Only allow in Kamizero Domain
-        if (url.host === "www.kamizero.me" || url.host === window.location.host) {
-          window.location.href = url.href;
-        } else {
-          alert("This QR Code is not for KAMIZERO ");
-        }
-      } catch (e) {
-        alert(" This QR Code is not allowed ");
-      }
-    }
-
-    function onScanFailure(error) {
-      // when there is error show retry button
-      retryBtn.classList.remove("d-none");
-    }
-
-    function startScanner() {
-      if (window.html5QrcodeScanner) {
-        try { window.html5QrcodeScanner.clear(); } catch (e) {}
-      }
-
-      window.html5QrcodeScanner = new Html5QrcodeScanner(
-        qrRegionId,
-        { fps: 10, qrbox: 250 },
-        false
-      );
-
-      window.html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-    }
-      retryBtn.addEventListener("click", function () {
-        retryBtn.classList.add("d-none");
-        startScanner();
-      });
-      startScanner();
-  });
-</script>
-
-<!--  -->
-<script>
-  document.addEventListener("turbo:before-cache", function () {
-    if (window.html5QrcodeScanner) {
-      try { window.html5QrcodeScanner.clear(); } catch (e) {}
-      window.html5QrcodeScanner = null;
-    }
-  });
-</script>
