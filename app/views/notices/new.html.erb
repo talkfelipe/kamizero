@@ -1,4 +1,4 @@
-<div class="container notice-page">
+<div class="container notice-page" data-controller="notice-tabs">
   <!-- PAGE HEADER: BACK + TITLE + SUBTITLE -->
   <div class="notice-header">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
@@ -11,20 +11,20 @@
   <div class="notice-card">
     <ul class="nav nav-tabs mb-3 border-0" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="btn btn-primary mx-3 text-white" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Create from uploaded file</button>
+        <button class="btn btn-primary mx-3 text-white" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" data-notice-tabs-target="tab" data-action="shown.bs.tab->notice-tabs#onTabShown">Create from uploaded file</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="btn btn-primary mx-3 text-white" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Create from blank form</button>
+        <button class="btn btn-primary mx-3 text-white" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" data-notice-tabs-target="tab" data-action="shown.bs.tab->notice-tabs#onTabShown">Create from blank form</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="btn btn-primary mx-3 text-white" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Create from a template</button>
+        <button class="btn btn-primary mx-3 text-white" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" data-notice-tabs-target="tab" data-action="shown.bs.tab->notice-tabs#onTabShown">Create from a template</button>
       </li>
     </ul>
   </div>
   <div class="notice-card">
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-        <%= simple_form_for @notice, html: { id: "notice-upload-form", data: { controller: "conditional-form document-upload preview" } } do |f| %>
+        <%= simple_form_for @notice, html: { id: "notice-upload-form", data: { controller: "conditional-form document-upload preview", "notice-tabs-target": "uploadForm" } } do |f| %>
           <div class="position-relative">
             <%= f.input :attachment,
                     as: :file,
@@ -51,7 +51,7 @@
         <% end %>
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <%= simple_form_for @notice, html: { id: "notice-blank-form", data: { controller: "conditional-form preview" } } do |f| %>
+        <%= simple_form_for @notice, html: { id: "notice-blank-form", data: { controller: "conditional-form preview", "notice-tabs-target": "blankForm" } } do |f| %>
           <%= render "form_fields", f: f %>
         <% end %>
       </div>
@@ -68,7 +68,8 @@
                 </div>
                 <div class="card-footer bg-transparent border-0">
                   <button type="button"
-                          class="btn btn-dark btn-sm w-100 use-template-btn"
+                          class="btn btn-dark btn-sm w-100"
+                          data-action="click->notice-tabs#useTemplate"
                           data-category="<%= template.category %>"
                           data-title="<%= template.title %>"
                           data-content="<%= template.content %>">
@@ -83,78 +84,6 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener("turbo:load", function() {
-    // Flag to skip reset when using template
-    let skipReset = false;
-
-    // Reset forms when switching tabs
-    document.querySelectorAll('#myTab button[data-bs-toggle="tab"]').forEach(function(tab) {
-      tab.addEventListener("shown.bs.tab", function(event) {
-        if (skipReset) {
-          skipReset = false;
-          return;
-        }
-
-        // Reset upload form
-        const uploadForm = document.getElementById("notice-upload-form");
-        if (uploadForm) {
-          uploadForm.reset();
-          // Hide the form fields and preview container
-          const formFields = uploadForm.querySelector('[data-document-upload-target="formFields"]');
-          const previewContainer = uploadForm.querySelector('[data-document-upload-target="previewContainer"]');
-          if (formFields) formFields.classList.add("d-none");
-          if (previewContainer) previewContainer.classList.add("d-none");
-        }
-
-        // Reset blank form
-        const blankForm = document.getElementById("notice-blank-form");
-        if (blankForm) {
-          blankForm.reset();
-          // Trigger change event on category to reset conditional fields
-          const categorySelect = blankForm.querySelector("select[name='notice[category]']");
-          if (categorySelect) {
-            categorySelect.dispatchEvent(new Event("change", { bubbles: true }));
-          }
-        }
-      });
-    });
-
-    // Template button functionality
-    document.querySelectorAll(".use-template-btn").forEach(function(button) {
-      button.addEventListener("click", function() {
-        const category = this.dataset.category;
-        const title = this.dataset.title;
-        const content = this.dataset.content;
-
-        const blankForm = document.getElementById("notice-blank-form");
-        if (!blankForm) return;
-
-        // Skip reset when switching to blank form tab
-        skipReset = true;
-
-        // Switch to the blank form tab first
-        const blankFormTab = document.getElementById("profile-tab");
-        if (blankFormTab) {
-          const tab = new bootstrap.Tab(blankFormTab);
-          tab.show();
-        }
-
-        // Then populate the form after tab switch
-        const categorySelect = blankForm.querySelector("select[name='notice[category]']");
-        const titleInput = blankForm.querySelector("input[name='notice[title]']");
-        const contentTextarea = blankForm.querySelector("textarea[name='notice[content]']");
-
-        if (categorySelect) {
-          categorySelect.value = category;
-          categorySelect.dispatchEvent(new Event("change", { bubbles: true }));
-        }
-        if (titleInput) titleInput.value = title;
-        if (contentTextarea) contentTextarea.value = content;
-      });
-    });
-  });
-</script>
 
 <!-- Preview Modal -->
 <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
