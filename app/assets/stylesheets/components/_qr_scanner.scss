@@ -1,0 +1,329 @@
+/* ============================================================
+   QR SCANNER PAGE (fully scoped / independent)
+   ============================================================ */
+
+.qr-scanner-page {
+  /* PAGE-LEVEL CONTAINER (MATCH DASHBOARD) */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+
+  /* Main blocks: same width, centered */
+  .welcome-card,
+  .qr-scanner-header,
+  .qr-scanner-card {
+    max-width: 1200px;
+    margin: 0 auto 1rem;
+  }
+
+  /* ------------------------------------------------------------
+     WELCOME CARD (MATCH DASHBOARD/SUBSCRIPTION)
+     ------------------------------------------------------------ */
+
+  .welcome-card {
+    border-radius: 16px;
+    padding: 1rem 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    border: none;
+    background: #ffffff;
+    margin-top: 8px;
+  }
+
+  .welcome-card .card-body {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .welcome-logo-wrapper {
+    flex: 0 0 auto;
+  }
+
+  .welcome-logo {
+    height: 160px;
+    width: auto;
+    object-fit: contain;
+    padding: 0.6rem 0.6rem;
+  }
+
+  .welcome-card .flex-grow-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .welcome-card p {
+    margin-bottom: 0;
+  }
+
+  .kamizero-tagline {
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 1.2;
+    text-align: center;
+    color: #0097b2;
+  }
+
+  /* ------------------------------------------------------------
+     HEADER: BACK + Title + description
+     ------------------------------------------------------------ */
+
+  .qr-scanner-header {
+    text-align: left;
+  }
+
+  .qr-scanner-header a.text-secondary {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.35rem;
+    color: #0097b2 !important;
+  }
+
+  .qr-scanner-header a.text-secondary i {
+    margin-right: 4px;
+  }
+
+  .qr-scanner-header h2 {
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+    color: #003049;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .qr-scanner-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.96rem;
+  }
+
+  /* ------------------------------------------------------------
+     QR SCANNER CARD
+     ------------------------------------------------------------ */
+
+  .qr-scanner-card {
+    background: #ffffff;
+    border-radius: 16px !important;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+
+  .qr-scanner-card .card-header {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: #0097b2;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 1.4rem;
+  }
+
+  .qr-scanner-card .card-header i {
+    color: #14bec0;
+  }
+
+  .qr-scanner-card .card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ------------------------------------------------------------
+     QR READER WRAPPER
+     ------------------------------------------------------------ */
+
+  .qr-reader-wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+  }
+
+  #qr-reader {
+    width: 100% !important;
+    border: none !important;
+  }
+
+  /* Override html5-qrcode library styles */
+  #qr-reader__scan_region {
+    background: #fafafa !important;
+  }
+
+  #qr-reader__dashboard {
+    padding: 1rem 0 !important;
+  }
+
+  #qr-reader__dashboard_section_csr button,
+  #qr-reader__dashboard_section_fsr button {
+    background: #14bec0 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+  }
+
+  #qr-reader__dashboard_section_csr button:hover,
+  #qr-reader__dashboard_section_fsr button:hover {
+    background: #0097b2 !important;
+  }
+
+  #qr-reader__dashboard_section_csr select,
+  #qr-reader__dashboard_section_fsr select {
+    border-radius: 10px !important;
+    border: 1px solid #d0d7de !important;
+    padding: 10px 14px !important;
+    font-size: 0.95rem !important;
+    background: #ffffff !important;
+    font-family: "Poppins", sans-serif !important;
+  }
+
+  #qr-reader__dashboard_section_csr select:focus,
+  #qr-reader__dashboard_section_fsr select:focus {
+    border-color: #00bcd4 !important;
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.25) !important;
+    outline: none !important;
+  }
+
+  #qr-reader__header_message,
+  #qr-reader__camera_permission_button,
+  #qr-reader__status_span {
+    font-family: "Poppins", sans-serif !important;
+    color: #4b5563 !important;
+  }
+
+  #qr-reader__camera_permission_button {
+    background: #14bec0 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 14px 28px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+  }
+
+  #qr-reader__camera_permission_button:hover {
+    background: #0097b2 !important;
+  }
+
+  /* ------------------------------------------------------------
+     RETRY BUTTON
+     ------------------------------------------------------------ */
+
+  .btn-qr-retry {
+    margin-top: 1.5rem;
+    background: #ffffff;
+    border: 2px solid #14bec0;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+    color: #14bec0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-qr-retry:hover {
+    background: #14bec0;
+    color: #ffffff;
+  }
+
+  .btn-qr-retry i {
+    color: inherit;
+  }
+
+  /* ------------------------------------------------------------
+     RESULT DISPLAY
+     ------------------------------------------------------------ */
+
+  .qr-result {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .qr-result:empty {
+    display: none;
+  }
+
+  .qr-result:not(:empty) {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+  }
+
+  /* ------------------------------------------------------------
+     RESPONSIVE
+     ------------------------------------------------------------ */
+
+  @media (max-width: 768px) {
+    .welcome-card,
+    .qr-scanner-header,
+    .qr-scanner-card {
+      max-width: 100%;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .welcome-card {
+      padding: 1.5rem 1.2rem;
+      border-radius: 14px;
+    }
+
+    .welcome-card .card-body {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.3rem;
+    }
+
+    .welcome-logo {
+      height: 100px;
+    }
+
+    .kamizero-tagline {
+      font-size: 22px;
+    }
+
+    .qr-scanner-card .card-body {
+      padding: 1.5rem 1rem;
+    }
+
+    .qr-reader-wrapper {
+      max-width: 100%;
+      padding: 0.75rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .qr-scanner-header h2 {
+      font-size: 1.35rem;
+    }
+
+    .qr-scanner-header p {
+      font-size: 0.9rem;
+    }
+
+    .btn-qr-retry {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+    }
+  }
+}
