@@ -32,25 +32,10 @@ $kamizero-navy: #003049;
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* prevent Bootstrap from forcing full expansion */
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
-}
-
 /* brand logo */
 .navbar-lewagon .navbar-brand img {
   width: 40px;
   height: auto;
-}
-
-/* spacing between navbar items */
-.navbar-nav .nav-item {
-  margin-right: 1rem;
-}
-
-/* last item should not push the icon too far */
-.navbar-nav .nav-item:last-child {
-  margin-right: 0;
 }
 
 
@@ -61,6 +46,9 @@ $kamizero-navy: #003049;
 .navbar .container-fluid {
   padding-left: 1rem;
   padding-right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 
@@ -75,6 +63,43 @@ $kamizero-navy: #003049;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+
+/* ============================================================
+   DESKTOP NAV CONTAINER
+   ============================================================ */
+
+.navbar-desktop-nav {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-desktop-nav .navbar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navbar-desktop-nav .nav-item {
+  margin-right: 1rem;
+}
+
+.navbar-desktop-nav .nav-item:last-child {
+  margin-right: 0;
+}
+
+
+/* ============================================================
+   MOBILE NAV CONTAINER
+   ============================================================ */
+
+.navbar-mobile-nav {
+  display: flex;
+  align-items: center;
 }
 
 
@@ -131,8 +156,9 @@ $kamizero-navy: #003049;
    DROPDOWN TRIGGER ICON (list icon)
    ============================================================ */
 
-.navbar-lewagon i.fa-list {
+.navbar-dropdown-icon {
   font-size: 1.35rem;
+  color: $kamizero-navy !important;
 }
 
 
@@ -144,15 +170,32 @@ $kamizero-navy: #003049;
   border-radius: 8px;
   padding: 0.5rem 0;
   font-size: 0.95rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
 .dropdown-item {
   padding: 0.6rem 1rem;
+  font-family: "Poppins", sans-serif;
+  color: $kamizero-navy;
+  transition: background-color 0.15s ease;
 }
 
 .dropdown-item:hover {
   background: #e8f7fa;
   color: $kamizero-navy;
+}
+
+/* Mobile dropdown - ensure it doesn't get cut off */
+.navbar-mobile-nav .dropdown-menu {
+  right: 0;
+  left: auto;
+  min-width: 200px;
+}
+
+/* LOG OUT styling - bold for emphasis */
+.dropdown-item-logout {
+  font-weight: 600;
 }
 
 
@@ -186,4 +229,24 @@ $kamizero-navy: #003049;
   border-radius: 0.55rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
   text-decoration: none;
+}
+
+
+/* ============================================================
+   MOBILE RESPONSIVENESS
+   ============================================================ */
+
+@media (max-width: 575.98px) {
+
+  /* Ensure proper spacing on mobile */
+  .navbar .container-fluid,
+  .nav-inner-auth {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Mobile dropdown adjustments */
+  .navbar-mobile-nav .dropdown-menu {
+    margin-top: 0.5rem;
+  }
 }
