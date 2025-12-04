@@ -7,7 +7,7 @@
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
 
-    <h2>Message Details</h2>
+    <h2 class="mx-3">Message Details</h2>
     <p>View this message and reply<i class="fa-solid fa-angles-down"></i></p>
   </div>
 
@@ -35,6 +35,9 @@
       <!-- NOTE title + content -->
       <h4 class="note-title">
         <%= @note.title %>
+        <span style="font-size: 0.85rem; font-weight: normal; mx-3">
+        <%= @note.created_at.strftime("%Y/%m/%d")%>
+        </span>
       </h4>
       <p class="mb-4"><%= @note.content %></p>
 
@@ -48,7 +51,16 @@
 
       <% if @note.reply.present? %>
         <!-- Already replied: show reply text only -->
+
+        <h4 class="note-title">
+          <%= @note.title %>
+          <span style="font-size: 0.85rem; font-weight: normal; mx-3">
+          <%= @note.created_at.strftime("%Y/%m/%d")%>
+          </span>
+        </h4>
+
         <p class="mb-0"><%= @note.reply %></p>
+
 
       <% elsif current_user.role == "teacher" %>
         <!-- Teacher, no reply yet: show form -->

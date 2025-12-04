@@ -38,12 +38,10 @@ class PagesController < ApplicationController
     @unread_notices = notice_scope                   # take out only unread_notices which status is true
                       .where.not(id: read_notice_ids)
                       .order(created_at: :desc)
-                      .limit(10)
 
     @unread_notes = note_scope
                       .where.not(id: read_note_ids)
                       .order(created_at: :desc)
-                      .limit(10)
 
     @unread_count_notices  = @unread_notices.size
     @unread_count_notes  = @unread_notes.size
