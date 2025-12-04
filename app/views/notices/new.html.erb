@@ -24,7 +24,7 @@
   <div class="notice-card">
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-        <%= simple_form_for @notice, html: { id: "notice-upload-form", data: { controller: "conditional-form document-upload" } } do |f| %>
+        <%= simple_form_for @notice, html: { id: "notice-upload-form", data: { controller: "conditional-form document-upload preview" } } do |f| %>
           <div class="position-relative">
             <%= f.input :attachment,
                     as: :file,
@@ -40,8 +40,7 @@
           <div class="d-none" data-document-upload-target="formFields">
             <%= render "form_fields", f: f,
                 title_data: { data: { "document-upload-target": "title" } },
-                content_data: { data: { "document-upload-target": "content" } },
-                content_preview: true %>
+                content_data: { data: { "document-upload-target": "content" } } %>
           </div>
           <!-- Image/PDF preview (hidden until content is generated) -->
           <div class="d-none" data-document-upload-target="previewContainer">
@@ -52,7 +51,7 @@
         <% end %>
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <%= simple_form_for @notice, html: { id: "notice-blank-form", data: { controller: "conditional-form" } } do |f| %>
+        <%= simple_form_for @notice, html: { id: "notice-blank-form", data: { controller: "conditional-form preview" } } do |f| %>
           <%= render "form_fields", f: f %>
         <% end %>
       </div>
@@ -85,7 +84,43 @@
   </div>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("turbo:load", function() {
+    // Flag to skip reset when using template
+    let skipReset = false;
+
+    // Reset forms when switching tabs
+    document.querySelectorAll('#myTab button[data-bs-toggle="tab"]').forEach(function(tab) {
+      tab.addEventListener("shown.bs.tab", function(event) {
+        if (skipReset) {
+          skipReset = false;
+          return;
+        }
+
+        // Reset upload form
+        const uploadForm = document.getElementById("notice-upload-form");
+        if (uploadForm) {
+          uploadForm.reset();
+          // Hide the form fields and preview container
+          const formFields = uploadForm.querySelector('[data-document-upload-target="formFields"]');
+          const previewContainer = uploadForm.querySelector('[data-document-upload-target="previewContainer"]');
+          if (formFields) formFields.classList.add("d-none");
+          if (previewContainer) previewContainer.classList.add("d-none");
+        }
+
+        // Reset blank form
+        const blankForm = document.getElementById("notice-blank-form");
+        if (blankForm) {
+          blankForm.reset();
+          // Trigger change event on category to reset conditional fields
+          const categorySelect = blankForm.querySelector("select[name='notice[category]']");
+          if (categorySelect) {
+            categorySelect.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        }
+      });
+    });
+
+    // Template button functionality
     document.querySelectorAll(".use-template-btn").forEach(function(button) {
       button.addEventListener("click", function() {
         const category = this.dataset.category;
@@ -95,6 +130,17 @@
         const blankForm = document.getElementById("notice-blank-form");
         if (!blankForm) return;
 
+        // Skip reset when switching to blank form tab
+        skipReset = true;
+
+        // Switch to the blank form tab first
+        const blankFormTab = document.getElementById("profile-tab");
+        if (blankFormTab) {
+          const tab = new bootstrap.Tab(blankFormTab);
+          tab.show();
+        }
+
+        // Then populate the form after tab switch
         const categorySelect = blankForm.querySelector("select[name='notice[category]']");
         const titleInput = blankForm.querySelector("input[name='notice[title]']");
         const contentTextarea = blankForm.querySelector("textarea[name='notice[content]']");
@@ -105,14 +151,35 @@
         }
         if (titleInput) titleInput.value = title;
         if (contentTextarea) contentTextarea.value = content;
-
-        // Switch to the blank form tab using Bootstrap 5 Tab API
-        const blankFormTab = document.getElementById("profile-tab");
-        if (blankFormTab) {
-          const tab = new bootstrap.Tab(blankFormTab);
-          tab.show();
-        }
       });
     });
   });
 </script>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <span class="text-muted small">Preview</span>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-2">
+        <div class="notice-page notice-show-page">
+          <div class="card notice-show-card shadow-sm bg-white">
+            <div class="card-body position-relative">
+              <span id="previewCategoryBadge" class="badge rounded-pill notice-category-badge bg-dark">General</span>
+              <h2 id="previewTitle" class="card-title notice-show-title mb-3"></h2>
+              <div class="mt-3 notice-show-content">
+                <div id="previewContent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,16 +2,11 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  // added contentPreview target
-  static targets = ["title", "content", "preview", "contentPreview", "spinner", "fileInput", "formFields", "previewContainer"]
+  static targets = ["title", "content", "preview", "spinner", "fileInput", "formFields", "previewContainer"]
 
   connect() {
     // Hide attachment section when switching away from the upload tab
     document.addEventListener('shown.bs.tab', this.handleTabChange.bind(this))
-    if (location.hash == "") {
-      location.hash = "r"
-      location.reload()
-    }
   }
 
   disconnect() {
@@ -141,15 +136,6 @@ export default class extends Controller {
         // keep values so the notice saves correctly
         this.titleTarget.value = data.title
         this.contentTarget.value = data.content // markdown
-
-        // show clean HTML preview below Content label
-        if (this.hasContentPreviewTarget && data.content_html) {
-          this.contentPreviewTarget.innerHTML = data.content_html
-          this.contentPreviewTarget.classList.remove("d-none")
-        }
-
-        // hide only the textarea (label stays visible)
-        this.contentTarget.classList.add("d-none")
 
         // show the form fields after content is loaded
         if (this.hasFormFieldsTarget) {

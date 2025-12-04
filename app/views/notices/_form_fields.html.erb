@@ -3,6 +3,7 @@
         input_html: {
           data: {
             "conditional-form-target" => "selector",
+            "preview-target" => "category",
             action: "change->conditional-form#toggleDependentField"
           }
         } %>
@@ -31,15 +32,14 @@
 <%= f.association :classroom, collection: [["ALL", ""]] + current_user.classrooms.map{|classroom| ["#{classroom.grade}#{classroom.name}", classroom.id]}, include_blank: false %>
 <%= f.input :title,
         placeholder: "e.g., Sports day",
-        input_html: local_assigns[:title_data] || {} %>
+        input_html: { data: { "preview-target": "title" }.merge((local_assigns.dig(:title_data, :data) || {})) } %>
 <%= f.input :content,
         placeholder: "Enter the full notice comment here...",
-        input_html: { style: "height: 300px;" }.merge(local_assigns[:content_data] || {}) %>
-<% if local_assigns[:content_preview] %>
-  <div class="mt-3 d-none notice-content-preview"
-      data-document-upload-target="contentPreview"></div>
-<% end %>
+        input_html: { style: "height: 300px;", data: { "preview-target": "content" }.merge((local_assigns.dig(:content_data, :data) || {})) } %>
 <div class="d-flex justify-content-end m-3">
+  <button type="button" class="btn btn-outline-secondary me-2" data-action="click->preview#showPreview">
+    <i class="fa-solid fa-eye"></i> Preview
+  </button>
   <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
   <%= f.button :submit, class: "btn btn-dark" %>
 </div>
