@@ -7,9 +7,6 @@
 $kamizero-teal: #14bec0;
 $kamizero-navy: #0097b2;
 
-/* Meguro = teal, Shinagawa = warm coral, others continue from palette */
-$school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
-
 /* ============================================================
    DASHBOARD PAGE WRAPPER
    ============================================================ */
@@ -91,7 +88,7 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   gap: 0.4rem;
 }
 
-/* Base school-pill tag – color comes from dynamic map */
+/* Base school-pill tag – color comes from inline styles */
 .dashboard-page .school-tag {
   display: inline-block;
   padding: 4px 10px;
@@ -99,7 +96,6 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
-  background: transparent;
 }
 
 /* ============================================================
@@ -337,6 +333,8 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   margin-bottom: 0;
   border-collapse: collapse;
   table-layout: fixed;
+  /* Remove any spacing between cells */
+  border-spacing: 0;
 }
 
 .dashboard-page .calendar-card .simple-calendar th {
@@ -347,25 +345,36 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   padding: 0.5rem 0.75rem;
   background: #ffffff;
   text-align: center;
+  /* Remove gaps */
+  margin: 0;
 }
 
 .dashboard-page .calendar-card .simple-calendar td {
+  /* No padding on td, only inside content */
   padding: 0;
+  margin: 0;
   border: 1px solid #e5e7eb;
   vertical-align: top;
+  /* Remove line-height that creates gaps */
+  line-height: 1;
 }
 
-/* Each cell */
+/* FIXED HEIGHT calendar cells - no gaps between rows */
 .dashboard-page .calendar-card .calendar-day {
+  height: 90px;           /* FIXED height - never expands */
   min-height: 90px;
+  max-height: 90px;
   padding: 4px 4px;
   background-color: #f9fafb;
   font-size: 0.75rem;
   display: flex;
   flex-direction: column;
-  align-items: stretch;       /* allow children to use full width */
+  align-items: stretch;
   justify-content: flex-start;
-  text-align: center;         /* centre the date text */
+  text-align: center;
+  overflow: hidden;        /* Hide overflow */
+  /* Remove any margin */
+  margin: 0;
 }
 
 /* Today */
@@ -378,8 +387,9 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
 .dashboard-page .calendar-card .calendar-day .date-number {
   display: block;
   font-weight: 600;
-  margin: 0 auto 4px auto;   /* centre horizontally */
+  margin: 0 auto 4px auto;
   color: #4b5563;
+  flex-shrink: 0;          /* Date never gets cut off */
 }
 
 /* Base calendar event style – full-width pill, wraps inside cell */
@@ -393,7 +403,6 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   font-weight: 600;
   color: #ffffff !important;
   text-decoration: none !important;
-  background: transparent;
   border: none;
   text-align: left;
 
@@ -403,6 +412,7 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   text-overflow: ellipsis;
 
   line-height: 1.2;
+  flex-shrink: 0;          /* Events don't compress */
 }
 
 
@@ -423,6 +433,7 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   font-weight: 600;
   color: $kamizero-navy;
   cursor: pointer;
+  flex-shrink: 0;          /* "More" indicator doesn't compress */
 }
 
 /* Prev/Next header on calendar */
@@ -474,22 +485,17 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   align-items: center;
 }
 
-/* DATE PILL (Dec / 5) – MONTHLY EVENTS (BRAND FILLED) */
+/* DATE PILL - School-colored gradients (dynamic from inline styles) */
 .dashboard-page .events-card .event-date-pill {
   width: 52px;
   min-width: 52px;
   height: 72px;
   border-radius: 14px;
-
-  /* brand gradient */
-  background: linear-gradient(145deg, $kamizero-teal 0%, $kamizero-navy 100%);
   border: none;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -519,10 +525,10 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   gap: 2px;
 }
 
+/* Event titles colored by school (from inline styles) */
 .dashboard-page .events-card .event-title {
   font-size: 0.95rem;
   font-weight: 700;
-  color: $kamizero-navy;
 }
 
 .dashboard-page .events-card .event-meta {
@@ -542,23 +548,7 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
 }
 
 /* ============================================================
-   SCHOOL COLORS (USED ON DASHBOARD + CALENDAR)
-   ============================================================ */
-
-@for $i from 1 through 50 {
-  $index: ($i - 1) % length($school-colors) + 1;
-  $color: nth($school-colors, $index);
-
-  .dashboard-page .school-tag-#{$i},
-  .calendar-event.school-tag-#{$i} {
-    background-color: $color !important;
-    border: none;
-    color: #ffffff !important;
-  }
-}
-
-/* ============================================================
-   RESPONSIVE – MOBILE
+   RESPONSIVE – MOBILE (768px and below)
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -612,15 +602,69 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
     font-size: 13px;
   }
 
-  /* Calendar cells a bit shorter on mobile */
+  /* FIX 1: Mobile calendar - CAREFUL gap removal (don't break headers!) */
+  .dashboard-page .calendar-card .simple-calendar table {
+    border-spacing: 0 !important;
+    border-collapse: collapse !important;
+    margin: 0 !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar tbody {
+    border-spacing: 0 !important;
+  }
+
+  /* Keep thead visible! */
+  .dashboard-page .calendar-card .simple-calendar thead tr {
+    display: table-row !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar thead th {
+    padding: 0.4rem 0.5rem !important;
+  }
+
+  /* Fix only tbody rows */
+  .dashboard-page .calendar-card .simple-calendar tbody tr {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    display: table-row !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar tbody td {
+    padding: 0 !important;
+    margin: 0 !important;
+    vertical-align: top !important;
+    height: 70px !important;
+    max-height: 70px !important;
+  }
+
   .dashboard-page .calendar-card .calendar-day {
-    min-height: 70px;
-    padding: 3px 3px;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+    padding: 3px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .calendar-event {
     font-size: 0.65rem;
     padding: 2px 4px;
+  }
+
+  /* FIX 2: Mobile VIEW ALL button - perfect center alignment */
+  .button-view-all {
+    font-size: 0.7rem !important;
+    padding: 0.4rem 0.7rem !important;
+    white-space: nowrap !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    text-align: center !important;
   }
 
   /* Monthly events pill smaller */
@@ -651,7 +695,10 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
   }
 }
 
-/* Even smaller devices */
+/* ============================================================
+   RESPONSIVE – EXTRA SMALL MOBILE (576px and below)
+   ============================================================ */
+
 @media (max-width: 576px) {
   .dashboard-page .kamizero-tagline {
     font-size: 18px;
@@ -665,7 +712,52 @@ $school-colors: #14bec0, #ff7a59, #f1c40f, #e74c3c, #2ecc71;
     font-size: 0.7rem;
   }
 
+  /* FIX 1: Extra small mobile - CAREFUL approach */
+  .dashboard-page .calendar-card .simple-calendar table {
+    border-spacing: 0 !important;
+    border-collapse: collapse !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar tbody {
+    border-spacing: 0 !important;
+  }
+
+  /* Keep thead visible! */
+  .dashboard-page .calendar-card .simple-calendar thead tr {
+    display: table-row !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar thead th {
+    padding: 0.3rem 0.4rem !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar tbody tr {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+  }
+
+  .dashboard-page .calendar-card .simple-calendar tbody td {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 64px !important;
+    max-height: 64px !important;
+  }
+
   .dashboard-page .calendar-card .calendar-day {
-    min-height: 64px;
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+    margin: 0 !important;
+    padding: 2px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* FIX 2: Extra small mobile - button with perfect alignment */
+  .button-view-all {
+    font-size: 0.65rem !important;
+    padding: 0.35rem 0.6rem !important;
+    height: 28px !important;
+    min-height: 28px !important;
   }
 }
