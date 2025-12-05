@@ -376,7 +376,7 @@ notices_general = [
     category: "Event",
     title: "All Grades End-of-Term Class Party",
     content: "To celebrate the end of the first term, classes will have small parties in their classrooms. Students may play simple games, share reflections, and write messages for classmates. Please note that we will not exchange food items, so no snacks are necessary.",
-    date: Date.new(2025, 12, rand(1..5)),
+    date: Date.new(2025, 12, 19),
     start_time: "13:00:00",
     end_time: "14:30:00",
     created_at: Date.new(2025, 6, 17)
