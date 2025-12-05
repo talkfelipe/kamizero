@@ -523,8 +523,8 @@ harmony = School.find_by(name: "Harmony")
 
 parent1 = User.create!(
   email: "parent@sunrise.com",
-  first_name: first_names.sample,
-  last_name: surnames.sample,
+  first_name: "Koni",
+  last_name: "Tasuku",
   password: "123456",
 )
 puts "Parent account created"
@@ -556,5 +556,18 @@ puts "#{User.where(role: 'parent').count} Parents account created"
 puts "#{User.where(role: 'teacher').count} Teachers account created"
 
 puts "#{Note.count} Notes created"
+
+# Mark most notices as read for parent@sunrise.com, leaving only 5 unread
+parent1_notices = parent1.parent_notices.order(created_at: :desc)
+notices_to_mark_read = parent1_notices.offset(5) # Skip the first 5 (most recent), mark the rest as read
+
+notices_to_mark_read.each do |notice|
+  ReadNotification.create!(
+    user: parent1,
+    notification: notice,
+    status: true
+  )
+end
+puts "Marked #{notices_to_mark_read.count} notices as read for parent@sunrise.com (5 left unread)"
 
 puts "done!"
