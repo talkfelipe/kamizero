@@ -1,17 +1,16 @@
-<div class="container note-page notes-page">
+<div class="container notice-page notices-page">
 
   <!-- HEADER – EXACT SAME STRUCTURE AS NOTICES INDEX -->
-<div class="note-header d-flex align-items-center justify-content-between justify-content-md-start gap-3">
-  <div class="note-header-text">
+  <div class="notice-header">
     <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
 
     <h2>Messages</h2>
-    <p>View Messages<i class="fa-solid fa-angles-down"></i></p>
+    <p>View Messages <i class="fa-solid fa-angles-down"></i></p>
   </div>
 
-  <!-- HEADER ACTIONS (parent only) - OUTSIDE note-index-card like notices -->
+  <!-- HEADER ACTIONS (parent only) - SEPARATE FROM HEADER -->
   <% if current_user.role == "parent" && @students_for_dropdown.present? %>
     <div class="notes-header-actions">
       <div class="dropdown">
@@ -36,12 +35,12 @@
       </div>
     </div>
   <% end %>
-</div>
-  <!-- FILTERS (parents only) - OUTSIDE note-index-card like notices -->
+
+  <!-- FILTERS (parents only) -->
   <% if current_user.role == "parent" %>
-    <div class="notes-filters-card">
+    <div class="notices-filters-card">
       <%= simple_form_for :filters, url: notes_path, method: :get,
-                          html: { class: "note-filters" } do |f| %>
+                          html: { class: "notice-filters" } do |f| %>
 
         <div class="filter-item">
           <%= f.input :school_id,
@@ -61,18 +60,18 @@
     </div>
   <% end %>
 
-  <!-- MESSAGES LIST / EMPTY STATE - NO WRAPPER CARD -->
-  <div class="notes-list">
+  <!-- MESSAGES LIST / EMPTY STATE -->
+  <div class="notices-list">
     <% if @notes.present? %>
       <% @notes.each do |note| %>
-        <%= link_to note_path(note), class: "note-card position-relative" do %>
+        <%= link_to note_path(note), class: "notice-card position-relative" do %>
           <!-- Icon -->
-          <div class="note-card-icon">
+          <div class="notice-card-icon">
             <i class="fa-solid fa-book"></i>
           </div>
 
           <!-- Main Content -->
-          <div class="note-card-main">
+          <div class="notice-card-main">
             <!-- Grade / Class pills -->
             <div class="mb-3 d-flex flex-wrap gap-2 note-meta-pills">
               <span class="badge rounded-pill pill-meta">
@@ -84,8 +83,8 @@
             </div>
 
             <!-- Title -->
-            <div class="note-card-header">
-              <h2 class="note-card-title">
+            <div class="notice-card-header">
+              <h2 class="notice-card-title">
                 <%= note.title %>
                 <span style="font-size: 0.85rem; font-weight: normal; margin-left: 0.5rem;">
                   <%= note.created_at.strftime("%Y/%m/%d") %>
@@ -99,7 +98,7 @@
             </p>
 
             <!-- Content preview -->
-            <p class="note-card-body">
+            <p class="notice-card-body">
               <%= truncate(strip_tags(note.content), length: 100) %>
             </p>
           </div>
