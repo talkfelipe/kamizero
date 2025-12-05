@@ -1,7 +1,9 @@
 <%# ============================================================
     BUILD SCHOOL → COLOR MAP (DYNAMIC HSL - INFINITE COLORS)
-    FIX 3: Colors generated dynamically from school ID
-    Each school ID produces unique, deterministic color
+    FIX 7: Works for BOTH parents AND teachers
+           + UNREAD NOTICES events get school colors
+           + Case-insensitive category comparison
+           + Date pill text colors fixed for school colors
     ============================================================ %>
 <%
   # Helper method to generate pastel color from school ID
@@ -10,20 +12,14 @@
     hue = (school_id * 137.508) % 360
 
     # Adjust hue to prefer cool spectrum with some warm accents
-    # Cool range: 180-300 (blues, greens, purples)
-    # Warm range: 0-60 (oranges, browns)
     if hue > 300 || hue < 60
-      # Warm side - shift to earth tones (oranges, browns)
-      hue = ((hue % 60) * 0.5) + 15  # 15-45 range (orange-brown)
+      hue = ((hue % 60) * 0.5) + 15
     elsif hue >= 60 && hue < 180
-      # Avoid yellows/limes - shift to cool
-      hue = ((hue - 60) * 0.5) + 180  # Shift to blue-green range
+      hue = ((hue - 60) * 0.5) + 180
     end
-    # else: already in cool range (180-300), keep as is
 
-    # Pastel tone: moderate saturation, high lightness
-    saturation = 55 + (school_id % 15)  # 55-70% for soft colors
-    lightness = 70 + (school_id % 10)   # 70-80% for pastel
+    saturation = 55 + (school_id % 15)
+    lightness = 70 + (school_id % 10)
 
     "hsl(#{hue.round}, #{saturation}%, #{lightness}%)"
   end
@@ -38,15 +34,24 @@
       hue = ((hue - 60) * 0.5) + 180
     end
 
-    # Darker for text readability
     saturation = 60 + (school_id % 15)
     lightness = 35 + (school_id % 10)
 
     "hsl(#{hue.round}, #{saturation}%, #{lightness}%)"
   end
 
+  # FIX: Get schools for BOTH parents AND teachers
   school_colors = {}
-  schools = current_user.children.includes(:school).map(&:school).uniq
+  schools = []
+
+  if current_user.role == "teacher"
+    # Get schools from BOTH events AND unread notices (events only)
+    event_schools = @events.present? ? @events.map(&:school).compact : []
+    notice_event_schools = @unread_notices.present? ? @unread_notices.select { |n| n.category&.downcase == "event" }.map(&:school).compact : []
+    schools = (event_schools + notice_event_schools).uniq
+  else
+    schools = current_user.children.includes(:school).map(&:school).compact.uniq
+  end
 
   schools.each do |school|
     school_colors[school.id] = {
@@ -68,6 +73,13 @@
 
     .event-date-pill-<%= school_id %> {
       background: linear-gradient(145deg, <%= colors[:light] %> 0%, <%= colors[:dark] %> 100%) !important;
+      border: none !important;
+    }
+
+    /* FIX: Date pill text must be white when using school colors */
+    .event-date-pill-<%= school_id %> .event-month,
+    .event-date-pill-<%= school_id %> .event-day {
+      color: #ffffff !important;
     }
 
     .event-title-<%= school_id %> {
@@ -137,15 +149,29 @@
               <li class="list-group-item unread-item">
                 <%= link_to notice_path(notice), class: "d-flex w-100 event-item text-decoration-none text-reset" do %>
 
-                  <!-- DATE PILL -->
-                  <div class="event-date-pill me-3">
-                    <div class="event-month"><%= notice.created_at.strftime("%b").upcase %></div>
-                    <div class="event-day"><%= notice.created_at.strftime("%-d") %></div>
-                  </div>
+                  <% if notice.category&.downcase == "event" %>
+                    <!-- EVENT NOTICE: Date pill with school color gradient -->
+                    <div class="event-date-pill event-date-pill-<%= notice.school_id %> me-3">
+                      <div class="event-month"><%= notice.created_at.strftime("%b").upcase %></div>
+                      <div class="event-day"><%= notice.created_at.strftime("%-d") %></div>
+                    </div>
+                  <% else %>
+                    <!-- REGULAR NOTICE: Default navy styling -->
+                    <div class="event-date-pill me-3">
+                      <div class="event-month"><%= notice.created_at.strftime("%b").upcase %></div>
+                      <div class="event-day"><%= notice.created_at.strftime("%-d") %></div>
+                    </div>
+                  <% end %>
 
                   <!-- TEXT CONTENT -->
                   <div class="event-text flex-grow-1">
-                    <div class="event-title"><%= notice.title %></div>
+                    <% if notice.category&.downcase == "event" %>
+                      <!-- EVENT NOTICE: Title with school color -->
+                      <div class="event-title event-title-<%= notice.school_id %>"><%= notice.title %></div>
+                    <% else %>
+                      <!-- REGULAR NOTICE: Default navy title -->
+                      <div class="event-title"><%= notice.title %></div>
+                    <% end %>
 
                     <div class="event-meta">
                       <%= notice.created_at.strftime("%A") %>
@@ -193,7 +219,6 @@
                   <!-- TEXT CONTENT -->
                   <div class="event-text flex-grow-1">
                     <div class="event-title"><%= note.title %></div>
-
 
                     <div class="event-meta">
                       <%= note.created_at.strftime("%A") %></div>
@@ -269,7 +294,7 @@
                 <%= link_to notice_path(event),
                             class: "event-item d-flex w-100 text-decoration-none text-reset" do %>
 
-                  <!-- FIX 2: DATE PILL with school color gradient -->
+                  <!-- DATE PILL with school color gradient -->
                   <div class="event-date-pill event-date-pill-<%= event.school_id %> me-3">
                     <div class="event-month">
                       <%= event.date.strftime("%b") %>
@@ -281,7 +306,7 @@
 
                   <!-- TEXT BLOCK -->
                   <div class="event-text flex-grow-1">
-                    <!-- FIX 2: Title with school color -->
+                    <!-- Title with school color -->
                     <div class="event-title event-title-<%= event.school_id %>">
                       <%= event.title %>
                     </div>
