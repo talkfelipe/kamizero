@@ -1,8 +1,8 @@
-<div class="container notice-page">
+<div class="container notice-page notice-create-page">
 
   <!-- PAGE HEADER: BACK + TITLE + SUBTITLE -->
   <div class="notice-header">
-    <%= link_to dashboard_path, class: "text-decoration-none text-secondary" do %>
+    <%= link_to notes_path, class: "text-decoration-none text-secondary" do %>
       <i class="fa-solid fa-angles-left"></i> <strong>BACK</strong>
     <% end %>
     <h2>Create Message</h2>
@@ -11,7 +11,7 @@
 
   <!-- FORM CARD -->
   <div class="notice-card">
-    <%= simple_form_for [@student,@note],
+    <%= simple_form_for [@student, @note],
       html: { data: { controller: "conditional-form document-upload" } } do |f| %>
 
       <%= f.input :title,
@@ -32,7 +32,7 @@
       </div>
 
       <div class="d-flex justify-content-end m-3">
-        <%= link_to "Cancel", dashboard_path, class: "btn btn-light me-2" %>
+        <%= link_to "Cancel", notes_path, class: "btn btn-light me-2" %>
         <%= f.button :submit, class: "btn btn-dark" %>
       </div>
 
