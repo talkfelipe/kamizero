@@ -1,3 +1,4 @@
+ReadNotification.destroy_all
 Classroom.destroy_all
 Notice.destroy_all
 User.destroy_all
