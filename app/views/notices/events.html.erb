@@ -36,7 +36,11 @@
     end
 
     school_colors = {}
-    schools = current_user.students.includes(:school).map(&:school).uniq
+    if current_user.role == "teacher"
+      schools = [current_user.school].compact
+    else
+      schools = current_user.children.includes(:school).map(&:school).uniq
+    end
 
     schools.each do |school|
       school_colors[school.id] = {
