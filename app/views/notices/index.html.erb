@@ -13,12 +13,12 @@
   <!-- MAIN WHITE CARD (wraps filters + list) -->
   <div class="notice-index-card">
 
-    <!-- FILTERS (original) -->
+    <!-- FILTERS -->
     <div class="notices-filters-card">
       <%= simple_form_for :filters, url: notices_path, method: :get,
                           html: { class: "notice-filters" } do |f| %>
 
-        <!-- Search -->
+        <!-- Search + Submit (PC: 4 col, Mobile: row 1 left) -->
         <div class="filter-item search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
           <%= f.input :q,
@@ -29,9 +29,12 @@
               class: "filter-input",
               value: params.dig(:filters, :q)
             } %>
+          <button type="submit" class="search-submit-btn">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
         </div>
 
-        <!-- Category Filter -->
+        <!-- Category Filter (PC: 3 col, Mobile: row 2 left) -->
         <div class="filter-item">
           <%= f.input :category,
             collection: [["All Categories", ""], ["General", "General"], ["Event", "Event"]],
@@ -44,7 +47,7 @@
             } %>
         </div>
 
-        <!-- School Filter -->
+        <!-- School Filter (PC: 3 col, Mobile: row 2 right) -->
         <% if current_user.role == "parent" %>
         <div class="filter-item">
           <%= f.input :school_id,
@@ -62,8 +65,8 @@
         </div>
         <% end %>
 
-        <!-- Clear -->
-        <div>
+        <!-- Clear (PC: 2 col, Mobile: row 1 right) -->
+        <div class="filter-clear-wrapper">
           <%= link_to "CLEAR", notices_path, class: "filter-clear" %>
         </div>
 
