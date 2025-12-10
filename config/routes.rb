@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   end
 
   post "/scan_file", to: "notices#scan_file", as: :scan_file
+  post "/ocr_scan", to: "notices#ocr_scan", as: :ocr_scan
   post "/preview_markdown", to: "notices#preview_markdown", as: :preview_markdown
 
   resources :notices, only: [:destroy]

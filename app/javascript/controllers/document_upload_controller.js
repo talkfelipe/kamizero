@@ -62,48 +62,45 @@ export default class extends Controller {
   }
 
   async OCRscan(file) {
-    const endpoint = "https://api.ocr.space/parse/image"
+    if (!file) return
 
-    if (file) {
-      const formData = new FormData()
-      const base64 = await this.toBase64(file)
-      formData.append("base64Image", base64)
-      // formData.append("OCREngine", 2)
-      // formData.append("language", "auto")
+    const base64 = await this.toBase64(file)
+    const token = document.querySelector('meta[name="csrf-token"]').content
+    const formData = new FormData()
+    formData.append("base64_image", base64)
 
-      // existing image preview (kept)
-      this.previewTarget.src = base64
+    // existing image preview (kept)
+    this.previewTarget.src = base64
 
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          apikey: "K84807466288957"
-        },
-        body: formData
+    fetch("/ocr_scan", {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token
+      },
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+
+        // Validate OCR response structure
+        if (!data.ParsedResults || !data.ParsedResults[0]) {
+          throw new Error("OCR failed: No parsed results returned")
+        }
+
+        const textContent = data.ParsedResults[0].ParsedText
+
+        if (!textContent || textContent.trim() === "") {
+          throw new Error("OCR failed: No text could be extracted from the image")
+        }
+
+        this.sendTextFromImage(textContent)
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-
-          // Validate OCR response structure
-          if (!data.ParsedResults || !data.ParsedResults[0]) {
-            throw new Error("OCR failed: No parsed results returned")
-          }
-
-          const textContent = data.ParsedResults[0].ParsedText
-
-          if (!textContent || textContent.trim() === "") {
-            throw new Error("OCR failed: No text could be extracted from the image")
-          }
-
-          this.sendTextFromImage(textContent)
-        })
-        .catch(error => {
-          console.error("OCR error:", error)
-          alert(error.message || "Failed to scan the document. Please try again or enter the details manually.")
-          this.hideSpinner()
-        })
-    }
+      .catch(error => {
+        console.error("OCR error:", error)
+        alert(error.message || "Failed to scan the document. Please try again or enter the details manually.")
+        this.hideSpinner()
+      })
   }
 
   sendTextFromImage(textContent, retryCount = 0) {

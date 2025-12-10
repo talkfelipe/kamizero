@@ -82,6 +82,40 @@ class NoticesController < ApplicationController
     end
   end
 
+  def ocr_scan
+    base64_image = params[:base64_image]
+
+    if base64_image.blank?
+      render json: { error: "No image provided" }, status: :unprocessable_entity
+      return
+    end
+
+    api_key = ENV["OCR_API_KEY"]
+    if api_key.blank?
+      Rails.logger.error("OCR_API_KEY environment variable is not set")
+      render json: { error: "OCR service not configured" }, status: :service_unavailable
+      return
+    end
+
+    begin
+      uri = URI.parse("https://api.ocr.space/parse/image")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      http.cert_store = OpenSSL::X509::Store.new.tap(&:set_default_paths)
+
+      request = Net::HTTP::Post.new(uri.path)
+      request["apikey"] = api_key
+      request.set_form_data({ "base64Image" => base64_image })
+
+      response = http.request(request)
+      render json: response.body, status: response.code.to_i
+    rescue StandardError => e
+      Rails.logger.error("OCR API error: #{e.message}")
+      render json: { error: "Failed to process image" }, status: :internal_server_error
+    end
+  end
+
   def preview_markdown
     content = params[:content]
     title = params[:title]
